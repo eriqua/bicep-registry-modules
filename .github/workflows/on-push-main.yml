@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '!avm/**'
 
 jobs:
   get-module-to-publish:
