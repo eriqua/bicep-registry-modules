@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - '!avm/**'
+      - '!.github/**/avm.**'
+      - '!.github/**/avm-**'
 
 jobs:
   get-module-to-validate:

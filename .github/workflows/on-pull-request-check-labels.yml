@@ -9,6 +9,9 @@ on:
       - synchronize
     paths:
       - '!avm/**'
+      - '!.github/**/avm.**'
+      - '!.github/**/avm-**'
+
 
 jobs:
   label-check:
