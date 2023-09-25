@@ -38,7 +38,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csad'
+  name: '${uniqueString(deployment().name, location)}-test-csad-${iteration}'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -107,7 +107,7 @@ module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csamax'
+  name: '${uniqueString(deployment().name, location)}-test-csamax-${iteration}'
   params: {
     // Required parameters
     kind: 'Face'
@@ -334,7 +334,7 @@ module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csaspeech'
+  name: '${uniqueString(deployment().name, location)}-test-csaspeech-${iteration}'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -447,7 +447,7 @@ module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csaecrs'
+  name: '${uniqueString(deployment().name, location)}-test-csaecrs-${iteration}'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -526,7 +526,7 @@ module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csaencr'
+  name: '${uniqueString(deployment().name, location)}-test-csaencr-${iteration}'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -611,7 +611,7 @@ module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
 
 ```bicep
 module account 'br/public:avm-res-cognitiveservices-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-csawaf'
+  name: '${uniqueString(deployment().name, location)}-test-csawaf-${iteration}'
   params: {
     // Required parameters
     kind: 'Face'
