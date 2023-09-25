@@ -41,7 +41,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvd-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-kvvd'
   params: {
     // Required parameters
     name: 'kvvd002'
@@ -106,7 +106,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 
 ```bicep
 module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvmax-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-kvvmax'
   params: {
     name: 'kvvmax002'
     accessPolicies: [
@@ -505,7 +505,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 
 ```bicep
 module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvpe-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters
     name: 'kvvpe001'
@@ -596,7 +596,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 
 ```bicep
 module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kvvwaf-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-kvvwaf'
   params: {
     name: 'kvvwaf002'
     accessPolicies: [

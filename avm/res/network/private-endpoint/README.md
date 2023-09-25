@@ -36,7 +36,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateEndpoint 'br/public:avm-res-network-privateendpoint:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npemin-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-npemin'
   params: {
     // Required parameters
     groupIds: [
@@ -105,7 +105,7 @@ module privateEndpoint 'br/public:avm-res-network-privateendpoint:1.0.0' = {
 
 ```bicep
 module privateEndpoint 'br/public:avm-res-network-privateendpoint:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npemax-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-npemax'
   params: {
     // Required parameters
     groupIds: [
@@ -246,7 +246,7 @@ module privateEndpoint 'br/public:avm-res-network-privateendpoint:1.0.0' = {
 
 ```bicep
 module privateEndpoint 'br/public:avm-res-network-privateendpoint:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-npewaf-${iteration}'
+  name: '${uniqueString(deployment().name, location)}-test-npewaf'
   params: {
     // Required parameters
     groupIds: [
