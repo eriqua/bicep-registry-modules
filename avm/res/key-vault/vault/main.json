@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "906532672506379950"
+      "templateHash": "801185442804867168"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -366,7 +366,7 @@
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Optional. Location for all resources."
+        "description": "Optional.  Location for all resources."
       }
     },
     "accessPolicies": {

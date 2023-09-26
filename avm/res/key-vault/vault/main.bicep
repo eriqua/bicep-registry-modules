@@ -9,7 +9,7 @@ metadata owner = 'Azure/module-maintainers'
 @maxLength(24)
 param name string
 
-@description('Optional. Location for all resources.')
+@description('Optional.  Location for all resources.')
 param location string = resourceGroup().location
 
 @description('Optional. All access policies to create.')
@@ -242,7 +242,7 @@ module keyVault_keys 'key/main.bicep' = [for (key, index) in keys: {
   }
 }]
 
-module keyVault_privateEndpoints 'br:avmprivateregistry.azurecr.io/avm-res-network-privateendpoint:0.1.0' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
+module keyVault_privateEndpoints 'br:avmprivateregistry.azurecr.io/avm-res-network-privateendpoint:0.1.3' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     groupIds: [
