@@ -63,7 +63,7 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   params: {
     name: '${namePrefix}${serviceShort}001'
     kind: 'Face'
-    customSubDomainName: '${namePrefix}xdomain'
+    customSubDomainName: '${namePrefix}x${serviceShort}'
     location: location
     diagnosticSettings: [
       {
