@@ -80,5 +80,7 @@ function Publish-ModuleFromPathToPBR {
     '--force'
   )
   # TODO move to its own task to show that as skipped if no file qualifies for new version
-  bicep publish @publishInput
+  # bicep publish @publishInput
+  $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f 'avmPrivateRegistry', $publishedModuleName, $targetVersion
+  bicep publish $TemplateFilePath --target $publishingTarget --force
 }
