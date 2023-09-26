@@ -2,7 +2,7 @@ metadata name = 'Private Endpoints'
 metadata description = 'This module deploys a Private Endpoint.'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Required. Name of the private endpoint resource to create.')
+@description('Required. Name of the private endpoint resource to create..')
 param name string
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
@@ -60,7 +60,7 @@ var builtInRoleNames = {
   'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
 }
 
-@description('The current released version of the module. Used for telemetry..')
+@description('The current released version of the module. Used for telemetry.')
 var moduleVersion = '#_moduleVersion_#' // AUTOMATED, DO NOT CHANGE
 
 resource avmTelemetry 'Microsoft.Resources/deployments@2023-07-01' = if (enableTelemetry) {
