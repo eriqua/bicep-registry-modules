@@ -21,7 +21,7 @@
           "roleDefinitionIdOrName": {
             "type": "string",
             "metadata": {
-              "description": "Required. The name of the role to assign.  If it cannot be found you can specify the role definition ID instead."
+              "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
             }
           },
           "principalId": {
