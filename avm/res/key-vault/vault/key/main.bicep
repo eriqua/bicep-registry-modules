@@ -9,16 +9,16 @@ param keyVaultName string
 param name string
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Determines whether the object is enabled.')
 param attributesEnabled bool = true
 
 @description('Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible.')
-param attributesExp int = -1
+param attributesExp int?
 
 @description('Optional. Not before date in seconds since 1970-01-01T00:00:00Z.')
-param attributesNbf int = -1
+param attributesNbf int?
 
 @description('Optional. The elliptic curve name.')
 @allowed([
@@ -39,10 +39,10 @@ param curveName string = 'P-256'
   'verify'
   'wrapKey'
 ])
-param keyOps array = []
+param keyOps array?
 
 @description('Optional. The key size in bits. For example: 2048, 3072, or 4096 for RSA.')
-param keySize int = -1
+param keySize int?
 
 @description('Optional. The type of the key.')
 @allowed([
@@ -57,7 +57,7 @@ param kty string = 'EC'
 param roleAssignments roleAssignmentType
 
 @description('Optional. Key rotation policy properties object.')
-param rotationPolicy object = {}
+param rotationPolicy object?
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -87,14 +87,14 @@ resource key 'Microsoft.KeyVault/vaults/keys@2022-07-01' = {
   properties: {
     attributes: {
       enabled: attributesEnabled
-      exp: attributesExp != -1 ? attributesExp : null
-      nbf: attributesNbf != -1 ? attributesNbf : null
+      exp: attributesExp
+      nbf: attributesNbf
     }
     curveName: curveName
     keyOps: keyOps
-    keySize: keySize != -1 ? keySize : null
+    keySize: keySize
     kty: kty
-    rotationPolicy: !empty(rotationPolicy) ? rotationPolicy : null
+    rotationPolicy: rotationPolicy
   }
 }
 
@@ -103,11 +103,11 @@ resource key_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
     principalId: roleAssignment.principalId
-    description: roleAssignment.?description ?? null
-    principalType: roleAssignment.?principalType ?? null
-    condition: roleAssignment.?condition ?? null
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
     conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
-    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId ?? null
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
   scope: key
 }]
@@ -132,7 +132,7 @@ type roleAssignmentType = {
   @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
   principalId: string
 
-  @description('The principal type of the assigned principal ID.')
+  @description('Optional. The principal type of the assigned principal ID.')
   principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
 
   @description('Optional. The description of the role assignment.')

@@ -1,12 +1,18 @@
 targetScope = 'subscription'
 
+metadata name = 'Using only defaults'
+metadata description = '''
+This instance deploys the module with the minimum set of required parameters.
+> **Note:** The test currently implements additional non-required parameters to cater for a test-specific limitation.
+'''
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'network.privateendpoints-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-network.privateendpoints-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -57,5 +63,13 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     // Workaround for PSRule
     lock: {}
     roleAssignments: []
+    applicationSecurityGroupResourceIds: []
+    customNetworkInterfaceName: ''
+    privateDnsZoneGroupName: ''
+    ipConfigurations: []
+    customDnsConfigs: []
+    privateDnsZoneResourceIds: []
+    manualPrivateLinkServiceConnections: []
+    tags: {}
   }
 }]

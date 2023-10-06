@@ -26,14 +26,24 @@ This module deploys a Key Vault.
 
 ## Usage examples
 
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+The following module usage examples are retrieved from the content of the files hosted in the module's `tests` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
    >**Note**: To reference the module, please use the following syntax `br/public:avm-res-keyvault-vault:1.0.0`.
 
-<h3>Example 1: Defaults</h3>
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [Using Private Endpoints](#example-3-using-private-endpoints)
+- [WAF-aligned](#example-4-waf-aligned)
+
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+> **Note:** The test currently implements additional non-required parameters to cater for a test-specific limitation.
+
+
 
 <details>
 
@@ -43,15 +53,7 @@ The following module usage examples are retrieved from the content of the files 
 module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvd'
   params: {
-    // Required parameters
-    name: 'kvvd002'
-    // Non-required parameters
-    diagnosticSettings: []
-    enablePurgeProtection: false
-    location: '<location>'
-    lock: {}
-    privateEndpoints: []
-    roleAssignments: []
+
   }
 }
 ```
@@ -68,16 +70,20 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "kvvd002"
     },
-    // Non-required parameters
+    "accessPolicies": {
+      "value": []
+    },
     "diagnosticSettings": {
       "value": []
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "keys": {
+      "value": []
     },
     "location": {
       "value": "<location>"
@@ -90,6 +96,12 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     },
     "roleAssignments": {
       "value": []
+    },
+    "secrets": {
+      "value": {}
+    },
+    "tags": {
+      "value": {}
     }
   }
 }
@@ -98,7 +110,10 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 </details>
 <p>
 
-<h3>Example 2: Max</h3>
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
 
 <details>
 
@@ -497,7 +512,10 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 </details>
 <p>
 
-<h3>Example 3: Private-Endpoint</h3>
+### Example 3: _Using Private Endpoints_
+
+This instance deploys the module with Private Endpoints.
+
 
 <details>
 
@@ -517,7 +535,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         privateDnsZoneResourceIds: [
           '<privateDNSResourceId>'
         ]
-        service: 'vault'
         subnetResourceId: '<subnetResourceId>'
         tags: {
           Environment: 'Non-Prod'
@@ -564,7 +581,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           "privateDnsZoneResourceIds": [
             "<privateDNSResourceId>"
           ],
-          "service": "vault",
           "subnetResourceId": "<subnetResourceId>",
           "tags": {
             "Environment": "Non-Prod",
@@ -588,7 +604,10 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 </details>
 <p>
 
-<h3>Example 4: Waf-Aligned</h3>
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-pratices of the Well-Architectured-Framework.
+
 
 <details>
 
@@ -599,77 +618,22 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvwaf'
   params: {
     name: 'kvvwaf002'
-    accessPolicies: [
-      {
-        objectId: '<objectId>'
-        permissions: {
-          keys: [
-            'get'
-            'list'
-            'update'
-          ]
-          secrets: [
-            'all'
-          ]
-        }
-        tenantId: '<tenantId>'
-      }
-      {
-        objectId: '<objectId>'
-        permissions: {
-          certificates: [
-            'backup'
-            'create'
-            'delete'
-          ]
-          secrets: [
-            'all'
-          ]
-        }
-      }
-    ]
     diagnosticSettings: [
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
         eventHubName: '<eventHubName>'
-        logCategoriesAndGroups: [
-          {
-            category: 'AzurePolicyEvaluationDetails'
-          }
-          {
-            category: 'AuditEvent'
-          }
-        ]
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
+        name: 'enableAll'
         storageAccountResourceId: '<storageAccountResourceId>'
         workspaceResourceId: '<workspaceResourceId>'
       }
     ]
     enablePurgeProtection: false
-    enableRbacAuthorization: false
+    enableRbacAuthorization: true
     keys: [
       {
         attributesExp: 1725109032
         attributesNbf: 10000
         name: 'keyName'
-        roleAssignments: [
-          {
-            principalId: '<principalId>'
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
         rotationPolicy: {
           attributes: {
             expiryTime: 'P2Y'
@@ -703,44 +667,14 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: [
-        {
-          value: '40.74.28.0/23'
-        }
-      ]
-      virtualNetworkRules: [
-        {
-          id: '<id>'
-          ignoreMissingVnetServiceEndpoint: false
-        }
-      ]
     }
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
           '<privateDNSResourceId>'
         ]
-        roleAssignments: [
-          {
-            principalId: '<principalId>'
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
-        tags: {
-          Environment: 'Non-Prod'
-          'hidden-title': 'This is visible in the resource name'
-          Role: 'DeploymentValidation'
-        }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
     secrets: {
@@ -750,13 +684,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           attributesNbf: 10000
           contentType: 'Something'
           name: 'secretName'
-          roleAssignments: [
-            {
-              principalId: '<principalId>'
-              principalType: 'ServicePrincipal'
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
           value: 'secretValue'
         }
       ]
@@ -786,62 +713,12 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     "name": {
       "value": "kvvwaf002"
     },
-    "accessPolicies": {
-      "value": [
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "keys": [
-              "get",
-              "list",
-              "update"
-            ],
-            "secrets": [
-              "all"
-            ]
-          },
-          "tenantId": "<tenantId>"
-        },
-        {
-          "objectId": "<objectId>",
-          "permissions": {
-            "certificates": [
-              "backup",
-              "create",
-              "delete"
-            ],
-            "secrets": [
-              "all"
-            ]
-          }
-        }
-      ]
-    },
     "diagnosticSettings": {
       "value": [
         {
           "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
           "eventHubName": "<eventHubName>",
-          "logCategoriesAndGroups": [
-            {
-              "category": "AzurePolicyEvaluationDetails"
-            },
-            {
-              "category": "AuditEvent"
-            }
-          ],
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        },
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
+          "name": "enableAll",
           "storageAccountResourceId": "<storageAccountResourceId>",
           "workspaceResourceId": "<workspaceResourceId>"
         }
@@ -851,7 +728,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
       "value": false
     },
     "enableRbacAuthorization": {
-      "value": false
+      "value": true
     },
     "keys": {
       "value": [
@@ -859,13 +736,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           "attributesExp": 1725109032,
           "attributesNbf": 10000,
           "name": "keyName",
-          "roleAssignments": [
-            {
-              "principalId": "<principalId>",
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
           "rotationPolicy": {
             "attributes": {
               "expiryTime": "P2Y"
@@ -904,18 +774,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     "networkAcls": {
       "value": {
         "bypass": "AzureServices",
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "value": "40.74.28.0/23"
-          }
-        ],
-        "virtualNetworkRules": [
-          {
-            "id": "<id>",
-            "ignoreMissingVnetServiceEndpoint": false
-          }
-        ]
+        "defaultAction": "Deny"
       }
     },
     "privateEndpoints": {
@@ -924,29 +783,8 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           "privateDnsZoneResourceIds": [
             "<privateDNSResourceId>"
           ],
-          "roleAssignments": [
-            {
-              "principalId": "<principalId>",
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
           "service": "vault",
-          "subnetResourceId": "<subnetResourceId>",
-          "tags": {
-            "Environment": "Non-Prod",
-            "hidden-title": "This is visible in the resource name",
-            "Role": "DeploymentValidation"
-          }
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -958,13 +796,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
             "attributesNbf": 10000,
             "contentType": "Something",
             "name": "secretName",
-            "roleAssignments": [
-              {
-                "principalId": "<principalId>",
-                "principalType": "ServicePrincipal",
-                "roleDefinitionIdOrName": "Reader"
-              }
-            ],
             "value": "secretValue"
           }
         ]
@@ -1027,7 +858,6 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
 All access policies to create.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `createMode`
 
@@ -1205,7 +1035,6 @@ Specifies if the vault is enabled for a template deployment.
 All keys to create.
 - Required: No
 - Type: array
-- Default: `[]`
 
 ### Parameter: `location`
 
@@ -1266,15 +1095,16 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
 | [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | No | array | Optional. Custom DNS configurations. |
 | [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | No | string | Optional. The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable/Disable usage telemetry for module. |
 | [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | No | array | Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
 | [`location`](#parameter-privateendpointslocation) | No | string | Optional. The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | No |  | Optional. Specify the type of lock. |
+| [`lock`](#parameter-privateendpointslock) | No | object | Optional. Specify the type of lock. |
 | [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | No | array | Optional. Manual PrivateLink Service Connections. |
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`service`](#parameter-privateendpointsservice) | Yes | string | Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
 
@@ -1315,7 +1145,7 @@ Optional. The custom name of the network interface attached to the private endpo
 
 ### Parameter: `privateEndpoints.enableTelemetry`
 
-Optional. Enable telemetry via a Globally Unique Identifier (GUID).
+Optional. Enable/Disable usage telemetry for module.
 
 - Required: No
 - Type: bool
@@ -1363,7 +1193,7 @@ Optional. The location to deploy the private endpoint to.
 Optional. Specify the type of lock.
 
 - Required: No
-- Type: 
+- Type: object
 
 ### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
 
@@ -1375,6 +1205,13 @@ Optional. Manual PrivateLink Service Connections.
 ### Parameter: `privateEndpoints.name`
 
 Optional. The name of the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneGroupName`
+
+Optional. The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided.
 
 - Required: No
 - Type: string
@@ -1391,13 +1228,13 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: No
-- Type: 
+- Type: array
 
 ### Parameter: `privateEndpoints.service`
 
-Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
+Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
 
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `privateEndpoints.subnetResourceId`
@@ -1495,7 +1332,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 All secrets to create.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
 
 ### Parameter: `sku`
 
@@ -1517,7 +1353,6 @@ softDelete data retention days. It accepts >=7 and <=90.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs
@@ -1532,8 +1367,4 @@ Resource tags.
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `res/network/private-endpoint` | Local reference |
+_None_

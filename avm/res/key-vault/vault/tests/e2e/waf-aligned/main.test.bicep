@@ -1,12 +1,15 @@
 targetScope = 'subscription'
 
+metadata name = 'WAF-aligned'
+metadata description = 'This instance deploys the module in alignment with the best-pratices of the Well-Architectured-Framework.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'keyvault.vaults-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-keyvault.vaults-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -63,57 +66,9 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   params: {
     name: '${namePrefix}${serviceShort}002'
     location: location
-    accessPolicies: [
-      {
-        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
-        permissions: {
-          keys: [
-            'get'
-            'list'
-            'update'
-          ]
-          secrets: [
-            'all'
-          ]
-        }
-        tenantId: tenant().tenantId
-      }
-      {
-        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
-        permissions: {
-          certificates: [
-            'backup'
-            'create'
-            'delete'
-          ]
-          secrets: [
-            'all'
-          ]
-        }
-      }
-    ]
     diagnosticSettings: [
       {
-        name: 'customSetting'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        logCategoriesAndGroups: [
-          {
-            category: 'AzurePolicyEvaluationDetails'
-          }
-          {
-            category: 'AuditEvent'
-          }
-        ]
-        eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-        eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-        workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      }
-      {
+        name: 'enableAll'
         eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
@@ -122,19 +77,12 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     ]
     // Only for testing purposes
     enablePurgeProtection: false
-    enableRbacAuthorization: false
+    enableRbacAuthorization: true
     keys: [
       {
         attributesExp: 1725109032
         attributesNbf: 10000
         name: 'keyName'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-            principalType: 'ServicePrincipal'
-          }
-        ]
         rotationPolicy: {
           attributes: {
             expiryTime: 'P2Y'
@@ -167,17 +115,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: [
-        {
-          value: '40.74.28.0/23'
-        }
-      ]
-      virtualNetworkRules: [
-        {
-          id: nestedDependencies.outputs.subnetResourceId
-          ignoreMissingVnetServiceEndpoint: false
-        }
-      ]
     }
     privateEndpoints: [
       {
@@ -186,25 +123,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         ]
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
-        tags: {
-          'hidden-title': 'This is visible in the resource name'
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
-        }
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
       }
     ]
     secrets: {
@@ -214,13 +132,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
           attributesNbf: 10000
           contentType: 'Something'
           name: 'secretName'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-              principalType: 'ServicePrincipal'
-            }
-          ]
           value: 'secretValue'
         }
       ]

@@ -198,8 +198,21 @@ function Set-ParametersSection {
             }
             else {
                 $type = $parameter.type
-                $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
-                $required = (-not $defaultValue)
+
+                if ($parameter.defaultValue -is [array]) {
+                    $defaultValue = '[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')
+                }
+                elseif ($parameter.defaultValue -is [hashtable]) {
+                    $defaultValue = '{object}'
+                }
+                elseif ($parameter.defaultValue -is [string] -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]')) {
+                    $defaultValue = '''' + $parameter.defaultValue + ''''
+                }
+                else {
+                    $defaultValue = $parameter.defaultValue
+                }
+
+                $required = -not $defaultValue -and -not $parameter.nullable
                 $rawAllowedValues = $parameter.allowedValues
             }
 
@@ -311,8 +324,20 @@ function Set-DefinitionSection {
         $paramIdentifier = '{0}.{1}' -f $ParentName, $parameterName
         $paramIdentifierLink = ('{0}{1}' -f $ParentIdentifierLink, $parameterName).ToLower()
 
+        # definition type (if any)
+        if ($parameterValue.Keys -contains '$ref') {
+            $definition = $TemplateFileContent.definitions[(Split-Path $parameterValue.'$ref' -Leaf)]
+        }
+        else {
+            $definition = $null
+        }
+
+        $isRequired = ($parameterValue.nullable -or $definition.nullable) ? 'No' : 'Yes'
+        $type = ($parameterValue.Keys -contains '$ref') ? $definition.type : $parameterValue['type']
+        $description = $parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null
+
         # build table for definition properties
-        $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, ($parameterValue['nullable'] ? 'No' : 'Yes'), $parameterValue['type'], ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null))
+        $tableSectionContent += ('| [`{0}`]({1}) | {2} | {3} | {4} |' -f $parameterName, $paramIdentifierLink, $isRequired, $type, $description)
         $allowedValues = ($parameterValue.ContainsKey('allowedValues')) ? (($parameterValue['allowedValues'] -is [array]) ? ('[{0}]' -f (($parameterValue['allowedValues'] | Sort-Object) -join ', ')) : (($parameterValue['allowedValues'] -is [hashtable]) ? '{object}' : $parameterValue['allowedValues'])) : $null
 
         #build flat list for definition properties
@@ -322,8 +347,8 @@ function Set-DefinitionSection {
             ($parameterValue.ContainsKey('metadata') ? '' : $null),
             ($parameterValue.ContainsKey('metadata') ? $parameterValue['metadata']['description'] : $null),
             ($parameterValue.ContainsKey('metadata') ? '' : $null),
-            ('- Required: {0}' -f ($parameterValue['nullable'] ? 'No' : 'Yes')),
-            ('- Type: {0}' -f $parameterValue['type']),
+            ('- Required: {0}' -f $isRequired),
+            ('- Type: {0}' -f $type),
             (($null -ne $allowedValues) ? ('- Allowed: `{0}`' -f $allowedValues) : $null)
         ) | Where-Object { $null -ne $_ }
 
@@ -1032,7 +1057,7 @@ function Set-UsageExamplesSection {
 
     # Process content
     $SectionContent = [System.Collections.ArrayList]@(
-        'The following module usage examples are retrieved from the content of the files hosted in the module''s `.test` folder.',
+        'The following module usage examples are retrieved from the content of the files hosted in the module''s `tests` folder.',
         '   >**Note**: The name of each example is based on the name of the file from which it is taken.',
         '',
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
@@ -1065,36 +1090,59 @@ function Set-UsageExamplesSection {
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
-    $RequiredParametersList = $TemplateFileContent.parameters.Keys
-    | Where-Object {
+    $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object {
         $hasNoDefaultValue = $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue'
         $isUserDefinedType = $TemplateFileContent.parameters[$_].Keys -contains '$ref'
-        $isNullable = $TemplateFileContent.parameters[$_].Keys -contains '$ref' ? $TemplateFileContent.definitions[(Split-Path $TemplateFileContent.parameters[$_].'$ref' -Leaf)]['nullable'] : $false
-        (($hasNoDefaultValue -and -not $isUserDefinedType) -or ($isUserDefinedType -and -not $isNullable))
+        $isNullable = $TemplateFileContent.parameters[$_]['nullable']
+        $isNullableInRef = $TemplateFileContent.parameters[$_].Keys -contains '$ref' ? $TemplateFileContent.definitions[(Split-Path $TemplateFileContent.parameters[$_].'$ref' -Leaf)]['nullable'] : $false
+        (($hasNoDefaultValue -and -not $isUserDefinedType -and -not $isNullable) -or ($isUserDefinedType -and -not $isNullableInRef))
     } | Sort-Object
 
     ############################
     ##   Process test files   ##
     ############################
     $pathIndex = 1
+    $usageExampleSectionHeaders = @()
+    $testFilesContent = @()
     foreach ($testFilePath in $testFilePaths) {
 
         # Read content
         $rawContentArray = Get-Content -Path $testFilePath
+        $compiledTestFileContent = bicep build $testFilePath --stdout | ConvertFrom-Json -AsHashtable
         $rawContent = Get-Content -Path $testFilePath -Encoding 'utf8' | Out-String
 
         # Format example header
-        if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
-            $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+        if ($compiledTestFileContent.metadata.Keys -contains 'name') {
+            $exampleTitle = $compiledTestFileContent.metadata.name
         }
         else {
-            $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+            if ((Split-Path (Split-Path $testFilePath -Parent) -Leaf) -ne '.test') {
+                $exampleTitle = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+            }
+            else {
+                $exampleTitle = ((Split-Path $testFilePath -LeafBase) -replace '\.', ' ') -replace ' parameters', ''
+            }
+            $textInfo = (Get-Culture -Name 'en-US').TextInfo
+            $exampleTitle = $textInfo.ToTitleCase($exampleTitle)
         }
-        $textInfo = (Get-Culture -Name 'en-US').TextInfo
-        $exampleTitle = $textInfo.ToTitleCase($exampleTitle)
-        $SectionContent += @(
-            '<h3>Example {0}: {1}</h3>' -f $pathIndex, $exampleTitle
+
+        $fullTestFileTitle = '### Example {0}: _{1}_' -f $pathIndex, $exampleTitle
+        $testFilesContent += @(
+            $fullTestFileTitle
         )
+        $usageExampleSectionHeaders += @{
+            title  = $exampleTitle
+            header = $fullTestFileTitle
+        }
+
+        # If a description is added in the template's metadata, we can add it too
+        if ($compiledTestFileContent.metadata.Keys -contains 'description') {
+            $testFilesContent += @(
+                '',
+                $compiledTestFileContent.metadata.description,
+                ''
+            )
+        }
 
         ## ----------------------------------- ##
         ##   Handle by type (Bicep vs. JSON)   ##
@@ -1188,7 +1236,7 @@ function Set-UsageExamplesSection {
                 }
 
                 # Build result
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1216,7 +1264,7 @@ function Set-UsageExamplesSection {
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
                 # [2/2] Create the final content block
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1383,7 +1431,7 @@ function Set-UsageExamplesSection {
                 # - the 'existing' Key Vault resources
                 # - a 'module' header that mimics a module deployment
                 # - all parameters in Bicep format
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>'
                     ''
@@ -1417,7 +1465,7 @@ function Set-UsageExamplesSection {
                 $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
                 # [2/2] Create the final content block
-                $SectionContent += @(
+                $testFilesContent += @(
                     '',
                     '<details>',
                     '',
@@ -1433,19 +1481,28 @@ function Set-UsageExamplesSection {
             }
         }
 
-        $SectionContent += @(
+        $testFilesContent += @(
             ''
         )
 
         $pathIndex++
     }
 
+    foreach ($rawHeader in $usageExampleSectionHeaders) {
+        $navigationHeader = (($rawHeader.header -replace '<\/?.+?>|[^A-Za-z0-9\s-]').Trim() -replace '\s+', '-').ToLower() # Remove any html and non-identifer elements
+        $SectionContent += "- [{0}](#{1})" -f $rawHeader.title, $navigationHeader
+    }
+    $SectionContent += ''
+
+
+    $SectionContent += $testFilesContent
+
     ######################
     ##   Built result   ##
     ######################
     if ($SectionContent) {
         if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -ContentType 'nextH2'
         }
     }
     else {

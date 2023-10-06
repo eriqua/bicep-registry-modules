@@ -1,12 +1,15 @@
 targetScope = 'subscription'
 
+metadata name = 'Using large parameter set'
+metadata description = 'This instance deploys the module with most of its features enabled.'
+
 // ========== //
 // Parameters //
 // ========== //
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'network.privateendpoints-${serviceShort}-rg'
+param resourceGroupName string = 'dep-${namePrefix}-network.privateendpoints-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -89,5 +92,9 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    // Workaround for PSRule
+    privateDnsZoneGroupName: 'default'
+    customDnsConfigs: []
+    manualPrivateLinkServiceConnections: []
   }
 }]
