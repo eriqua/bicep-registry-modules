@@ -92,5 +92,6 @@ module testDeployment '../../../main.bicep' = {
     roleAssignments: null
     diagnosticSettings: null
     lock: null
+    publicNetworkAccess: null
   }
 }

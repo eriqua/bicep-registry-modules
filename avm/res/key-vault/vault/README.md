@@ -64,6 +64,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     lock: '<lock>'
     networkAcls: '<networkAcls>'
     privateEndpoints: '<privateEndpoints>'
+    publicNetworkAccess: '<publicNetworkAccess>'
     roleAssignments: '<roleAssignments>'
     secrets: '<secrets>'
     tags: '<tags>'
@@ -109,6 +110,9 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     },
     "privateEndpoints": {
       "value": "<privateEndpoints>"
+    },
+    "publicNetworkAccess": {
+      "value": "<publicNetworkAccess>"
     },
     "roleAssignments": {
       "value": "<roleAssignments>"
@@ -279,6 +283,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         }
       }
     ]
+    publicNetworkAccess: '<publicNetworkAccess>'
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -484,6 +489,9 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         }
       ]
     },
+    "publicNetworkAccess": {
+      "value": "<publicNetworkAccess>"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -566,6 +574,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         }
       }
     ]
+    publicNetworkAccess: '<publicNetworkAccess>'
     roleAssignments: '<roleAssignments>'
     secrets: '<secrets>'
     tags: {
@@ -627,6 +636,9 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           }
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "<publicNetworkAccess>"
     },
     "roleAssignments": {
       "value": "<roleAssignments>"
@@ -695,6 +707,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    publicNetworkAccess: '<publicNetworkAccess>'
     roleAssignments: '<roleAssignments>'
     secrets: {
       secureList: [
@@ -780,6 +793,9 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "publicNetworkAccess": {
+      "value": "<publicNetworkAccess>"
     },
     "roleAssignments": {
       "value": "<roleAssignments>"
@@ -1251,8 +1267,7 @@ Optional. Tags to be applied on all resources/resource groups in this deployment
 Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.
 - Required: No
 - Type: string
-- Default: `''`
-- Allowed: `['', Disabled, Enabled]`
+- Allowed: `[Disabled, Enabled]`
 
 ### Parameter: `roleAssignments`
 

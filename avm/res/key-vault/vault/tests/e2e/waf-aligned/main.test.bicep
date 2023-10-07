@@ -115,5 +115,6 @@ module testDeployment '../../../main.bicep' = {
     roleAssignments: null
     accessPolicies: null
     keys: null
+    publicNetworkAccess: null
   }
 }

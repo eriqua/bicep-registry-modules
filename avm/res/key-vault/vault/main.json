@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "1831434396807402641"
+      "templateHash": "10388474954812360444"
     },
     "name": "Key Vaults",
     "description": "This module deploys a Key Vault.",
@@ -472,9 +472,8 @@
     },
     "publicNetworkAccess": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "allowedValues": [
-        "",
         "Enabled",
         "Disabled"
       ],
@@ -596,7 +595,7 @@
           "family": "A"
         },
         "networkAcls": "[if(not(equals(null(), parameters('networkAcls'))), createObject('bypass', tryGet(parameters('networkAcls'), 'bypass'), 'defaultAction', tryGet(parameters('networkAcls'), 'defaultAction'), 'virtualNetworkRules', coalesce(tryGet(parameters('networkAcls'), 'virtualNetworkRules'), createArray()), 'ipRules', coalesce(tryGet(parameters('networkAcls'), 'ipRules'), createArray())), null())]",
-        "publicNetworkAccess": "[if(not(empty(parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkAcls'))), 'Disabled', null()))]"
+        "publicNetworkAccess": "[if(not(equals(null(), parameters('publicNetworkAccess'))), parameters('publicNetworkAccess'), if(and(not(equals(null(), parameters('privateEndpoints'))), not(equals(null(), parameters('networkAcls')))), 'Disabled', null()))]"
       }
     },
     "keyVault_lock": {
