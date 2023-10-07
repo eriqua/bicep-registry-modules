@@ -55,5 +55,6 @@ module testDeployment '../../../main.bicep' = {
     secrets: null
     keys: null
     tags: null
+    networkAcls: null
   }
 }

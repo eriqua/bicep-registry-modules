@@ -74,39 +74,7 @@ module testDeployment '../../../main.bicep' = {
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
-    // Only for testing purposes
-    enablePurgeProtection: false
     enableRbacAuthorization: true
-    keys: [
-      {
-        attributesExp: 1725109032
-        attributesNbf: 10000
-        name: 'keyName'
-        rotationPolicy: {
-          attributes: {
-            expiryTime: 'P2Y'
-          }
-          lifetimeActions: [
-            {
-              trigger: {
-                timeBeforeExpiry: 'P2M'
-              }
-              action: {
-                type: 'Rotate'
-              }
-            }
-            {
-              trigger: {
-                timeBeforeExpiry: 'P30D'
-              }
-              action: {
-                type: 'Notify'
-              }
-            }
-          ]
-        }
-      }
-    ]
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
@@ -141,8 +109,11 @@ module testDeployment '../../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    // Only for testing purposes
+    enablePurgeProtection: false
     // Workaround for PSRule
     roleAssignments: null
     accessPolicies: null
+    keys: null
   }
 }

@@ -62,6 +62,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     keys: '<keys>'
     location: '<location>'
     lock: '<lock>'
+    networkAcls: '<networkAcls>'
     privateEndpoints: '<privateEndpoints>'
     roleAssignments: '<roleAssignments>'
     secrets: '<secrets>'
@@ -102,6 +103,9 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     },
     "lock": {
       "value": "<lock>"
+    },
+    "networkAcls": {
+      "value": "<networkAcls>"
     },
     "privateEndpoints": {
       "value": "<privateEndpoints>"
@@ -542,8 +546,13 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     // Required parameters
     name: 'kvvpe001'
     // Non-required parameters
+    accessPolicies: '<accessPolicies>'
+    diagnosticSettings: '<diagnosticSettings>'
     enablePurgeProtection: false
+    keys: '<keys>'
     location: '<location>'
+    lock: '<lock>'
+    networkAcls: '<networkAcls>'
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
@@ -557,6 +566,8 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
         }
       }
     ]
+    roleAssignments: '<roleAssignments>'
+    secrets: '<secrets>'
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -578,16 +589,29 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "kvvpe001"
     },
-    // Non-required parameters
+    "accessPolicies": {
+      "value": "<accessPolicies>"
+    },
+    "diagnosticSettings": {
+      "value": "<diagnosticSettings>"
+    },
     "enablePurgeProtection": {
       "value": false
     },
+    "keys": {
+      "value": "<keys>"
+    },
     "location": {
       "value": "<location>"
+    },
+    "lock": {
+      "value": "<lock>"
+    },
+    "networkAcls": {
+      "value": "<networkAcls>"
     },
     "privateEndpoints": {
       "value": [
@@ -603,6 +627,12 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
           }
         }
       ]
+    },
+    "roleAssignments": {
+      "value": "<roleAssignments>"
+    },
+    "secrets": {
+      "value": "<secrets>"
     },
     "tags": {
       "value": {
@@ -646,36 +676,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
     ]
     enablePurgeProtection: false
     enableRbacAuthorization: true
-    keys: [
-      {
-        attributesExp: 1725109032
-        attributesNbf: 10000
-        name: 'keyName'
-        rotationPolicy: {
-          attributes: {
-            expiryTime: 'P2Y'
-          }
-          lifetimeActions: [
-            {
-              action: {
-                type: 'Rotate'
-              }
-              trigger: {
-                timeBeforeExpiry: 'P2M'
-              }
-            }
-            {
-              action: {
-                type: 'Notify'
-              }
-              trigger: {
-                timeBeforeExpiry: 'P30D'
-              }
-            }
-          ]
-        }
-      }
-    ]
+    keys: '<keys>'
     location: '<location>'
     lock: {
       kind: 'CanNotDelete'
@@ -752,36 +753,7 @@ module vault 'br/public:avm-res-keyvault-vault:1.0.0' = {
       "value": true
     },
     "keys": {
-      "value": [
-        {
-          "attributesExp": 1725109032,
-          "attributesNbf": 10000,
-          "name": "keyName",
-          "rotationPolicy": {
-            "attributes": {
-              "expiryTime": "P2Y"
-            },
-            "lifetimeActions": [
-              {
-                "action": {
-                  "type": "Rotate"
-                },
-                "trigger": {
-                  "timeBeforeExpiry": "P2M"
-                }
-              },
-              {
-                "action": {
-                  "type": "Notify"
-                },
-                "trigger": {
-                  "timeBeforeExpiry": "P30D"
-                }
-              }
-            ]
-          }
-        }
-      ]
+      "value": "<keys>"
     },
     "location": {
       "value": "<location>"
@@ -1105,7 +1077,6 @@ Name of the Key Vault. Must be globally unique.
 Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `privateEndpoints`
 
