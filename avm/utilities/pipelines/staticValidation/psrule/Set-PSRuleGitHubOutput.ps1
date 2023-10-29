@@ -48,8 +48,8 @@ function Set-PSRuleGitHubOutput {
 
         $results = Import-Csv -Path $inputFilePath
 
-        $passedRules += $results | Where-Object { $_.Outcome -EQ 'Pass' } | Sort-Object -Property 'RuleName' -Unique
-        $failedRules += $results | Where-Object { $_.Outcome -EQ 'Fail' } | Sort-Object -Property 'RuleName' -Unique
+        $passedRules += $results | Where-Object { $_.Outcome -EQ 'Pass' }
+        $failedRules += $results | Where-Object { $_.Outcome -EQ 'Fail' }
 
         ######################
         # Set output content #

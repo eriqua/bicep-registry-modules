@@ -42,20 +42,6 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
     // Required parameters
     groupShortName: 'agiagmin001'
     name: 'iagmin001'
-    // Non-required parameters
-    armRoleReceivers: '<armRoleReceivers>'
-    automationRunbookReceivers: '<automationRunbookReceivers>'
-    azureAppPushReceivers: '<azureAppPushReceivers>'
-    azureFunctionReceivers: '<azureFunctionReceivers>'
-    emailReceivers: '<emailReceivers>'
-    itsmReceivers: '<itsmReceivers>'
-    location: 'global'
-    logicAppReceivers: '<logicAppReceivers>'
-    roleAssignments: '<roleAssignments>'
-    smsReceivers: '<smsReceivers>'
-    tags: '<tags>'
-    voiceReceivers: '<voiceReceivers>'
-    webhookReceivers: '<webhookReceivers>'
   }
 }
 ```
@@ -78,46 +64,6 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
     },
     "name": {
       "value": "iagmin001"
-    },
-    // Non-required parameters
-    "armRoleReceivers": {
-      "value": "<armRoleReceivers>"
-    },
-    "automationRunbookReceivers": {
-      "value": "<automationRunbookReceivers>"
-    },
-    "azureAppPushReceivers": {
-      "value": "<azureAppPushReceivers>"
-    },
-    "azureFunctionReceivers": {
-      "value": "<azureFunctionReceivers>"
-    },
-    "emailReceivers": {
-      "value": "<emailReceivers>"
-    },
-    "itsmReceivers": {
-      "value": "<itsmReceivers>"
-    },
-    "location": {
-      "value": "global"
-    },
-    "logicAppReceivers": {
-      "value": "<logicAppReceivers>"
-    },
-    "roleAssignments": {
-      "value": "<roleAssignments>"
-    },
-    "smsReceivers": {
-      "value": "<smsReceivers>"
-    },
-    "tags": {
-      "value": "<tags>"
-    },
-    "voiceReceivers": {
-      "value": "<voiceReceivers>"
-    },
-    "webhookReceivers": {
-      "value": "<webhookReceivers>"
     }
   }
 }
@@ -152,7 +98,6 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
         useCommonAlertSchema: true
       }
     ]
-    location: 'global'
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -210,9 +155,6 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
         }
       ]
     },
-    "location": {
-      "value": "global"
-    },
     "roleAssignments": {
       "value": [
         {
@@ -259,23 +201,37 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
     groupShortName: 'agiagwaf001'
     name: 'iagwaf001'
     // Non-required parameters
-    armRoleReceivers: '<armRoleReceivers>'
-    automationRunbookReceivers: '<automationRunbookReceivers>'
-    azureAppPushReceivers: '<azureAppPushReceivers>'
-    azureFunctionReceivers: '<azureFunctionReceivers>'
-    emailReceivers: '<emailReceivers>'
-    itsmReceivers: '<itsmReceivers>'
-    location: 'global'
-    logicAppReceivers: '<logicAppReceivers>'
-    roleAssignments: '<roleAssignments>'
-    smsReceivers: '<smsReceivers>'
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        name: 'TestUser_-EmailAction-'
+        useCommonAlertSchema: true
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        name: 'TestUser2'
+        useCommonAlertSchema: true
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    smsReceivers: [
+      {
+        countryCode: '1'
+        name: 'TestUser_-SMSAction-'
+        phoneNumber: '2345678901'
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
-    voiceReceivers: '<voiceReceivers>'
-    webhookReceivers: '<webhookReceivers>'
   }
 }
 ```
@@ -300,35 +256,37 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
       "value": "iagwaf001"
     },
     // Non-required parameters
-    "armRoleReceivers": {
-      "value": "<armRoleReceivers>"
-    },
-    "automationRunbookReceivers": {
-      "value": "<automationRunbookReceivers>"
-    },
-    "azureAppPushReceivers": {
-      "value": "<azureAppPushReceivers>"
-    },
-    "azureFunctionReceivers": {
-      "value": "<azureFunctionReceivers>"
-    },
     "emailReceivers": {
-      "value": "<emailReceivers>"
-    },
-    "itsmReceivers": {
-      "value": "<itsmReceivers>"
-    },
-    "location": {
-      "value": "global"
-    },
-    "logicAppReceivers": {
-      "value": "<logicAppReceivers>"
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "name": "TestUser_-EmailAction-",
+          "useCommonAlertSchema": true
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "name": "TestUser2",
+          "useCommonAlertSchema": true
+        }
+      ]
     },
     "roleAssignments": {
-      "value": "<roleAssignments>"
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "smsReceivers": {
-      "value": "<smsReceivers>"
+      "value": [
+        {
+          "countryCode": "1",
+          "name": "TestUser_-SMSAction-",
+          "phoneNumber": "2345678901"
+        }
+      ]
     },
     "tags": {
       "value": {
@@ -336,12 +294,6 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
-    },
-    "voiceReceivers": {
-      "value": "<voiceReceivers>"
-    },
-    "webhookReceivers": {
-      "value": "<webhookReceivers>"
     }
   }
 }
@@ -385,30 +337,35 @@ module actionGroup 'br/public:avm-res-insights-actiongroup:1.0.0' = {
 The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `automationRunbookReceivers`
 
 The list of AutomationRunbook receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `azureAppPushReceivers`
 
 The list of AzureAppPush receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `azureFunctionReceivers`
 
 The list of function receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `emailReceivers`
 
 The list of email receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `enabled`
 
@@ -435,6 +392,7 @@ The short name of the action group.
 The list of ITSM receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `location`
 
@@ -448,6 +406,7 @@ Location for all resources.
 The list of logic app receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `name`
 
@@ -528,24 +487,28 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 The list of SMS receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
+- Default: `{object}`
 
 ### Parameter: `voiceReceivers`
 
 The list of voice receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 ### Parameter: `webhookReceivers`
 
 The list of webhook receivers that are part of this action group.
 - Required: No
 - Type: array
+- Default: `[]`
 
 
 ## Outputs

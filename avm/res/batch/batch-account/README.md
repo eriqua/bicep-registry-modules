@@ -58,7 +58,7 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
     location: '<location>'
     lock: '<lock>'
     managedIdentities: '<managedIdentities>'
-    networkProfile: '<networkProfile>'
+    networkProfileAllowedIpRanges: '<networkProfileAllowedIpRanges>'
     privateEndpoints: '<privateEndpoints>'
     roleAssignments: '<roleAssignments>'
     storageAccessIdentityResourceId: '<storageAccessIdentityResourceId>'
@@ -108,8 +108,8 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
     "managedIdentities": {
       "value": "<managedIdentities>"
     },
-    "networkProfile": {
-      "value": "<networkProfile>"
+    "networkProfileAllowedIpRanges": {
+      "value": "<networkProfileAllowedIpRanges>"
     },
     "privateEndpoints": {
       "value": "<privateEndpoints>"
@@ -147,17 +147,25 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
     name: 'bbaencr001'
     storageAccountId: '<storageAccountId>'
     // Non-required parameters
+    allowedAuthenticationModes: '<allowedAuthenticationModes>'
     customerManagedKey: {
       keyName: '<keyName>'
       keyVaultResourceId: '<keyVaultResourceId>'
     }
+    diagnosticSettings: '<diagnosticSettings>'
+    keyVaultReferenceResourceId: '<keyVaultReferenceResourceId>'
     location: '<location>'
+    lock: '<lock>'
     managedIdentities: {
       userAssignedResourcesIds: [
         '<managedIdentityResourceId>'
       ]
     }
+    networkProfileAllowedIpRanges: '<networkProfileAllowedIpRanges>'
     poolAllocationMode: 'BatchService'
+    privateEndpoints: '<privateEndpoints>'
+    roleAssignments: '<roleAssignments>'
+    storageAccessIdentityResourceId: '<storageAccessIdentityResourceId>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     tags: {
       'hidden-title': 'This is visible in the resource name'
@@ -186,14 +194,26 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
       "value": "<storageAccountId>"
     },
     // Non-required parameters
+    "allowedAuthenticationModes": {
+      "value": "<allowedAuthenticationModes>"
+    },
     "customerManagedKey": {
       "value": {
         "keyName": "<keyName>",
         "keyVaultResourceId": "<keyVaultResourceId>"
       }
     },
+    "diagnosticSettings": {
+      "value": "<diagnosticSettings>"
+    },
+    "keyVaultReferenceResourceId": {
+      "value": "<keyVaultReferenceResourceId>"
+    },
     "location": {
       "value": "<location>"
+    },
+    "lock": {
+      "value": "<lock>"
     },
     "managedIdentities": {
       "value": {
@@ -202,8 +222,20 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
         ]
       }
     },
+    "networkProfileAllowedIpRanges": {
+      "value": "<networkProfileAllowedIpRanges>"
+    },
     "poolAllocationMode": {
       "value": "BatchService"
+    },
+    "privateEndpoints": {
+      "value": "<privateEndpoints>"
+    },
+    "roleAssignments": {
+      "value": "<roleAssignments>"
+    },
+    "storageAccessIdentityResourceId": {
+      "value": "<storageAccessIdentityResourceId>"
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
@@ -257,19 +289,7 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
     managedIdentities: {
       systemAssigned: true
     }
-    networkProfile: {
-      accountAccess: {
-        allowedIpRules: [
-          '40.74.28.0/23'
-        ]
-        defaultAction: 'Deny'
-      }
-      nodeManagementAccess: {
-        allowedIpRules: [
-          '40.74.28.0/23'
-        ]
-      }
-    }
+    networkProfileAllowedIpRanges: '<networkProfileAllowedIpRanges>'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
@@ -363,20 +383,8 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
         "systemAssigned": true
       }
     },
-    "networkProfile": {
-      "value": {
-        "accountAccess": {
-          "allowedIpRules": [
-            "40.74.28.0/23"
-          ],
-          "defaultAction": "Deny"
-        },
-        "nodeManagementAccess": {
-          "allowedIpRules": [
-            "40.74.28.0/23"
-          ]
-        }
-      }
+    "networkProfileAllowedIpRanges": {
+      "value": "<networkProfileAllowedIpRanges>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
@@ -468,7 +476,7 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
     managedIdentities: {
       systemAssigned: true
     }
-    networkProfile: '<networkProfile>'
+    networkProfileAllowedIpRanges: '<networkProfileAllowedIpRanges>'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
@@ -543,8 +551,8 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
         "systemAssigned": true
       }
     },
-    "networkProfile": {
-      "value": "<networkProfile>"
+    "networkProfileAllowedIpRanges": {
+      "value": "<networkProfileAllowedIpRanges>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
@@ -609,7 +617,8 @@ module batchAccount 'br/public:avm-res-batch-batchaccount:1.0.0' = {
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`networkProfile`](#parameter-networkprofile) | object | Network access profile. It is only applicable when publicNetworkAccess is not explicitly disabled. |
+| [`networkProfileAllowedIpRanges`](#parameter-networkprofileallowedipranges) | array | Array of IP ranges to filter client IP address. It is only applicable when publicNetworkAccess is not explicitly disabled. |
+| [`networkProfileDefaultAction`](#parameter-networkprofiledefaultaction) | string | The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled. |
 | [`poolAllocationMode`](#parameter-poolallocationmode) | string | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkProfileAllowedIpRanges are not set. |
@@ -853,31 +862,19 @@ Name of the Azure Batch.
 - Required: Yes
 - Type: string
 
-### Parameter: `networkProfile`
+### Parameter: `networkProfileAllowedIpRanges`
 
-Network access profile. It is only applicable when publicNetworkAccess is not explicitly disabled.
+Array of IP ranges to filter client IP address. It is only applicable when publicNetworkAccess is not explicitly disabled.
 - Required: No
-- Type: object
+- Type: array
 
+### Parameter: `networkProfileDefaultAction`
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`accountAccess`](#parameter-networkprofileaccountaccess) | No | object | Optional. Network access profile for batchAccount endpoint (Batch account data plane API). |
-| [`nodeManagementAccess`](#parameter-networkprofilenodemanagementaccess) | No | object | Optional. Network access profile for nodeManagement endpoint (Batch service managing compute nodes for Batch pools). |
-
-### Parameter: `networkProfile.accountAccess`
-
-Optional. Network access profile for batchAccount endpoint (Batch account data plane API).
-
+The network profile default action for endpoint access. It is only applicable when publicNetworkAccess is not explicitly disabled.
 - Required: No
-- Type: object
-
-### Parameter: `networkProfile.nodeManagementAccess`
-
-Optional. Network access profile for nodeManagement endpoint (Batch service managing compute nodes for Batch pools).
-
-- Required: No
-- Type: object
+- Type: string
+- Default: `'Deny'`
+- Allowed: `[Allow, Deny]`
 
 ### Parameter: `poolAllocationMode`
 
