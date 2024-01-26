@@ -580,7 +580,7 @@ module batchAccount 'br/public:avm/res/batch/batch-account:<version>' = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Name of the Azure Batch. |
+| [`name`](#parameter-name) | string | Name of the Azure Batch resource. |
 | [`storageAccountId`](#parameter-storageaccountid) | string | The resource ID of the storage account to be used for auto-storage account. |
 
 **Conditional parameters**
@@ -611,7 +611,7 @@ module batchAccount 'br/public:avm/res/batch/batch-account:<version>' = {
 
 ### Parameter: `name`
 
-Name of the Azure Batch.
+Name of the Azure Batch resource.
 
 - Required: Yes
 - Type: string

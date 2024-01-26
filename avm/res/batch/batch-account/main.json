@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.24.24.22086",
-      "templateHash": "12017185166479854402"
+      "templateHash": "12867550355373746302"
     },
     "name": "Batch Accounts",
     "description": "This module deploys a Batch Account.",
@@ -483,7 +483,7 @@
     "name": {
       "type": "string",
       "metadata": {
-        "description": "Required. Name of the Azure Batch."
+        "description": "Required. Name of the Azure Batch resource."
       }
     },
     "location": {
