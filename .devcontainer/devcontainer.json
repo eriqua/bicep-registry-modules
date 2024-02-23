@@ -1,0 +1,31 @@
+{
+  "name": "Ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18-bullseye",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "cschleiden.vscode-github-actions",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "github.vscode-pull-request-github",
+        "microsoft-dciborow.align-bicep",
+        "ms-azuretools.vscode-bicep",
+        "ms-vsliveshare.vsliveshare",
+        "ms-vscode-remote.remote-containers",
+        "zokugun.explicit-folding",
+        "GitHub.copilot-labs"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install -g prettier && dotnet tool install -g Azure.Bicep.RegistryModuleTool",
+  "postStartCommand": "az bicep install",
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/node/.dotnet/tools:/home/node/.azure/bin"
+  },
+  "features": {
+    "azure-cli": "latest",
+    "dotnet": "7.0",
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/powershell:1": {}
+  }
+}
