@@ -57,7 +57,7 @@ param applicationGatewayIPConfigurations array = []
 @description('Optional. An array of service endpoint policies.')
 param serviceEndpointPolicies array = []
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.1.0'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.2.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
