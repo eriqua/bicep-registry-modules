@@ -1,5 +1,6 @@
 metadata name = 'Data Protection Backup Vaults'
 metadata description = 'This module deploys a Data Protection Backup Vault.'
+metadata owner = 'Azure/module-maintainers'
 
 @description('Required. Name of the Backup Vault.')
 param name string
@@ -10,15 +11,13 @@ param enableTelemetry bool = true
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
 @description('Optional. Array of role assignments to create.')
-param roleAssignments roleAssignmentType[]?
+param roleAssignments roleAssignmentType
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
 @description('Optional. The lock settings of the service.')
-param lock lockType?
+param lock lockType
 
-import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { managedIdentityAllType } from '../../.types/avm-common-types/main.bicep'
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentityAllType?
 
@@ -29,7 +28,7 @@ param managedIdentities managedIdentityAllType?
 ])
 param infrastructureEncryption string = 'Enabled'
 
-import { customerManagedKeyType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { customerManagedKeyType } from '../../.types/avm-common-types/main.bicep'
 @description('Optional. The customer managed key definition.')
 param customerManagedKey customerManagedKeyType?
 
@@ -71,10 +70,13 @@ param type string = 'GeoRedundant'
 param azureMonitorAlertSettingsAlertsForAllJobFailures string = 'Enabled'
 
 @description('Optional. List of all backup policies.')
-param backupPolicies array?
+param backupPolicies array = []
+
+// @description('Optional. Security settings for the backup vault.')
+// param securitySettings object = {}
 
 @description('Optional. Feature settings for the backup vault.')
-param featureSettings object?
+param featureSettings object = {}
 
 var formattedUserAssignedIdentities = reduce(
   map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }),
@@ -147,7 +149,12 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+var keyVaultType = !empty(customerManagedKey.?keyVaultResourceId)
+  ? split(customerManagedKey.?keyVaultResourceId!, '/')[7]
+  : ''
+var isHSMKeyVault = contains(keyVaultType, 'managedHSMs')
+
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!isHSMKeyVault && !empty(customerManagedKey.?keyVaultResourceId)) {
   name: last(split((customerManagedKey.?keyVaultResourceId!), '/'))
   scope: resourceGroup(
     split(customerManagedKey.?keyVaultResourceId!, '/')[2],
@@ -155,6 +162,18 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empt
   )
 
   resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+    name: customerManagedKey.?keyName!
+  }
+}
+
+resource hSMCMKKeyVault 'Microsoft.KeyVault/managedHSMs@2022-07-01' existing = if (isHSMKeyVault && !empty(customerManagedKey.?keyVaultResourceId)) {
+  name: last(split((customerManagedKey.?keyVaultResourceId!), '/'))
+  scope: resourceGroup(
+    split(customerManagedKey.?keyVaultResourceId!, '/')[2],
+    split(customerManagedKey.?keyVaultResourceId!, '/')[4]
+  )
+
+  resource hSMCMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
     name: customerManagedKey.?keyName!
   }
 }
@@ -188,75 +207,29 @@ resource backupVault 'Microsoft.DataProtection/backupVaults@2024-04-01' = {
     securitySettings: {
       encryptionSettings: !empty(customerManagedKey)
         ? {
-            infrastructureEncryption: 'Disabled'
-            kekIdentity: !empty(customerManagedKey.?userAssignedIdentityResourceId)
-              ? {
-                  identityId: cMKUserAssignedIdentity.id
-                  identityType: 'UserAssigned'
-                }
-              : {
-                  identityType: 'SystemAssigned'
-                }
-            // // identityId: cMKUserAssignedIdentity.id
-            // identityId: !empty(customerManagedKey.?userAssignedIdentityResourceId)
-            // ? cMKUserAssignedIdentity.id
-            // : null
-            // identityType: 'UserAssigned'
-            // // identityType: 'SystemAssigned'
-
-            keyVaultProperties: {
-              keyUri: cMKKeyVault::cMKKey.properties.keyUri
-              // keyUri: 'https://dep-avma-kv-dpbvcmk-ou5.vault.azure.net/keys/keyEncryptionKey'
-              // keyUri: !empty(customerManagedKey.?keyVersion)
-              //   ? '${cMKKeyVault::cMKKey.properties.keyUri}/${customerManagedKey!.?keyVersion}'
-              //   : cMKKeyVault::cMKKey.properties.keyUriWithVersion
+            infrastructureEncryption: infrastructureEncryption
+            kekIdentity: {
+              identityId: !empty(customerManagedKey.?userAssignedIdentityResourceId ?? '')
+                ? cMKUserAssignedIdentity.properties.clientId
+                : null
+              // identityType: 'string'
             }
-            state: 'Enabled'
+            keyVaultProperties: {
+              keyUri: 'https://sec-hsm01.managedhsm.azure.net/keys/bicep-backupvault-hsm-001/ae9bbf79f3d64514980cabc7ed20eaef'
+              // keyUri: !isHSMKeyVault ? cMKKeyVault.properties.vaultUri : hSMCMKKeyVault.properties.hsmUri
+            }
           }
         : null
-      // encryptionSettings: !empty(customerManagedKey)
-      //   ? {
-      //       infrastructureEncryption: infrastructureEncryption
-      //       kekIdentity: {
-      //         identityId: !empty(customerManagedKey.?userAssignedIdentityResourceId ?? '')
-      //           ? cMKUserAssignedIdentity.properties.clientId
-      //           : null
-      //         // identityType: 'string'
-      //       }
-      //       keyVaultProperties: {
-      //         keyUri: cMKKeyVault.properties.vaultUri
-      //       }
-      //     }
-      //   : null
-      // encryptionSettings: !empty(customerManagedKey)
-      //   ? {
-      //       infrastructureEncryption: infrastructureEncryption
-      //       kekIdentity: !empty(customerManagedKey.?userAssignedIdentityResourceId)
-      //         ? {
-      //           identityId: cMKUserAssignedIdentity.id
-      //           }
-      //         : {
-      //           identityId: empty(customerManagedKey.?userAssignedIdentityResourceId)
-      //           }
-      //       keyVaultProperties: {
-      //         keyUri: !empty(customerManagedKey.?keyVersion)
-      //           ? '${cMKKeyVault::cMKKey.properties.keyUri}/${customerManagedKey!.?keyVersion}'
-      //           : cMKKeyVault::cMKKey.properties.keyUriWithVersion
-      //       }
-      //     }
-      //   : null
-      immutabilitySettings: !empty(immutabilitySettingState)
-        ? {
-            state: immutabilitySettingState
-          }
-        : null
+      immutabilitySettings: {
+        state: immutabilitySettingState
+      }
       softDeleteSettings: softDeleteSettings
     }
   }
 }
 
 module backupVault_backupPolicies 'backup-policy/main.bicep' = [
-  for (backupPolicy, index) in (backupPolicies ?? []): {
+  for (backupPolicy, index) in backupPolicies: {
     name: '${uniqueString(deployment().name, location)}-BV-BackupPolicy-${index}'
     params: {
       backupVaultName: backupVault.name
@@ -303,7 +276,7 @@ output resourceGroupName string = resourceGroup().name
 output name string = backupVault.name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedMIPrincipalId string? = backupVault.?identity.?principalId
+output systemAssignedMIPrincipalId string = backupVault.?identity.?principalId ?? ''
 
 @description('The location the resource was deployed into.')
 output location string = backupVault.location
@@ -311,6 +284,40 @@ output location string = backupVault.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type lockType = {
+  @description('Optional. Specify the name of lock.')
+  name: string?
+
+  @description('Optional. Specify the type of lock.')
+  kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
+}?
+
+type roleAssignmentType = {
+  @description('Optional. The name (as GUID) of the role assignment. If not provided, a GUID will be generated.')
+  name: string?
+
+  @description('Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+  roleDefinitionIdOrName: string
+
+  @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
+
+  @description('Optional. The description of the role assignment.')
+  description: string?
+
+  @description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container".')
+  condition: string?
+
+  @description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?
 
 @export()
 @description('The type for soft delete settings.')
