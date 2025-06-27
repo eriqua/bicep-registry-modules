@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.36.1.42791",
-      "templateHash": "7785844403485559235"
+      "templateHash": "17964614369795367992"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account."
@@ -908,7 +908,7 @@
       "type": "string",
       "maxLength": 24,
       "metadata": {
-        "description": "Required. Name of the Storage Account. Must be lower-case."
+        "description": "Required. The name of the Storage Account. Must be lower-case."
       }
     },
     "location": {
