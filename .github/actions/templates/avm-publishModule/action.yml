@@ -45,8 +45,19 @@ runs:
         sudo mv ./bicep /usr/local/bin/bicep
         bicep --version
 
+    - name: Failing step only the first attempt
+      shell: bash
+      run: |
+        if [ "$GITHUB_RUN_ATTEMPT" -gt 1 ]; then
+          echo "Re-run, continuing."
+        else
+          echo "First run, failing."
+          exit 1
+        fi
+
     - name: "Publish module to public bicep registry"
       id: publish_step
+      if: github.run_attempt == 1
       uses: azure/powershell@v2
       with:
         azPSVersion: "latest"
