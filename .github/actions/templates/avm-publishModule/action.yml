@@ -47,7 +47,7 @@ runs:
 
     - name: "Publish module to public bicep registry"
       id: publish_step
-      if: github.run_attempt == 1
+      # if: github.run_attempt == 1
       uses: azure/powershell@v2
       with:
         azPSVersion: "latest"
