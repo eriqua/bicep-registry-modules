@@ -51,9 +51,22 @@ function Get-ModuleTargetPatchVersion {
         # Otherwise get latest patch
         $patchList = $existingTagList | ForEach-Object { [int](($_ -split '\.')[-1]) }
         $latestPatch = ($patchList | Measure-Object -Maximum).Maximum
-        Write-Verbose "Latest tag is [$ModuleRelativeFolderPath/$MajMinVersion.$latestPatch]. Bumping patch." -Verbose
-        # Increase patch count
-        $patch = $latestPatch + 1
+        $latestTag = $ModuleRelativeFolderPath / $MajMinVersion.$latestPatch
+        Write-Verbose "Latest tag is [$latestTag]." -Verbose
+        Write-Verbose 'Checking if latest tag commit is already corresponding to the current commit.' -Verbose
+
+        $currentCommit = git rev-parse HEAD
+        $latestTagCommit = git rev-list -n 1 $latestTag
+
+        if ($currentCommit -eq $latestTagCommit) {
+            # Return latest patch (we're likely in a rerun)
+            Write-Warning 'The latest tag commit corresponds to the current commit. Publishing will be skipped.' -Verbose
+            $patch = $latestPatch
+        } else {
+            # Increase patch count
+            Write-Verbose 'The latest tag commit does not correspond to the current commit. Bumping patch.' -Verbose
+            $patch = $latestPatch + 1
+        }
     }
 
     # Return PATCH
