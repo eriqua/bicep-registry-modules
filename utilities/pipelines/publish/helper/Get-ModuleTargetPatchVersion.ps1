@@ -41,7 +41,7 @@ function Get-ModuleTargetPatchVersion {
     $ModuleRelativeFolderPath = (($ModuleFolderPath -split '[\/|\\](avm)[\/|\\](res|ptn|utl)[\/|\\]')[-3..-1] -join '/') -replace '\\', '/'
 
     # Get all released module tags (using upstream specifically to work in forks)
-    $existingTagList = git ls-remote --tag 'https://github.com/Azure/bicep-registry-modules.git' "$ModuleRelativeFolderPath/$MajMinVersion*"
+    $existingTagList = git ls-remote --tag origin "$ModuleRelativeFolderPath/$MajMinVersion*"
     if ( $existingTagList.count -eq 0 ) {
         # If first module tag, reset patch
         Write-Verbose "No existing tag for module [$ModuleRelativeFolderPath] starting with version [$MajMinVersion]" -Verbose
