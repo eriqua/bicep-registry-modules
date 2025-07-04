@@ -51,7 +51,7 @@ function Get-ModuleTargetPatchVersion {
         # Otherwise get latest patch
         $patchList = $existingTagList | ForEach-Object { [int](($_ -split '\.')[-1]) }
         $latestPatch = ($patchList | Measure-Object -Maximum).Maximum
-        $latestTag = $ModuleRelativeFolderPath / $MajMinVersion.$latestPatch
+        $latestTag = "$ModuleRelativeFolderPath/$MajMinVersion.$latestPatch"
         Write-Verbose "Latest tag is [$latestTag]." -Verbose
         Write-Verbose 'Checking if latest tag commit is already corresponding to the current commit.' -Verbose
 
