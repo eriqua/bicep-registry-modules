@@ -25,9 +25,12 @@ param namePrefix string = '#_namePrefix_#'
 @secure()
 param password string = newGuid()
 
+@description('Optional. The current time in UTC.')
+param timeNow string = utcNow()
+
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: enforcedLocation
 }
@@ -38,7 +41,6 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-    location: enforcedLocation
   }
 }
 
@@ -52,7 +54,6 @@ module diagnosticDependencies '../../../../../../../utilities/e2e-template-asset
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: enforcedLocation
   }
 }
 
@@ -265,11 +266,28 @@ module testDeployment '../../../main.bicep' = [
           value: '\'TestEncryptedValue\''
         }
       ]
+      webhooks: [
+        {
+          name: 'TestWebhook'
+          runbookName: 'TestRunbook'
+          expiryTime: dateTimeAdd(timeNow, 'P1M')
+          parameters: {
+            param1: 'value1'
+            param2: 'value2'
+          }
+        }
+      ]
       tags: {
         'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
+      hybridRunbookWorkerGroups: [
+        {
+          name: 'myGroup'
+          credentialName: 'Credential01'
+        }
+      ]
     }
   }
 ]

@@ -2,6 +2,14 @@
 
 This module deploys an Azure Dev Center.
 
+You can reference the module as follows:
+```bicep
+module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -13,23 +21,23 @@ This module deploys an Azure Dev Center.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DevCenter/devcenters` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters) |
-| `Microsoft.DevCenter/devcenters/attachednetworks` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/attachednetworks) |
-| `Microsoft.DevCenter/devcenters/catalogs` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/catalogs) |
-| `Microsoft.DevCenter/devcenters/devboxdefinitions` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/devboxdefinitions) |
-| `Microsoft.DevCenter/devcenters/environmentTypes` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/environmentTypes) |
-| `Microsoft.DevCenter/devcenters/galleries` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/galleries) |
-| `Microsoft.DevCenter/devcenters/projectPolicies` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/projectPolicies) |
-| `Microsoft.DevCenter/projects` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects) |
-| `Microsoft.DevCenter/projects/catalogs` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/catalogs) |
-| `Microsoft.DevCenter/projects/environmentTypes` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/environmentTypes) |
-| `Microsoft.DevCenter/projects/pools` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/pools) |
-| `Microsoft.DevCenter/projects/pools/schedules` | [2025-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/pools/schedules) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Authorization/roleAssignments` | 2022-04-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_roleassignments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)</li></ul> |
+| `Microsoft.DevCenter/devcenters` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters)</li></ul> |
+| `Microsoft.DevCenter/devcenters/attachednetworks` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_attachednetworks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/attachednetworks)</li></ul> |
+| `Microsoft.DevCenter/devcenters/catalogs` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_catalogs.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/catalogs)</li></ul> |
+| `Microsoft.DevCenter/devcenters/devboxdefinitions` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_devboxdefinitions.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/devboxdefinitions)</li></ul> |
+| `Microsoft.DevCenter/devcenters/environmentTypes` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_environmenttypes.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/environmentTypes)</li></ul> |
+| `Microsoft.DevCenter/devcenters/galleries` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_galleries.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/galleries)</li></ul> |
+| `Microsoft.DevCenter/devcenters/projectPolicies` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_devcenters_projectpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/devcenters/projectPolicies)</li></ul> |
+| `Microsoft.DevCenter/projects` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_projects.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects)</li></ul> |
+| `Microsoft.DevCenter/projects/catalogs` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_projects_catalogs.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/catalogs)</li></ul> |
+| `Microsoft.DevCenter/projects/environmentTypes` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_projects_environmenttypes.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/environmentTypes)</li></ul> |
+| `Microsoft.DevCenter/projects/pools` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_projects_pools.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/pools)</li></ul> |
+| `Microsoft.DevCenter/projects/pools/schedules` | 2025-02-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.devcenter_projects_pools_schedules.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevCenter/2025-02-01/projects/pools/schedules)</li></ul> |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.insights_diagnosticsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)</li></ul> |
 
 ## Usage examples
 
@@ -47,6 +55,8 @@ The following section provides usage examples for the module, which were used to
 
 This instance deploys the module with the minimum set of required parameters.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
+
 
 <details>
 
@@ -54,7 +64,6 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
-  name: 'devcenterDeployment'
   params: {
     name: 'dcdcmin001'
   }
@@ -100,6 +109,8 @@ param name = 'dcdcmin001'
 
 This instance deploys the module with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
+
 
 <details>
 
@@ -107,7 +118,6 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
-  name: 'devcenterDeployment'
   params: {
     // Required parameters
     name: '<name>'
@@ -154,7 +164,7 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
       }
       {
         imageResourceId: '<imageResourceId>'
-        name: 'test-devbox-definition-custom-gallery-image'
+        name: '<name>'
         sku: {
           name: 'general_i_8c32gb256ssd_v2'
         }
@@ -261,8 +271,7 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
             resources: '<resources>'
           }
           {
-            action: 'Deny'
-            resourceType: 'AttachedNetworks'
+            resources: '<resources>'
           }
         ]
       }
@@ -301,18 +310,18 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
         name: 'test-project-same-resource-group'
         pools: [
           {
-            devBoxDefinitionName: 'test-devbox-definition-builtin-gallery-image'
+            devBoxDefinitionName: '<devBoxDefinitionName>'
             devBoxDefinitionType: 'Reference'
-            displayName: 'My Sandbox Pool - Managed Network'
+            displayName: 'My Sandbox Pool - Unmanaged Network'
             localAdministrator: 'Disabled'
-            managedVirtualNetworkRegion: 'westeurope'
             name: 'sandbox-pool'
+            networkConnectionName: 'test-attached-network'
             singleSignOnStatus: 'Enabled'
             stopOnDisconnect: {
               gracePeriodMinutes: 60
               status: 'Enabled'
             }
-            virtualNetworkType: 'Managed'
+            virtualNetworkType: 'Unmanaged'
           }
         ]
       }
@@ -410,7 +419,7 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
         },
         {
           "imageResourceId": "<imageResourceId>",
-          "name": "test-devbox-definition-custom-gallery-image",
+          "name": "<name>",
           "sku": {
             "name": "general_i_8c32gb256ssd_v2"
           }
@@ -539,8 +548,7 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
               "resources": "<resources>"
             },
             {
-              "action": "Deny",
-              "resourceType": "AttachedNetworks"
+              "resources": "<resources>"
             }
           ]
         }
@@ -581,18 +589,18 @@ module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
           "name": "test-project-same-resource-group",
           "pools": [
             {
-              "devBoxDefinitionName": "test-devbox-definition-builtin-gallery-image",
+              "devBoxDefinitionName": "<devBoxDefinitionName>",
               "devBoxDefinitionType": "Reference",
-              "displayName": "My Sandbox Pool - Managed Network",
+              "displayName": "My Sandbox Pool - Unmanaged Network",
               "localAdministrator": "Disabled",
-              "managedVirtualNetworkRegion": "westeurope",
               "name": "sandbox-pool",
+              "networkConnectionName": "test-attached-network",
               "singleSignOnStatus": "Enabled",
               "stopOnDisconnect": {
                 "gracePeriodMinutes": 60,
                 "status": "Enabled"
               },
-              "virtualNetworkType": "Managed"
+              "virtualNetworkType": "Unmanaged"
             }
           ]
         },
@@ -686,7 +694,7 @@ param devboxDefinitions = [
   }
   {
     imageResourceId: '<imageResourceId>'
-    name: 'test-devbox-definition-custom-gallery-image'
+    name: '<name>'
     sku: {
       name: 'general_i_8c32gb256ssd_v2'
     }
@@ -793,8 +801,7 @@ param projectPolicies = [
         resources: '<resources>'
       }
       {
-        action: 'Deny'
-        resourceType: 'AttachedNetworks'
+        resources: '<resources>'
       }
     ]
   }
@@ -833,18 +840,18 @@ param projects = [
     name: 'test-project-same-resource-group'
     pools: [
       {
-        devBoxDefinitionName: 'test-devbox-definition-builtin-gallery-image'
+        devBoxDefinitionName: '<devBoxDefinitionName>'
         devBoxDefinitionType: 'Reference'
-        displayName: 'My Sandbox Pool - Managed Network'
+        displayName: 'My Sandbox Pool - Unmanaged Network'
         localAdministrator: 'Disabled'
-        managedVirtualNetworkRegion: 'westeurope'
         name: 'sandbox-pool'
+        networkConnectionName: 'test-attached-network'
         singleSignOnStatus: 'Enabled'
         stopOnDisconnect: {
           gracePeriodMinutes: 60
           status: 'Enabled'
         }
-        virtualNetworkType: 'Managed'
+        virtualNetworkType: 'Unmanaged'
       }
     ]
   }
@@ -883,6 +890,8 @@ param tags = {
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
+
 
 <details>
 
@@ -890,7 +899,6 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module devcenter 'br/public:avm/res/dev-center/devcenter:<version>' = {
-  name: 'devcenterDeployment'
   params: {
     // Required parameters
     name: '<name>'
@@ -2518,7 +2526,7 @@ The type of pool to create in the project. A project pool is a container for dev
 | [`devBoxDefinitionName`](#parameter-projectspoolsdevboxdefinitionname) | string | Name of a Dev Box definition in parent Project of this Pool. If creating a pool from a definition defined in the Dev Center, then this will be the name of the definition. If creating a pool from a custom definition (e.g. Team Customizations), first the catalog must be added to this project, and second must use the format "\~Catalog\~{catalogName}\~{imagedefinition YAML name}" (e.g. "\~Catalog\~eshopRepo\~frontend-dev"). |
 | [`localAdministrator`](#parameter-projectspoolslocaladministrator) | string | Each dev box creator will be granted the selected permissions on the dev boxes they create. Indicates whether owners of Dev Boxes in this pool are added as a "local administrator" or "standard user" on the Dev Box. |
 | [`name`](#parameter-projectspoolsname) | string | The name of the project pool. This name must be unique within a project and is visible to developers when creating dev boxes. |
-| [`virtualNetworkType`](#parameter-projectspoolsvirtualnetworktype) | string | Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource. |
+| [`virtualNetworkType`](#parameter-projectspoolsvirtualnetworktype) | string | Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource. If "microsoftHostedNetworkEnableStatus" is set to "Disabled" at the Dev Center level, this property must be set to "Unmanaged". |
 
 **Conditional parameters**
 
@@ -2526,7 +2534,7 @@ The type of pool to create in the project. A project pool is a container for dev
 | :-- | :-- | :-- |
 | [`devBoxDefinition`](#parameter-projectspoolsdevboxdefinition) | object | A definition of the machines that are created from this Pool. Required if devBoxDefinitionType is "Value". |
 | [`managedVirtualNetworkRegion`](#parameter-projectspoolsmanagedvirtualnetworkregion) | string | The region of the managed virtual network. Required if virtualNetworkType is "Managed". |
-| [`networkConnectionName`](#parameter-projectspoolsnetworkconnectionname) | string | Name of a Network Connection in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed". |
+| [`networkConnectionName`](#parameter-projectspoolsnetworkconnectionname) | string | Name of a Network Connection (Attached Network) in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed". |
 
 **Optional parameters**
 
@@ -2571,7 +2579,7 @@ The name of the project pool. This name must be unique within a project and is v
 
 ### Parameter: `projects.pools.virtualNetworkType`
 
-Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource.
+Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource. If "microsoftHostedNetworkEnableStatus" is set to "Disabled" at the Dev Center level, this property must be set to "Unmanaged".
 
 - Required: Yes
 - Type: string
@@ -2662,7 +2670,7 @@ The region of the managed virtual network. Required if virtualNetworkType is "Ma
 
 ### Parameter: `projects.pools.networkConnectionName`
 
-Name of a Network Connection in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed".
+Name of a Network Connection (Attached Network) in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed".
 
 - Required: No
 - Type: string
@@ -3075,8 +3083,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 | Reference | Type |
 | :-- | :-- |
 | `br/public:avm/res/dev-center/project:0.1.0` | Remote reference |
-| `br/public:avm/utl/types/avm-common-types:0.6.0` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.1` | Remote reference |
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

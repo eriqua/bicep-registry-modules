@@ -16,11 +16,11 @@ param version string = 'latest'
 @description('Optional. Tags of the Automation Account resource.')
 param tags object?
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2024-10-23' existing = {
   name: automationAccountName
 }
 
-resource python2package 'Microsoft.Automation/automationAccounts/python2Packages@2023-11-01' = {
+resource python2package 'Microsoft.Automation/automationAccounts/python2Packages@2024-10-23' = {
   name: name
   parent: automationAccount
   tags: tags

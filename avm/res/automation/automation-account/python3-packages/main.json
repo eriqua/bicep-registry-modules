@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.35.1.17967",
-      "templateHash": "15014564193136078174"
+      "version": "0.41.2.15936",
+      "templateHash": "8070887000006360544"
     },
     "name": "Automation Account Python 3 Packages",
     "description": "This module deploys a Python3 Package in the Automation Account."
@@ -49,12 +49,12 @@
     "automationAccount": {
       "existing": true,
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2022-08-08",
+      "apiVersion": "2024-10-23",
       "name": "[parameters('automationAccountName')]"
     },
     "python3package": {
       "type": "Microsoft.Automation/automationAccounts/python3Packages",
-      "apiVersion": "2023-11-01",
+      "apiVersion": "2024-10-23",
       "name": "[format('{0}/{1}', parameters('automationAccountName'), parameters('name'))]",
       "tags": "[parameters('tags')]",
       "properties": {
@@ -92,7 +92,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('python3package', '2023-11-01', 'full').location]"
+      "value": "[reference('python3package', '2024-10-23', 'full').location]"
     }
   }
 }
