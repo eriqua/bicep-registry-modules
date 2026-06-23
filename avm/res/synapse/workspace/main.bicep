@@ -10,7 +10,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object?
+param tags resourceInput<'Microsoft.Synapse/workspaces@2021-06-01'>.tags?
 
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
@@ -33,7 +33,7 @@ param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 @description('Optional. The Entra ID administrator for the synapse workspace.')
 param administrator administratorType?
 
-import { customerManagedKeyType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { customerManagedKeyType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The customer managed key definition.')
 param customerManagedKey customerManagedKeyType?
 
@@ -76,7 +76,7 @@ param bigDataPools bigDataPoolType[]?
 param sqlPools sqlPoolType[]?
 
 @description('Optional. Purview Resource ID.')
-param purviewResourceID string = ''
+param purviewResourceId string = ''
 
 @description('Required. Login for administrator access to the workspace\'s SQL pools.')
 param sqlAdministratorLogin string
@@ -91,23 +91,23 @@ param accountUrl string = 'https://${last(split(defaultDataLakeStorageAccountRes
 @description('Optional. Git integration settings.')
 param workspaceRepositoryConfiguration object?
 
-import { managedIdentityOnlyUserAssignedType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { managedIdentityOnlyUserAssignedType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentityOnlyUserAssignedType?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
-import { privateEndpointMultiServiceType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { privateEndpointMultiServiceType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints privateEndpointMultiServiceType[]?
 
-import { diagnosticSettingLogsOnlyType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { diagnosticSettingLogsOnlyType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingLogsOnlyType[]?
 
@@ -182,19 +182,19 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2024-11-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
   name: last(split((customerManagedKey.?keyVaultResourceId!), '/'))
   scope: resourceGroup(
     split(customerManagedKey.?keyVaultResourceId!, '/')[2],
     split(customerManagedKey.?keyVaultResourceId!, '/')[4]
   )
 
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
+  resource cMKKey 'keys@2024-11-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
     name: customerManagedKey.?keyName!
   }
 }
 
-resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
   name: last(split(customerManagedKey.?userAssignedIdentityResourceId!, '/'))
   scope: resourceGroup(
     split(customerManagedKey.?userAssignedIdentityResourceId!, '/')[2],
@@ -231,7 +231,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
                   useSystemAssignedIdentity: empty(customerManagedKey.?userAssignedIdentityResourceId)
                 }
             key: {
-              keyVaultUrl: cMKKeyVault::cMKKey.properties.keyUri
+              keyVaultUrl: cMKKeyVault::cMKKey!.properties.keyUri
               name: customerManagedKey!.keyName
             }
           }
@@ -247,9 +247,9 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
         }
       : null
     publicNetworkAccess: managedVirtualNetwork ? publicNetworkAccess : null
-    purviewConfiguration: !empty(purviewResourceID)
+    purviewConfiguration: !empty(purviewResourceId)
       ? {
-          purviewResourceId: purviewResourceID
+          purviewResourceId: purviewResourceId
         }
       : null
     sqlAdministratorLogin: sqlAdministratorLogin
@@ -267,6 +267,7 @@ module synapse_integrationRuntimes 'integration-runtime/main.bicep' = [
       name: integrationRuntime.name
       type: integrationRuntime.type
       typeProperties: integrationRuntime.?typeProperties ?? {}
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -279,7 +280,7 @@ module workspace_cmk_rbac 'modules/nested_cmkRbac.bicep' = if (encryptionActivat
     workspaceIndentityPrincipalId: workspace.identity.principalId
     keyvaultName: !empty(customerManagedKey!.keyVaultResourceId) ? cMKKeyVault.name : ''
     usesRbacAuthorization: !empty(customerManagedKey!.keyVaultResourceId)
-      ? cMKKeyVault.properties.enableRbacAuthorization
+      ? cMKKeyVault!.properties.enableRbacAuthorization
       : true
   }
   scope: resourceGroup(
@@ -290,12 +291,13 @@ module workspace_cmk_rbac 'modules/nested_cmkRbac.bicep' = if (encryptionActivat
 
 // - Workspace encryption - Activate Workspace
 module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
-  name: '${workspace.name}-cmk-activation'
+  name: take('${workspace.name}-cmk-activation', 64)
   params: {
     name: customerManagedKey!.keyName
     isActiveCMK: true
     keyVaultResourceId: cMKKeyVault.id
     workspaceName: workspace.name
+    enableTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     workspace_cmk_rbac
@@ -303,7 +305,7 @@ module workspace_key 'key/main.bicep' = if (encryptionActivateWorkspace) {
 }
 
 // - Workspace Entra ID Administrator
-module workspace_administrator 'administrators/main.bicep' = if (!empty(administrator)) {
+module workspace_administrator 'administrator/main.bicep' = if (!empty(administrator)) {
   name: '${workspace.name}-administrator'
   params: {
     workspaceName: workspace.name
@@ -311,6 +313,7 @@ module workspace_administrator 'administrators/main.bicep' = if (!empty(administ
     login: administrator!.login
     sid: administrator!.sid
     tenantId: administrator.?tenantId
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -319,9 +322,9 @@ resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: workspace
 }
@@ -344,7 +347,7 @@ resource workspace_roleAssignments 'Microsoft.Authorization/roleAssignments@2022
 ]
 
 // Firewall Rules
-module workspace_firewallRules 'firewall-rules/main.bicep' = [
+module workspace_firewallRules 'firewall-rule/main.bicep' = [
   for (rule, index) in (firewallRules ?? []): {
     name: '${uniqueString(deployment().name, location)}-workspace-FirewallRule-${index}'
     params: {
@@ -352,6 +355,7 @@ module workspace_firewallRules 'firewall-rules/main.bicep' = [
       endIpAddress: rule.endIpAddress
       startIpAddress: rule.startIpAddress
       workspaceName: workspace.name
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -368,9 +372,11 @@ module workspace_bigDataPools 'big-data-pool/main.bicep' = [
       autoPauseDelayInMinutes: bigDataPool.?autoPauseDelayInMinutes
       autoScale: bigDataPool.?autoScale
       cacheSize: bigDataPool.?cacheSize
+      customLibraries: bigDataPool.?customLibraries
       dynamicExecutorAllocation: bigDataPool.?dynamicExecutorAllocation
       autotuneEnabled: bigDataPool.?autotuneEnabled
       computeIsolationEnabled: bigDataPool.?computeIsolationEnabled
+      libraryRequirements: bigDataPool.?libraryRequirements
       nodeCount: bigDataPool.?nodeCount
       nodeSize: bigDataPool.nodeSize
       nodeSizeFamily: bigDataPool.nodeSizeFamily
@@ -382,6 +388,7 @@ module workspace_bigDataPools 'big-data-pool/main.bicep' = [
       lock: bigDataPool.?lock ?? lock
       diagnosticSettings: bigDataPool.?diagnosticSettings ?? []
       roleAssignments: bigDataPool.?roleAssignments ?? []
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -401,10 +408,11 @@ module workspace_sqlPools 'sql-pool/main.bicep' = [
       recoverableDatabaseResourceId: sqlPool.?recoverableDatabaseResourceId
       storageAccountType: sqlPool.?storageAccountType
       transparentDataEncryption: sqlPool.?transparentDataEncryption
-      diagnosticSettings: sqlPool.?diagnosticSettings
-      roleAssignments: sqlPool.?roleAssignments
+      diagnosticSettings: sqlPool.?diagnosticSettings ?? []
+      roleAssignments: sqlPool.?roleAssignments ?? []
       lock: sqlPool.?lock ?? lock
       tags: sqlPool.?tags ?? tags
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -455,7 +463,7 @@ module workspace_privateEndpoints 'br/public:avm/res/network/private-endpoint:0.
       ).location
       lock: privateEndpoint.?lock ?? lock
       privateDnsZoneGroup: privateEndpoint.?privateDnsZoneGroup
-      roleAssignments: privateEndpoint.?roleAssignments
+      roleAssignments: privateEndpoint.?roleAssignments ?? []
       tags: privateEndpoint.?tags ?? tags
       customDnsConfigs: privateEndpoint.?customDnsConfigs
       ipConfigurations: privateEndpoint.?ipConfigurations
@@ -578,8 +586,14 @@ type firewallRuleType = {
   endIpAddress: string
 }
 
-import { autoScaleType, dynamicExecutorAllocationType, sparkConfigPropertiesType } from 'big-data-pool/main.bicep'
-import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import {
+  autoScaleType
+  dynamicExecutorAllocationType
+  sparkConfigPropertiesType
+  libraryRequirementsType
+  customLibraryType
+} from 'big-data-pool/main.bicep'
+import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @export()
 @description('The synapse workspace Big Data Pool definition.')
 type bigDataPoolType = {
@@ -627,6 +641,12 @@ type bigDataPoolType = {
 
   @description('Optional. The Spark events folder.')
   sparkEventsFolder: string?
+
+  @description('Optional. Library version requirements.')
+  libraryRequirements: libraryRequirementsType?
+
+  @description('Optional. List of custom libraries/packages associated with the spark pool.')
+  customLibraries: customLibraryType[]?
 
   @description('Optional. The diagnostic settings of the service.')
   diagnosticSettings: diagnosticSettingFullType[]?
@@ -679,15 +699,10 @@ type sqlPoolType = {
   recoverableDatabaseResourceId: string?
 
   @description('Optional. The storage account type to use for the SQL pool.')
-  storageAccountType: (
-    | 'GRS'
-    | 'LRS'
-    | 'ZRS')?
+  storageAccountType: ('GRS' | 'LRS' | 'ZRS')?
 
   @description('Optional. Enable database transparent data encryption.')
-  transparentDataEncryption: (
-    | 'Enabled'
-    | 'Disabled')?
+  transparentDataEncryption: ('Enabled' | 'Disabled')?
 
   @description('Optional. The diagnostic settings of the service.')
   diagnosticSettings: diagnosticSettingFullType[]?

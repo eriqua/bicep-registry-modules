@@ -22,20 +22,42 @@ param defaultAction string = 'Allow'
 param trustedServiceAccessEnabled bool = true
 
 @description('Optional. An array of subnet resource ID objects that this Event Hub Namespace is exposed to via Service Endpoints. You can enable the `ignoreMissingVnetServiceEndpoint` if you wish to add this virtual network to Event Hub Namespace but do not have an existing service endpoint. It will not be set if publicNetworkAccess is "Disabled". Otherwise, when used, defaultAction will be set to "Deny".')
-param virtualNetworkRules array = []
+param virtualNetworkRules networkRuleType[] = []
 
 @description('Optional. An array of objects for the public IP ranges you want to allow via the Event Hub Namespace firewall. Supports IPv4 address or CIDR. It will not be set if publicNetworkAccess is "Disabled". Otherwise, when used, defaultAction will be set to "Deny".')
-param ipRules array = []
+param ipRules resourceInput<'Microsoft.EventHub/namespaces/networkRuleSets@2024-01-01'>.properties.ipRules = []
 
 @description('Optional. The name of the network ruleset.')
 param networkRuleSetName string = 'default'
 
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.eventhub-namespace-networkruleset.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
 var networkRules = [
-  for (virtualNetworkRule, index) in virtualNetworkRules: {
+  for virtualNetworkRule in virtualNetworkRules: {
     ignoreMissingVnetServiceEndpoint: virtualNetworkRule.?ignoreMissingVnetServiceEndpoint
     subnet: contains(virtualNetworkRule, 'subnetResourceId')
       ? {
-          id: virtualNetworkRule.subnetResourceId
+          id: virtualNetworkRule.subnetResourceId!
         }
       : null
   }
@@ -54,8 +76,8 @@ resource networkRuleSet 'Microsoft.EventHub/namespaces/networkRuleSets@2024-01-0
       ? null
       : (!empty(ipRules) || !empty(virtualNetworkRules) ? 'Deny' : defaultAction)
     trustedServiceAccessEnabled: trustedServiceAccessEnabled
-    ipRules: publicNetworkAccess == 'Disabled' ? null : ipRules
-    virtualNetworkRules: publicNetworkAccess == 'Disabled' ? null : networkRules
+    ipRules: publicNetworkAccess != 'Disabled' ? ipRules : null
+    virtualNetworkRules: publicNetworkAccess != 'Disabled' ? networkRules : null
   }
 }
 
@@ -67,3 +89,16 @@ output resourceId string = networkRuleSet.id
 
 @description('The name of the resource group the network rule set was created in.')
 output resourceGroupName string = resourceGroup().name
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+@export()
+type networkRuleType = {
+  @description('Optional. The resource Id of a Virtual Network Subnet.')
+  subnetResourceId: string?
+
+  @description('Optional. Value that indicates whether to ignore missing Vnet Service Endpoint.')
+  ignoreMissingVnetServiceEndpoint: bool?
+}

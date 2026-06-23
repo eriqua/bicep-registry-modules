@@ -26,7 +26,7 @@ param namePrefix string = '#_namePrefix_#'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: resourceLocation
 }
@@ -71,10 +71,10 @@ module testDeployment '../../../main.bicep' = [
           availabilityZones: [
             3
           ]
-          count: 1
           enableAutoScaling: true
-          maxCount: 3
+          count: 1
           maxPods: 30
+          maxCount: 3
           minCount: 1
           mode: 'System'
           name: 'systempool'
@@ -89,24 +89,24 @@ module testDeployment '../../../main.bicep' = [
       ]
       agentPools: [
         {
-          availabilityZones: [
-            3
-          ]
-          count: 2
-          enableAutoScaling: true
-          maxCount: 3
           maxPods: 30
-          minCount: 1
           minPods: 2
           mode: 'User'
           name: 'userpool1'
           nodeLabels: {}
           osDiskSizeGB: 128
           osType: 'Linux'
-          scaleSetEvictionPolicy: 'Delete'
-          scaleSetPriority: 'Regular'
-          type: 'VirtualMachineScaleSets'
-          vmSize: 'Standard_DS4_v2'
+          type: 'VirtualMachines'
+          virtualMachinesProfile: {
+            scale: {
+              manual: [
+                {
+                  count: 2
+                  size: 'Standard_DS4_v2'
+                }
+              ]
+            }
+          }
         }
       ]
       networkPlugin: 'kubenet'
@@ -126,7 +126,7 @@ module testDeployment '../../../main.bicep' = [
       ]
       roleAssignments: [
         {
-          name: '6acf186b-abbd-491b-8bd7-39fa199da81e'
+          name: guid('Owner assignment ${namePrefix}${serviceShort}')
           roleDefinitionIdOrName: 'Owner'
           principalId: nestedDependencies.outputs.managedIdentityPrincipalId
           principalType: 'ServicePrincipal'
@@ -157,8 +157,8 @@ module testDeployment '../../../main.bicep' = [
         Role: 'DeploymentValidation'
       }
       aadProfile: {
-        aadProfileEnableAzureRBAC: true
-        aadProfileManaged: true
+        enableAzureRBAC: true
+        managed: true
       }
     }
   }

@@ -4,12 +4,15 @@ param location string = resourceGroup().location
 @description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
+@description('Required. The name of the managed identity 2 to create.')
+param managedIdentityName2 string
+
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-07-01' = {
   name: virtualNetworkName
   location: location
   properties: {
@@ -29,11 +32,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   }
 }
 
-resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+resource privateDNSZone 'Microsoft.Network/privateDnsZones@2024-06-01' = {
   name: 'privatelink.redis.cache.windows.net'
   location: 'global'
 
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+  resource virtualNetworkLinks 'virtualNetworkLinks@2024-06-01' = {
     name: '${virtualNetwork.name}-vnetlink'
     location: 'global'
     properties: {
@@ -45,8 +48,13 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' = {
   name: managedIdentityName
+  location: location
+}
+
+resource managedIdentity2 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' = {
+  name: managedIdentityName2
   location: location
 }
 
@@ -55,6 +63,12 @@ output managedIdentityResourceId string = managedIdentity.id
 
 @description('The principal ID of the created managed identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity2.')
+output managedIdentityResourceId2 string = managedIdentity2.id
+
+@description('The principal ID of the created managed identity2.')
+output managedIdentityPrincipalId2 string = managedIdentity2.properties.principalId
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id

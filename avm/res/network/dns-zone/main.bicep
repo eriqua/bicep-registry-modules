@@ -18,6 +18,9 @@ param cname cnameType[]?
 @description('Optional. Array of CAA records.')
 param caa caaType[]?
 
+@description('Optional. Array of DS records.')
+param ds dsType[]?
+
 @description('Optional. Array of MX records.')
 param mx mxType[]?
 
@@ -36,17 +39,20 @@ param srv srvType[]?
 @description('Optional. Array of TXT records.')
 param txt txtType[]?
 
+@description('Optional. Enable DNSSEC for the DNS zone. Public keys from the RP are ½ of the public/private keypairs used to sign requests. They are exposed because they need to be configured as DS recorded in the parent zone to create a chain of trust (which is a secondary manual step).')
+param enableDnsSec bool?
+
 @description('Optional. The location of the dnsZone. Should be global.')
 param location string = 'global'
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
 @description('Optional. Tags of the resource.')
-param tags object?
+param tags resourceInput<'Microsoft.Network/dnsZones@2018-05-01'>.tags?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
@@ -102,8 +108,10 @@ var formattedRoleAssignments = [
   })
 ]
 
+var enableReferencedModulesTelemetry = false
+
 #disable-next-line no-deployments-resources
-resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
   name: '46d3xbcp.res.network-dnszone.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
   properties: {
     mode: 'Incremental'
@@ -141,6 +149,7 @@ module dnsZone_A 'a/main.bicep' = [
       ttl: aRecord.?ttl ?? 3600
       targetResourceId: aRecord.?targetResourceId
       roleAssignments: aRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -156,6 +165,7 @@ module dnsZone_AAAA 'aaaa/main.bicep' = [
       ttl: aaaaRecord.?ttl ?? 3600
       targetResourceId: aaaaRecord.?targetResourceId
       roleAssignments: aaaaRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -171,6 +181,7 @@ module dnsZone_CNAME 'cname/main.bicep' = [
       ttl: cnameRecord.?ttl ?? 3600
       targetResourceId: cnameRecord.?targetResourceId
       roleAssignments: cnameRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -185,6 +196,22 @@ module dnsZone_CAA 'caa/main.bicep' = [
       caaRecords: caaRecord.?caaRecords
       ttl: caaRecord.?ttl ?? 3600
       roleAssignments: caaRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
+    }
+  }
+]
+
+module dnsZone_DS 'ds/main.bicep' = [
+  for (dsRecord, index) in (ds ?? []): {
+    name: '${uniqueString(deployment().name, location)}-dnsZone-DSRecord-${index}'
+    params: {
+      dnsZoneName: dnsZone.name
+      name: dsRecord.name
+      metadata: dsRecord.?metadata
+      dsRecords: dsRecord.?dsRecords
+      ttl: dsRecord.?ttl ?? 3600
+      roleAssignments: dsRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -199,6 +226,7 @@ module dnsZone_MX 'mx/main.bicep' = [
       mxRecords: mxRecord.?mxRecords
       ttl: mxRecord.?ttl ?? 3600
       roleAssignments: mxRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -213,6 +241,7 @@ module dnsZone_NS 'ns/main.bicep' = [
       nsRecords: nsRecord.?nsRecords
       ttl: nsRecord.?ttl ?? 3600
       roleAssignments: nsRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -227,6 +256,7 @@ module dnsZone_PTR 'ptr/main.bicep' = [
       ptrRecords: ptrRecord.?ptrRecords
       ttl: ptrRecord.?ttl ?? 3600
       roleAssignments: ptrRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -241,6 +271,7 @@ module dnsZone_SOA 'soa/main.bicep' = [
       soaRecord: soaRecord.?soaRecord
       ttl: soaRecord.?ttl ?? 3600
       roleAssignments: soaRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -255,6 +286,7 @@ module dnsZone_SRV 'srv/main.bicep' = [
       srvRecords: srvRecord.?srvRecords
       ttl: srvRecord.?ttl ?? 3600
       roleAssignments: srvRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -269,17 +301,26 @@ module dnsZone_TXT 'txt/main.bicep' = [
       txtRecords: txtRecord.?txtRecords
       ttl: txtRecord.?ttl ?? 3600
       roleAssignments: txtRecord.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
+
+module dnsZone_dnssecConfig 'dnssec-config/main.bicep' = if (enableDnsSec == true) {
+  name: '${uniqueString(deployment().name, location)}-dnsZone-DnssecConfig'
+  params: {
+    dnsZoneName: dnsZone.name
+    enableTelemetry: enableReferencedModulesTelemetry
+  }
+}
 
 resource dnsZone_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: dnsZone
 }
@@ -319,12 +360,14 @@ output nameServers array = dnsZone.properties.nameServers
 //   Definitions   //
 // =============== //
 
+@export()
+@description('Type definition for an A record.')
 type aType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/A@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -336,18 +379,17 @@ type aType = {
   targetResourceId: string?
 
   @description('Optional. The list of A records in the record set.')
-  aRecords: {
-    @description('Required. The IPv4 address of this A record.')
-    ipv4Address: string
-  }[]?
+  aRecords: resourceInput<'Microsoft.Network/dnsZones/A@2018-05-01'>.properties.ARecords?
 }
 
+@export()
+@description('Type definition for an AAAA record.')
 type aaaaType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/AAAA@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -359,18 +401,17 @@ type aaaaType = {
   targetResourceId: string?
 
   @description('Optional. The list of AAAA records in the record set.')
-  aaaaRecords: {
-    @description('Required. The IPv6 address of this AAAA record.')
-    ipv6Address: string
-  }[]?
+  aaaaRecords: resourceInput<'Microsoft.Network/dnsZones/AAAA@2018-05-01'>.properties.AAAARecords?
 }
 
+@export()
+@description('Type definition for a CNAME record.')
 type cnameType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/CNAME@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -382,18 +423,17 @@ type cnameType = {
   targetResourceId: string?
 
   @description('Optional. The CNAME record in the record set.')
-  cnameRecord: {
-    @description('Required. The canonical name of the CNAME record.')
-    cname: string
-  }?
+  cnameRecord: resourceInput<'Microsoft.Network/dnsZones/CNAME@2018-05-01'>.properties.CNAMERecord?
 }
 
+@export()
+@description('Type definition for a CAA record.')
 type caaType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/CAA@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -402,26 +442,36 @@ type caaType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of CAA records in the record set.')
-  caaRecords: {
-    @description('Required. The flags for this CAA record as an integer between 0 and 255.')
-    @minValue(0)
-    @maxValue(255)
-    flags: int
-
-    @description('Required. The tag for this CAA record..')
-    tag: string
-
-    @description('Required. The value for this CAA record.')
-    value: string
-  }[]?
+  caaRecords: resourceInput<'Microsoft.Network/dnsZones/CAA@2018-05-01'>.properties.caaRecords?
 }
 
+@export()
+@description('Type definition for a DS record.')
+type dsType = {
+  @description('Required. The name of the record.')
+  name: string
+
+  @description('Optional. The metadata of the record.')
+  metadata: resourceInput<'Microsoft.Network/dnsZones/DS@2023-07-01-preview'>.properties.metadata?
+
+  @description('Optional. The TTL of the record.')
+  ttl: int?
+
+  @description('Optional. Array of role assignments to create.')
+  roleAssignments: roleAssignmentType[]?
+
+  @description('Optional. The list of DS records in the record set.')
+  dsRecords: resourceInput<'Microsoft.Network/dnsZones/DS@2023-07-01-preview'>.properties.DSRecords?
+}
+
+@export()
+@description('Type definition for an MX record.')
 type mxType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/MX@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -430,21 +480,17 @@ type mxType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of MX records in the record set.')
-  mxRecords: {
-    @description('Required. The domain name of the mail host for this MX record.')
-    exchange: string
-
-    @description('Required. The preference value for this MX record.')
-    preference: int
-  }[]?
+  mxRecords: resourceInput<'Microsoft.Network/dnsZones/MX@2018-05-01'>.properties.MXRecords?
 }
 
+@export()
+@description('Type definition for an NS record.')
 type nsType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/NS@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -453,18 +499,17 @@ type nsType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of NS records in the record set.')
-  nsRecords: {
-    @description('Required. The name server name for this NS record.')
-    nsdname: string
-  }[]?
+  nsRecords: resourceInput<'Microsoft.Network/dnsZones/NS@2018-05-01'>.properties.NSRecords?
 }
 
+@export()
+@description('Type definition for a PTR record.')
 type ptrType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/PTR@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -473,18 +518,17 @@ type ptrType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of PTR records in the record set.')
-  ptrRecords: {
-    @description('Required. The PTR target domain name for this PTR record.')
-    ptrdname: string
-  }[]?
+  ptrRecords: resourceInput<'Microsoft.Network/dnsZones/PTR@2018-05-01'>.properties.PTRRecords?
 }
 
+@export()
+@description('Type definition for an SOA record.')
 type soaType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/SOA@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -493,36 +537,17 @@ type soaType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The SOA record in the record set.')
-  soaRecord: {
-    @description('Required. The email contact for this SOA record.')
-    email: string
-
-    @description('Required. The expire time for this SOA record.')
-    expireTime: int
-
-    @description('Required. The domain name of the authoritative name server for this SOA record.')
-    host: string
-
-    @description('Required. The minimum value for this SOA record. By convention this is used to determine the negative caching duration.')
-    minimumTTL: int
-
-    @description('Required. The refresh value for this SOA record.')
-    refreshTime: int
-
-    @description('Required. The retry time for this SOA record.')
-    retryTime: int
-
-    @description('Required. The serial number for this SOA record.')
-    serialNumber: int
-  }?
+  soaRecord: resourceInput<'Microsoft.Network/dnsZones/SOA@2018-05-01'>.properties.SOARecord?
 }
 
+@export()
+@description('Type definition for an SRV record.')
 type srvType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/SRV@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -531,27 +556,17 @@ type srvType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of SRV records in the record set.')
-  srvRecords: {
-    @description('Required. The priority value for this SRV record.')
-    priority: int
-
-    @description('Required. The weight value for this SRV record.')
-    weight: int
-
-    @description('Required. The port value for this SRV record.')
-    port: int
-
-    @description('Required. The target domain name for this SRV record.')
-    target: string
-  }[]?
+  srvRecords: resourceInput<'Microsoft.Network/dnsZones/SRV@2018-05-01'>.properties.SRVRecords?
 }
 
+@export()
+@description('Type definition for a TXT record.')
 type txtType = {
   @description('Required. The name of the record.')
   name: string
 
   @description('Optional. The metadata of the record.')
-  metadata: object?
+  metadata: resourceInput<'Microsoft.Network/dnsZones/TXT@2018-05-01'>.properties.metadata?
 
   @description('Optional. The TTL of the record.')
   ttl: int?
@@ -560,8 +575,5 @@ type txtType = {
   roleAssignments: roleAssignmentType[]?
 
   @description('Optional. The list of TXT records in the record set.')
-  txtRecords: {
-    @description('Required. The text value of this TXT record.')
-    value: string[]
-  }[]?
+  txtRecords: resourceInput<'Microsoft.Network/dnsZones/TXT@2018-05-01'>.properties.TXTRecords?
 }

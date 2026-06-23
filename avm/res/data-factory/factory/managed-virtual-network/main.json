@@ -1,14 +1,53 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.36.1.42791",
-      "templateHash": "9191613554357178875"
+      "version": "0.43.1.21952",
+      "templateHash": "13073229421844664632"
     },
     "name": "Data Factory Managed Virtual Networks",
     "description": "This module deploys a Data Factory Managed Virtual Network."
+  },
+  "definitions": {
+    "managedPrivateEndpointType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The managed private endpoint resource name."
+          }
+        },
+        "groupId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The groupId to which the managed private endpoint is created."
+          }
+        },
+        "fqdns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "metadata": {
+            "description": "Required. Fully qualified domain names."
+          }
+        },
+        "privateLinkResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The ARM resource ID of the resource to which the managed private endpoint is created."
+          }
+        }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a Managed Private Endpoint."
+      }
+    }
   },
   "parameters": {
     "dataFactoryName": {
@@ -25,26 +64,65 @@
     },
     "managedPrivateEndpoints": {
       "type": "array",
-      "defaultValue": [],
+      "items": {
+        "$ref": "#/definitions/managedPrivateEndpointType"
+      },
+      "nullable": true,
       "metadata": {
         "description": "Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network."
       }
+    },
+    "enableTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable/Disable usage telemetry for module."
+      }
     }
   },
-  "resources": [
-    {
+  "variables": {
+    "enableReferencedModulesTelemetry": false
+  },
+  "resources": {
+    "avmTelemetry": {
+      "condition": "[parameters('enableTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('46d3xbcp.res.datafactory-factory-managedvnet.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [],
+          "outputs": {
+            "telemetry": {
+              "type": "String",
+              "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+            }
+          }
+        }
+      }
+    },
+    "dataFactory": {
+      "existing": true,
+      "type": "Microsoft.DataFactory/factories",
+      "apiVersion": "2018-06-01",
+      "name": "[parameters('dataFactoryName')]"
+    },
+    "managedVirtualNetwork": {
       "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
       "apiVersion": "2018-06-01",
       "name": "[format('{0}/{1}', parameters('dataFactoryName'), parameters('name'))]",
       "properties": {}
     },
-    {
+    "managedVirtualNetwork_managedPrivateEndpoint": {
       "copy": {
         "name": "managedVirtualNetwork_managedPrivateEndpoint",
-        "count": "[length(parameters('managedPrivateEndpoints'))]"
+        "count": "[length(coalesce(parameters('managedPrivateEndpoints'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-managedPrivateEndpoint-{1}', deployment().name, copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -55,30 +133,34 @@
           "dataFactoryName": {
             "value": "[parameters('dataFactoryName')]"
           },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          },
           "managedVirtualNetworkName": {
             "value": "[parameters('name')]"
           },
           "name": {
-            "value": "[parameters('managedPrivateEndpoints')[copyIndex()].name]"
+            "value": "[coalesce(parameters('managedPrivateEndpoints'), createArray())[copyIndex()].name]"
           },
           "fqdns": {
-            "value": "[parameters('managedPrivateEndpoints')[copyIndex()].fqdns]"
+            "value": "[coalesce(parameters('managedPrivateEndpoints'), createArray())[copyIndex()].fqdns]"
           },
           "groupId": {
-            "value": "[parameters('managedPrivateEndpoints')[copyIndex()].groupId]"
+            "value": "[coalesce(parameters('managedPrivateEndpoints'), createArray())[copyIndex()].groupId]"
           },
           "privateLinkResourceId": {
-            "value": "[parameters('managedPrivateEndpoints')[copyIndex()].privateLinkResourceId]"
+            "value": "[coalesce(parameters('managedPrivateEndpoints'), createArray())[copyIndex()].privateLinkResourceId]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.36.1.42791",
-              "templateHash": "13532538255788105281"
+              "version": "0.43.1.21952",
+              "templateHash": "12703728926650924070"
             },
             "name": "Data Factory Managed Virtual Network Managed PrivateEndpoints",
             "description": "This module deploys a Data Factory Managed Virtual Network Managed Private Endpoint."
@@ -110,6 +192,9 @@
             },
             "fqdns": {
               "type": "array",
+              "items": {
+                "type": "string"
+              },
               "metadata": {
                 "description": "Required. Fully qualified domain names."
               }
@@ -119,10 +204,49 @@
               "metadata": {
                 "description": "Required. The ARM resource ID of the resource to which the managed private endpoint is created."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "datafactory::managedVirtualNetwork": {
+              "existing": true,
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), parameters('managedVirtualNetworkName'))]"
+            },
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.datafactory-factory-managedvnetmgdpe.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            "datafactory": {
+              "existing": true,
+              "type": "Microsoft.DataFactory/factories",
+              "apiVersion": "2018-06-01",
+              "name": "[parameters('dataFactoryName')]"
+            },
+            "managedPrivateEndpoint": {
               "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
               "apiVersion": "2018-06-01",
               "name": "[format('{0}/{1}/{2}', parameters('dataFactoryName'), parameters('managedVirtualNetworkName'), parameters('name'))]",
@@ -132,7 +256,7 @@
                 "privateLinkResourceId": "[parameters('privateLinkResourceId')]"
               }
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -159,10 +283,10 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('dataFactoryName'), parameters('name'))]"
+        "managedVirtualNetwork"
       ]
     }
-  ],
+  },
   "outputs": {
     "resourceGroupName": {
       "type": "string",

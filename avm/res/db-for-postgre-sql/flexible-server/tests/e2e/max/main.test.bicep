@@ -12,7 +12,7 @@ metadata description = 'This instance deploys the module using Customer-Managed-
 param resourceGroupName string = 'dep-${namePrefix}-dbforpostgresql.flexibleservers-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
-var enforcedLocation = 'uksouth' // Enforcing location with available zones
+var enforcedLocation = 'brazilsouth' // Enforcing location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'dfpfmax'
@@ -33,7 +33,7 @@ param namePrefix string = '#_namePrefix_#'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: enforcedLocation
 }
@@ -61,10 +61,14 @@ module testDeployment '../../../main.bicep' = [
       name: '${namePrefix}${serviceShort}001'
       location: enforcedLocation
       availabilityZone: 1
-      highAvailability: 'ZoneRedundant'
+      highAvailability: 'Disabled'
       highAvailabilityZone: 2
       administratorLogin: 'adminUserName'
       administratorLoginPassword: password
+      authConfig: {
+        activeDirectoryAuth: 'Disabled'
+        passwordAuth: 'Enabled'
+      }
       skuName: 'Standard_D2s_v3'
       tier: 'GeneralPurpose'
       geoRedundantBackup: 'Disabled'
@@ -77,9 +81,14 @@ module testDeployment '../../../main.bicep' = [
         userAssignedResourceIds: [
           nestedDependencies.outputs.managedIdentityResourceId
         ]
+        systemAssigned: true
       }
       serverThreatProtection: 'Enabled'
-      autoGrow: 'Enabled'
+      storageSizeGB: 64
+      autoGrow: 'Disabled'
+      storageType: 'PremiumV2_LRS'
+      storageIops: 3000
+      storageThroughput: 125
     }
   }
 ]

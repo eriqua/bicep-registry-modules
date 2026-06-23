@@ -28,15 +28,39 @@ param sizeGiB int
 @sys.description('Optional. List of Elastic SAN Volume Snapshots to be created in the Elastic SAN Volume.')
 param snapshots volumeSnapshotType[]?
 
-resource elasticSan 'Microsoft.ElasticSan/elasticSans@2023-01-01' existing = {
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.elsan-elsan-volumegroupvolume.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+var enableReferencedModulesTelemetry = false
+
+resource elasticSan 'Microsoft.ElasticSan/elasticSans@2024-05-01' existing = {
   name: elasticSanName
 
-  resource volumeGroup 'volumegroups@2023-01-01' existing = {
+  resource volumeGroup 'volumegroups@2024-05-01' existing = {
     name: volumeGroupName
   }
 }
 
-resource volume 'Microsoft.ElasticSan/elasticSans/volumegroups/volumes@2023-01-01' = {
+resource volume 'Microsoft.ElasticSan/elasticSans/volumegroups/volumes@2024-05-01' = {
   name: name
   parent: elasticSan::volumeGroup
   properties: {
@@ -53,6 +77,7 @@ module volume_snapshots '../snapshot/main.bicep' = [
       volumeName: volume.name
       name: snapshot.name
       location: location
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]

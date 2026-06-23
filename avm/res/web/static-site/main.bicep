@@ -58,16 +58,16 @@ import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentityAllType?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { privateEndpointSingleServiceType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { privateEndpointSingleServiceType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Note, requires the \'sku\' to be \'Standard\'. Supplying the `privateDnsZoneGroup` configuration will allow the private endpoint to point to an already existing zone group. If not provided and `createPrivateDnsZone` being enabled, it will create and use the newly created zone group.')
 param privateEndpoints privateEndpointSingleServiceType[]?
 
 @description('Optional. Tags of the resource.')
-param tags object?
+param tags resourceInput<'Microsoft.Web/staticSites@2024-11-01'>.tags?
 
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
@@ -87,6 +87,13 @@ param functionAppSettings object = {}
 
 @description('Optional. The custom domains associated with this static site. The deployment will fail as long as the validation records are not present.')
 param customDomains array = []
+
+@description('Optional. Custom domain validation method. If not specified, automatically determined based on domain structure.')
+@allowed([
+  'dns-txt-token'
+  'cname-delegation'
+])
+param validationMethod string?
 
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
@@ -206,6 +213,7 @@ module staticSite_linkedBackend 'linked-backend/main.bicep' = if (!empty(linkedB
     staticSiteName: staticSite.name
     backendResourceId: linkedBackend.resourceId
     region: linkedBackend.?location ?? location
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -215,6 +223,7 @@ module staticSite_appSettings 'config/main.bicep' = if (!empty(appSettings)) {
     kind: 'appsettings'
     staticSiteName: staticSite.name
     properties: appSettings
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -224,6 +233,7 @@ module staticSite_functionAppSettings 'config/main.bicep' = if (!empty(functionA
     kind: 'functionappsettings'
     staticSiteName: staticSite.name
     properties: functionAppSettings
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -233,9 +243,10 @@ module staticSite_customDomains 'custom-domain/main.bicep' = [
     params: {
       name: customDomain
       staticSiteName: staticSite.name
-      validationMethod: indexOf(customDomain, '.') == lastIndexOf(customDomain, '.')
+      validationMethod: validationMethod ?? (indexOf(customDomain, '.') == lastIndexOf(customDomain, '.')
         ? 'dns-txt-token'
-        : 'cname-delegation'
+        : 'cname-delegation')
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -244,9 +255,9 @@ resource staticSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: staticSite
 }
@@ -267,10 +278,10 @@ resource staticSite_roleAssignments 'Microsoft.Authorization/roleAssignments@202
   }
 ]
 
-module staticSite_privateDnsZone 'br/public:avm/res/network/private-dns-zone:0.7.0' = if (!empty(privateEndpoints) && createPrivateDnsZone == 'Enabled') {
+module staticSite_privateDnsZone 'br/public:avm/res/network/private-dns-zone:0.8.0' = if (!empty(privateEndpoints) && createPrivateDnsZone == 'Enabled') {
   name: '${uniqueString(deployment().name, location)}-staticSite-PrivateDnsZone'
   params: {
-    name: 'privatelink.${staticSite.properties.defaultHostname}.azurestaticapps.net'
+    name: 'privatelink.${split(staticSite.properties.defaultHostname, '.')[0]}.azurestaticapps.net'
     enableTelemetry: enableReferencedModulesTelemetry
     virtualNetworkLinks: [
       {
@@ -280,7 +291,7 @@ module staticSite_privateDnsZone 'br/public:avm/res/network/private-dns-zone:0.7
   }
 }
 
-module staticSite_privateEndpoints 'br/public:avm/res/network/private-endpoint:0.10.1' = [
+module staticSite_privateEndpoints 'br/public:avm/res/network/private-endpoint:0.11.1' = [
   for (privateEndpoint, index) in (privateEndpoints ?? []): {
     name: '${uniqueString(deployment().name, location)}-staticSite-PrivateEndpoint-${index}'
     scope: resourceGroup(

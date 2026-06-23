@@ -26,7 +26,7 @@ param namePrefix string = '#_namePrefix_#'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: resourceLocation
 }
@@ -54,7 +54,6 @@ module diagnosticDependencies '../../../../../../../utilities/e2e-template-asset
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: resourceLocation
   }
 }
 
@@ -71,8 +70,11 @@ module testDeployment '../../../main.bicep' = [
       location: resourceLocation
       name: '${namePrefix}${serviceShort}001'
       backupConfig: {
-        enhancedSecurityState: 'Disabled'
-        softDeleteFeatureState: 'Disabled'
+        enhancedSecurityState: 'AlwaysON'
+        softDeleteFeatureState: 'AlwaysON'
+      }
+      redundancySettings: {
+        standardTierStorageRedundancy: 'LocallyRedundant'
       }
       protectedItems: [
         {
@@ -438,9 +440,16 @@ module testDeployment '../../../main.bicep' = [
       }
       immutabilitySettingState: 'Unlocked'
       softDeleteSettings: {
-        enhancedSecurityState: 'Enabled'
+        enhancedSecurityState: 'AlwaysON'
         softDeleteRetentionPeriodInDays: 14
-        softDeleteState: 'Enabled'
+        softDeleteState: 'AlwaysON'
+      }
+      sourceScanConfiguration: {
+        state: 'Enabled'
+        sourceScanIdentity: {
+          operationIdentityType: 'UserAssigned'
+          userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
+        }
       }
       tags: {
         'hidden-title': 'This is visible in the resource name'

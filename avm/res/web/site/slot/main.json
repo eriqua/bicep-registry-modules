@@ -5,13 +5,53 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.35.1.17967",
-      "templateHash": "13466865676700354567"
+      "version": "0.43.8.12551",
+      "templateHash": "7338894437592448374"
     },
     "name": "Web/Function App Deployment Slots",
     "description": "This module deploys a Web or Function App Deployment Slot."
   },
   "definitions": {
+    "hostNameBindingsOutputType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "metadata": {
+            "description": "The name of the host name binding."
+          }
+        },
+        "resourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "The resource ID of the host name binding."
+          }
+        },
+        "resourceGroupName": {
+          "type": "string",
+          "metadata": {
+            "description": "The name of the resource group the resource was deployed into."
+          }
+        },
+        "certificateThumbprint": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "The thumbprint of the certificate."
+          }
+        },
+        "certificateResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "The resource ID of the certificate."
+          }
+        }
+      },
+      "metadata": {
+        "__bicep_export!": true
+      }
+    },
     "privateEndpointOutputType": {
       "type": "object",
       "properties": {
@@ -3540,6 +3580,109 @@
         "description": "The type of a hybrid connection relay."
       }
     },
+    "hostNameBindingType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Hostname in the hostname binding. Defaults to the host name of the app/slot if not specified."
+          }
+        },
+        "kind": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Kind of resource."
+          }
+        },
+        "azureResourceName": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Azure resource name."
+          }
+        },
+        "azureResourceType": {
+          "type": "string",
+          "allowedValues": [
+            "TrafficManager",
+            "Website"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Azure resource type. Possible values are Website and TrafficManager."
+          }
+        },
+        "customHostNameDnsRecordType": {
+          "type": "string",
+          "allowedValues": [
+            "A",
+            "CName"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Custom DNS record type. Possible values are CName and A."
+          }
+        },
+        "domainResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Fully qualified ARM domain resource URI."
+          }
+        },
+        "hostNameType": {
+          "type": "string",
+          "allowedValues": [
+            "Managed",
+            "Verified"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Hostname type. Possible values are Verified and Managed."
+          }
+        },
+        "siteName": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. App Service app name."
+          }
+        },
+        "sslState": {
+          "type": "string",
+          "allowedValues": [
+            "Disabled",
+            "IpBasedEnabled",
+            "SniEnabled"
+          ],
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled."
+          }
+        },
+        "thumbprint": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. SSL certificate thumbprint."
+          }
+        },
+        "certificate": {
+          "$ref": "#/definitions/certificateType",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Certificate creation properties. If specified, a certificate will be created and used for this hostname binding."
+          }
+        }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "The type of a host name binding."
+      }
+    },
     "_1.privateEndpointCustomDnsConfigType": {
       "type": "object",
       "properties": {
@@ -3562,7 +3705,7 @@
       },
       "metadata": {
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -3604,7 +3747,7 @@
       },
       "metadata": {
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -3645,7 +3788,107 @@
       },
       "metadata": {
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
+        }
+      }
+    },
+    "certificateType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. Certificate name."
+          }
+        },
+        "location": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Resource location."
+          }
+        },
+        "hostNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Certificate host names."
+          }
+        },
+        "tags": {
+          "type": "object",
+          "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Web/certificates@2024-11-01#properties/tags"
+            },
+            "description": "Optional. Tags of the resource."
+          },
+          "nullable": true
+        },
+        "kind": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Kind of resource."
+          }
+        },
+        "keyVaultResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Key Vault resource ID."
+          }
+        },
+        "keyVaultSecretName": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Key Vault secret name."
+          }
+        },
+        "serverFarmResourceId": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Server farm resource ID."
+          }
+        },
+        "canonicalName": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. CNAME of the certificate to be issued via free certificate."
+          }
+        },
+        "password": {
+          "type": "securestring",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Certificate password."
+          }
+        },
+        "pfxBlob": {
+          "type": "securestring",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Certificate data in PFX format."
+          }
+        },
+        "domainValidationMethod": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Method of domain validation for free certificate."
+          }
+        }
+      },
+      "metadata": {
+        "description": "The type of a certificate.",
+        "__bicep_imported_from!": {
+          "sourceTemplate": "../modules/certificate.bicep"
         }
       }
     },
@@ -3767,7 +4010,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -3792,12 +4035,19 @@
           "metadata": {
             "description": "Optional. Specify the type of lock."
           }
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the notes of the lock."
+          }
         }
       },
       "metadata": {
         "description": "An AVM-aligned type for a lock.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -3825,7 +4075,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a managed identity configuration. To be used if both a system-assigned & user-assigned identities are supported by the resource provider.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -3953,6 +4203,9 @@
           "type": "object",
           "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/privateEndpoints@2024-07-01#properties/tags"
+            },
             "description": "Optional. Tags to be applied on all resources/Resource Groups in this deployment."
           }
         },
@@ -3967,7 +4220,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a private endpoint. To be used if the private endpoint's default service / groupId can be assumed (i.e., for services that only have one Private Endpoint type like 'vault' for key vault).",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -4042,7 +4295,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a role assignment.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     }
@@ -4094,6 +4347,13 @@
         "description": "Optional. The resource ID of the app service plan to use for the slot."
       }
     },
+    "managedEnvironmentResourceId": {
+      "type": "string",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Azure Resource Manager ID of the customers selected Managed Environment on which to host this app."
+      }
+    },
     "httpsOnly": {
       "type": "bool",
       "defaultValue": true,
@@ -4106,6 +4366,20 @@
       "defaultValue": true,
       "metadata": {
         "description": "Optional. If client affinity is enabled."
+      }
+    },
+    "clientAffinityProxyEnabled": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. To enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is true."
+      }
+    },
+    "clientAffinityPartitioningEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. To enable client affinity partitioning using CHIPS cookies, this will add the partitioned property to the affinity cookies; false to stop sending partitioned affinity cookies. Default is false."
       }
     },
     "appServiceEnvironmentResourceId": {
@@ -4136,7 +4410,7 @@
         "description": "Optional. Checks if Customer provided storage account is required."
       }
     },
-    "virtualNetworkSubnetId": {
+    "virtualNetworkSubnetResourceId": {
       "type": "string",
       "nullable": true,
       "metadata": {
@@ -4147,7 +4421,7 @@
       "type": "object",
       "metadata": {
         "__bicep_resource_derived_type!": {
-          "source": "Microsoft.Web/sites/slots@2024-04-01#properties/properties/properties/siteConfig"
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/siteConfig"
         },
         "description": "Optional. The site config object."
       },
@@ -4157,10 +4431,13 @@
     },
     "functionAppConfig": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/functionAppConfig"
+        },
         "description": "Optional. The Function App config object."
-      }
+      },
+      "nullable": true
     },
     "configs": {
       "type": "array",
@@ -4201,10 +4478,13 @@
     },
     "tags": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/tags"
+        },
         "description": "Optional. Tags of the resource."
-      }
+      },
+      "nullable": true
     },
     "roleAssignments": {
       "type": "array",
@@ -4242,22 +4522,23 @@
     },
     "clientCertMode": {
       "type": "string",
-      "defaultValue": "Optional",
-      "allowedValues": [
-        "Optional",
-        "OptionalInteractiveUser",
-        "Required"
-      ],
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/clientCertMode"
+        },
         "description": "Optional. This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted."
-      }
+      },
+      "defaultValue": "Optional"
     },
     "cloningInfo": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/cloningInfo"
+        },
         "description": "Optional. If specified during app creation, the app is cloned from a source app."
-      }
+      },
+      "nullable": true
     },
     "containerSize": {
       "type": "int",
@@ -4291,7 +4572,7 @@
       "type": "array",
       "metadata": {
         "__bicep_resource_derived_type!": {
-          "source": "Microsoft.Web/sites/slots@2024-04-01#properties/properties/properties/hostNameSslStates"
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/hostNameSslStates"
         },
         "description": "Optional. Hostname SSL states are used to manage the SSL bindings for app's hostnames."
       },
@@ -4306,28 +4587,23 @@
     },
     "publicNetworkAccess": {
       "type": "string",
-      "nullable": true,
-      "allowedValues": [
-        "Enabled",
-        "Disabled"
-      ],
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/publicNetworkAccess"
+        },
         "description": "Optional. Allow or block all public traffic."
-      }
+      },
+      "nullable": true
     },
     "redundancyMode": {
       "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "ActiveActive",
-        "Failover",
-        "GeoRedundant",
-        "Manual",
-        "None"
-      ],
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/redundancyMode"
+        },
         "description": "Optional. Site redundancy mode."
-      }
+      },
+      "defaultValue": "None"
     },
     "basicPublishingCredentialsPolicies": {
       "type": "array",
@@ -4339,26 +4615,15 @@
         "description": "Optional. The site publishing credential policy names which are associated with the site slot."
       }
     },
-    "vnetContentShareEnabled": {
-      "type": "bool",
-      "defaultValue": false,
+    "outboundVnetRouting": {
+      "type": "object",
       "metadata": {
-        "description": "Optional. To enable accessing content over virtual network."
-      }
-    },
-    "vnetImagePullEnabled": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. To enable pulling image over Virtual Network."
-      }
-    },
-    "vnetRouteAllEnabled": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Optional. Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied."
-      }
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/outboundVnetRouting"
+        },
+        "description": "Optional. The outbound VNET routing configuration for the site."
+      },
+      "nullable": true
     },
     "hybridConnectionRelays": {
       "type": "array",
@@ -4370,11 +4635,21 @@
         "description": "Optional. Names of hybrid connection relays to connect app with."
       }
     },
+    "hostNameBindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/hostNameBindingType"
+      },
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Host Name Bindings for the slot."
+      }
+    },
     "dnsConfiguration": {
       "type": "object",
       "metadata": {
         "__bicep_resource_derived_type!": {
-          "source": "Microsoft.Web/sites/slots@2024-04-01#properties/properties/properties/dnsConfiguration"
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/dnsConfiguration"
         },
         "description": "Optional. Property to configure various DNS related settings for a site."
       },
@@ -4382,15 +4657,91 @@
     },
     "autoGeneratedDomainNameLabelScope": {
       "type": "string",
-      "nullable": true,
-      "allowedValues": [
-        "NoReuse",
-        "ResourceGroupReuse",
-        "SubscriptionReuse",
-        "TenantReuse"
-      ],
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/autoGeneratedDomainNameLabelScope"
+        },
         "description": "Optional. Specifies the scope of uniqueness for the default hostname during resource creation."
+      },
+      "nullable": true
+    },
+    "sshEnabled": {
+      "type": "bool",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Whether to enable SSH access."
+      }
+    },
+    "daprConfig": {
+      "type": "object",
+      "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/daprConfig"
+        },
+        "description": "Optional. Dapr configuration of the app."
+      },
+      "nullable": true
+    },
+    "ipMode": {
+      "type": "string",
+      "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/ipMode"
+        },
+        "description": "Optional. Specifies the IP mode of the app."
+      },
+      "nullable": true
+    },
+    "resourceConfig": {
+      "type": "object",
+      "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Web/sites/slots@2025-03-01#properties/properties/properties/resourceConfig"
+        },
+        "description": "Optional. Function app resource requirements."
+      },
+      "nullable": true
+    },
+    "workloadProfileName": {
+      "type": "string",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Workload profile name for function app to execute on."
+      }
+    },
+    "hostNamesDisabled": {
+      "type": "bool",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. True to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process."
+      }
+    },
+    "reserved": {
+      "type": "bool",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. True if reserved (Linux); otherwise, false (Windows)."
+      }
+    },
+    "scmSiteAlsoStopped": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Stop SCM (KUDU) site when the app is stopped."
+      }
+    },
+    "e2eEncryptionEnabled": {
+      "type": "bool",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. End to End Encryption Setting."
+      }
+    },
+    "enableTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable/Disable usage telemetry for module."
       }
     }
   },
@@ -4414,31 +4765,57 @@
       "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
       "Web Plan Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2cc479cb-7b4d-49a8-b449-8c00fd0f0a4b')]",
       "Website Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'de139f84-1756-47ae-9be6-808fbbe84772')]"
-    }
+    },
+    "managedEnvironmentSupportedKinds": [
+      "functionapp,linux,container,azurecontainerapps"
+    ]
   },
   "resources": {
+    "avmTelemetry": {
+      "condition": "[parameters('enableTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('46d3xbcp.res.web-siteslot.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [],
+          "outputs": {
+            "telemetry": {
+              "type": "String",
+              "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+            }
+          }
+        }
+      }
+    },
     "app": {
       "existing": true,
       "type": "Microsoft.Web/sites",
-      "apiVersion": "2024-04-01",
+      "apiVersion": "2025-03-01",
       "name": "[parameters('appName')]"
     },
     "slot": {
       "type": "Microsoft.Web/sites/slots",
-      "apiVersion": "2024-04-01",
+      "apiVersion": "2025-03-01",
       "name": "[format('{0}/{1}', parameters('appName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "kind": "[parameters('kind')]",
       "tags": "[parameters('tags')]",
       "identity": "[variables('identity')]",
       "properties": {
-        "serverFarmId": "[parameters('serverFarmResourceId')]",
+        "managedEnvironmentId": "[if(not(empty(parameters('managedEnvironmentResourceId'))), parameters('managedEnvironmentResourceId'), null())]",
+        "serverFarmId": "[if(and(contains(variables('managedEnvironmentSupportedKinds'), parameters('kind')), or(not(empty(reference('app').managedEnvironmentId)), not(empty(parameters('managedEnvironmentResourceId'))))), null(), parameters('serverFarmResourceId'))]",
         "clientAffinityEnabled": "[parameters('clientAffinityEnabled')]",
+        "clientAffinityProxyEnabled": "[parameters('clientAffinityProxyEnabled')]",
+        "clientAffinityPartitioningEnabled": "[parameters('clientAffinityPartitioningEnabled')]",
         "httpsOnly": "[parameters('httpsOnly')]",
         "hostingEnvironmentProfile": "[if(not(empty(parameters('appServiceEnvironmentResourceId'))), createObject('id', parameters('appServiceEnvironmentResourceId')), null())]",
         "storageAccountRequired": "[parameters('storageAccountRequired')]",
         "keyVaultReferenceIdentity": "[parameters('keyVaultAccessIdentityResourceId')]",
-        "virtualNetworkSubnetId": "[parameters('virtualNetworkSubnetId')]",
+        "virtualNetworkSubnetId": "[parameters('virtualNetworkSubnetResourceId')]",
         "siteConfig": "[parameters('siteConfig')]",
         "functionAppConfig": "[parameters('functionAppConfig')]",
         "clientCertEnabled": "[parameters('clientCertEnabled')]",
@@ -4453,22 +4830,32 @@
         "hyperV": "[parameters('hyperV')]",
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
         "redundancyMode": "[parameters('redundancyMode')]",
-        "vnetContentShareEnabled": "[parameters('vnetContentShareEnabled')]",
-        "vnetImagePullEnabled": "[parameters('vnetImagePullEnabled')]",
-        "vnetRouteAllEnabled": "[parameters('vnetRouteAllEnabled')]",
         "dnsConfiguration": "[parameters('dnsConfiguration')]",
-        "autoGeneratedDomainNameLabelScope": "[parameters('autoGeneratedDomainNameLabelScope')]"
-      }
+        "autoGeneratedDomainNameLabelScope": "[parameters('autoGeneratedDomainNameLabelScope')]",
+        "outboundVnetRouting": "[parameters('outboundVnetRouting')]",
+        "sshEnabled": "[parameters('sshEnabled')]",
+        "daprConfig": "[parameters('daprConfig')]",
+        "ipMode": "[parameters('ipMode')]",
+        "resourceConfig": "[parameters('resourceConfig')]",
+        "workloadProfileName": "[parameters('workloadProfileName')]",
+        "hostNamesDisabled": "[parameters('hostNamesDisabled')]",
+        "reserved": "[parameters('reserved')]",
+        "scmSiteAlsoStopped": "[parameters('scmSiteAlsoStopped')]",
+        "endToEndEncryptionEnabled": "[parameters('e2eEncryptionEnabled')]"
+      },
+      "dependsOn": [
+        "app"
+      ]
     },
     "slot_lock": {
       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
-      "scope": "[format('Microsoft.Web/sites/{0}/slots/{1}', parameters('appName'), parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]",
       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+        "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
       },
       "dependsOn": [
         "slot"
@@ -4481,7 +4868,7 @@
       },
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
-      "scope": "[format('Microsoft.Web/sites/{0}/slots/{1}', parameters('appName'), parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]",
       "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
       "properties": {
         "copy": [
@@ -4522,7 +4909,7 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Web/sites/{0}/slots/{1}', parameters('appName'), parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name'))]",
       "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Web/sites/slots', parameters('appName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
       "properties": {
         "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -4543,7 +4930,7 @@
         "count": "[length(coalesce(parameters('basicPublishingCredentialsPolicies'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-Slot-Publish-Cred-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -4565,6 +4952,9 @@
           },
           "location": {
             "value": "[parameters('location')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -4573,8 +4963,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.35.1.17967",
-              "templateHash": "17422611495851182862"
+              "version": "0.43.8.12551",
+              "templateHash": "12400296843955929309"
             },
             "name": "Web Site Slot Basic Publishing Credentials Policies",
             "description": "This module deploys a Web Site Slot Basic Publishing Credentials Policy."
@@ -4615,12 +5005,39 @@
               "metadata": {
                 "description": "Optional. Location for all Resources."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": [
             {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.web-site-slotbasicpubcredpolicy.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
               "type": "Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -4655,7 +5072,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('appName'), parameters('slotName'), parameters('name')), '2024-04-01', 'full').location]"
+              "value": "[reference(resourceId('Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies', parameters('appName'), parameters('slotName'), parameters('name')), '2025-03-01', 'full').location]"
             }
           }
         }
@@ -4670,7 +5087,7 @@
         "count": "[length(coalesce(parameters('hybridConnectionRelays'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-Slot-HybridConnectionRelay-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -4689,6 +5106,9 @@
           },
           "sendKeyName": {
             "value": "[tryGet(coalesce(parameters('hybridConnectionRelays'), createArray())[copyIndex()], 'sendKeyName')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -4697,8 +5117,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.35.1.17967",
-              "templateHash": "5548719650419041948"
+              "version": "0.43.8.12551",
+              "templateHash": "8087090962178783374"
             },
             "name": "Web/Function Apps Slot Hybrid Connection Relay",
             "description": "This module deploys a Site Slot Hybrid Connection Namespace Relay."
@@ -4728,22 +5148,49 @@
               "metadata": {
                 "description": "Optional. Name of the authorization rule send key to use."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": [
             {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.web-site-slothybconnnamespacerelay.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
               "type": "Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}/{2}/{3}', parameters('appName'), parameters('slotName'), split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10])]",
               "properties": {
                 "serviceBusNamespace": "[split(parameters('hybridConnectionResourceId'), '/')[8]]",
-                "serviceBusSuffix": "[split(substring(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces', split(parameters('hybridConnectionResourceId'), '/')[8]), '2021-11-01').serviceBusEndpoint, indexOf(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces', split(parameters('hybridConnectionResourceId'), '/')[8]), '2021-11-01').serviceBusEndpoint, '.servicebus')), ':')[0]]",
+                "serviceBusSuffix": "[split(substring(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces', split(parameters('hybridConnectionResourceId'), '/')[8]), '2024-01-01').serviceBusEndpoint, indexOf(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces', split(parameters('hybridConnectionResourceId'), '/')[8]), '2024-01-01').serviceBusEndpoint, '.servicebus')), ':')[0]]",
                 "relayName": "[split(parameters('hybridConnectionResourceId'), '/')[10]]",
                 "relayArmUri": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10])]",
-                "hostname": "[split(json(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10]), '2021-11-01').userMetadata)[0].value, ':')[0]]",
-                "port": "[int(split(json(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10]), '2021-11-01').userMetadata)[0].value, ':')[1])]",
+                "hostname": "[split(json(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10]), '2024-01-01').userMetadata)[0].value, ':')[0]]",
+                "port": "[int(split(json(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10]), '2024-01-01').userMetadata)[0].value, ':')[1])]",
                 "sendKeyName": "[parameters('sendKeyName')]",
-                "sendKeyValue": "[listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10], parameters('sendKeyName')), '2021-11-01').primaryKey]"
+                "sendKeyValue": "[listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('hybridConnectionResourceId'), '/')[2], split(parameters('hybridConnectionResourceId'), '/')[4]), 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules', split(parameters('hybridConnectionResourceId'), '/')[8], split(parameters('hybridConnectionResourceId'), '/')[10], parameters('sendKeyName')), '2024-01-01').primaryKey]"
               }
             }
           ],
@@ -4776,13 +5223,683 @@
         "slot"
       ]
     },
+    "slot_hostNameBindings": {
+      "copy": {
+        "name": "slot_hostNameBindings",
+        "count": "[length(coalesce(parameters('hostNameBindings'), createArray()))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-Slot-HostNameBinding-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[coalesce(tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'name'), reference('slot').defaultHostName)]"
+          },
+          "appName": {
+            "value": "[parameters('appName')]"
+          },
+          "slotName": {
+            "value": "[parameters('name')]"
+          },
+          "kind": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'kind')]"
+          },
+          "azureResourceName": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'azureResourceName')]"
+          },
+          "azureResourceType": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'azureResourceType')]"
+          },
+          "customHostNameDnsRecordType": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'customHostNameDnsRecordType')]"
+          },
+          "domainResourceId": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'domainResourceId')]"
+          },
+          "hostNameType": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'hostNameType')]"
+          },
+          "siteName": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'siteName')]"
+          },
+          "sslState": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'sslState')]"
+          },
+          "thumbprint": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'thumbprint')]"
+          },
+          "certificate": {
+            "value": "[tryGet(coalesce(parameters('hostNameBindings'), createArray())[copyIndex()], 'certificate')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "16648305975161016120"
+            },
+            "name": "Web/Function Apps Slot Host Name Bindings",
+            "description": "This module deploys a Site Slot Host Name Binding."
+          },
+          "definitions": {
+            "certificateType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. Certificate name."
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Resource location."
+                  }
+                },
+                "hostNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Certificate host names."
+                  }
+                },
+                "tags": {
+                  "type": "object",
+                  "metadata": {
+                    "__bicep_resource_derived_type!": {
+                      "source": "Microsoft.Web/certificates@2024-11-01#properties/tags"
+                    },
+                    "description": "Optional. Tags of the resource."
+                  },
+                  "nullable": true
+                },
+                "kind": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Kind of resource."
+                  }
+                },
+                "keyVaultResourceId": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Key Vault resource ID."
+                  }
+                },
+                "keyVaultSecretName": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Key Vault secret name."
+                  }
+                },
+                "serverFarmResourceId": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Server farm resource ID."
+                  }
+                },
+                "canonicalName": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. CNAME of the certificate to be issued via free certificate."
+                  }
+                },
+                "password": {
+                  "type": "securestring",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Certificate password."
+                  }
+                },
+                "pfxBlob": {
+                  "type": "securestring",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Certificate data in PFX format."
+                  }
+                },
+                "domainValidationMethod": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Method of domain validation for free certificate."
+                  }
+                }
+              },
+              "metadata": {
+                "description": "The type of a certificate.",
+                "__bicep_imported_from!": {
+                  "sourceTemplate": "../../modules/certificate.bicep"
+                }
+              }
+            }
+          },
+          "parameters": {
+            "appName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment."
+              }
+            },
+            "slotName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the site slot. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Hostname in the hostname binding."
+              }
+            },
+            "kind": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. Kind of resource."
+              }
+            },
+            "azureResourceName": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. Azure resource name."
+              }
+            },
+            "azureResourceType": {
+              "type": "string",
+              "nullable": true,
+              "allowedValues": [
+                "Website",
+                "TrafficManager"
+              ],
+              "metadata": {
+                "description": "Optional. Azure resource type. Possible values are Website and TrafficManager."
+              }
+            },
+            "customHostNameDnsRecordType": {
+              "type": "string",
+              "nullable": true,
+              "allowedValues": [
+                "CName",
+                "A"
+              ],
+              "metadata": {
+                "description": "Optional. Custom DNS record type. Possible values are CName and A."
+              }
+            },
+            "domainResourceId": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. Fully qualified ARM domain resource URI."
+              }
+            },
+            "hostNameType": {
+              "type": "string",
+              "nullable": true,
+              "allowedValues": [
+                "Verified",
+                "Managed"
+              ],
+              "metadata": {
+                "description": "Optional. Hostname type. Possible values are Verified and Managed."
+              }
+            },
+            "siteName": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. App Service app name."
+              }
+            },
+            "sslState": {
+              "type": "string",
+              "nullable": true,
+              "allowedValues": [
+                "Disabled",
+                "SniEnabled",
+                "IpBasedEnabled"
+              ],
+              "metadata": {
+                "description": "Optional. SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled."
+              }
+            },
+            "thumbprint": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. SSL certificate thumbprint."
+              }
+            },
+            "certificate": {
+              "$ref": "#/definitions/certificateType",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. Certificate object with properties for certificate creation. The expected structure matches the certificateType defined in host-name-binding-type.bicep."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Resource location."
+              }
+            }
+          },
+          "resources": {
+            "app::slot": {
+              "existing": true,
+              "type": "Microsoft.Web/sites/slots",
+              "apiVersion": "2024-11-01",
+              "name": "[format('{0}/{1}', parameters('appName'), parameters('slotName'))]"
+            },
+            "app": {
+              "existing": true,
+              "type": "Microsoft.Web/sites",
+              "apiVersion": "2024-11-01",
+              "name": "[parameters('appName')]"
+            },
+            "hostNameBinding": {
+              "type": "Microsoft.Web/sites/slots/hostNameBindings",
+              "apiVersion": "2024-11-01",
+              "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
+              "kind": "[parameters('kind')]",
+              "properties": {
+                "azureResourceName": "[parameters('azureResourceName')]",
+                "azureResourceType": "[parameters('azureResourceType')]",
+                "customHostNameDnsRecordType": "[parameters('customHostNameDnsRecordType')]",
+                "domainId": "[parameters('domainResourceId')]",
+                "hostNameType": "[parameters('hostNameType')]",
+                "siteName": "[parameters('siteName')]",
+                "sslState": "[coalesce(parameters('sslState'), if(or(not(empty(parameters('thumbprint'))), not(empty(parameters('certificate')))), 'SniEnabled', null()))]",
+                "thumbprint": "[coalesce(parameters('thumbprint'), tryGet(tryGet(tryGet(if(not(empty(parameters('certificate'))), reference('sslCertificate'), null()), 'outputs'), 'thumbprint'), 'value'))]"
+              },
+              "dependsOn": [
+                "sslCertificate"
+              ]
+            },
+            "sslCertificate": {
+              "condition": "[not(empty(parameters('certificate')))]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('{0}-Cert', uniqueString(deployment().name, parameters('location')))]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[coalesce(tryGet(parameters('certificate'), 'name'), format('cert-{0}', replace(parameters('name'), '.', '-')))]"
+                  },
+                  "location": {
+                    "value": "[parameters('location')]"
+                  },
+                  "kind": {
+                    "value": "[parameters('kind')]"
+                  },
+                  "hostNames": {
+                    "value": "[coalesce(tryGet(parameters('certificate'), 'hostNames'), createArray(parameters('name')))]"
+                  },
+                  "password": {
+                    "value": "[tryGet(parameters('certificate'), 'password')]"
+                  },
+                  "pfxBlob": {
+                    "value": "[tryGet(parameters('certificate'), 'pfxBlob')]"
+                  },
+                  "serverFarmResourceId": {
+                    "value": "[tryGet(parameters('certificate'), 'serverFarmResourceId')]"
+                  },
+                  "keyVaultResourceId": {
+                    "value": "[tryGet(parameters('certificate'), 'keyVaultResourceId')]"
+                  },
+                  "keyVaultSecretName": {
+                    "value": "[tryGet(parameters('certificate'), 'keyVaultSecretName')]"
+                  },
+                  "canonicalName": {
+                    "value": "[tryGet(parameters('certificate'), 'canonicalName')]"
+                  },
+                  "domainValidationMethod": {
+                    "value": "[tryGet(parameters('certificate'), 'domainValidationMethod')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "languageVersion": "2.0",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.43.8.12551",
+                      "templateHash": "5581960621773069173"
+                    },
+                    "name": "Web/Function Apps Certificates",
+                    "description": "This module deploys a Web/Function App Certificate."
+                  },
+                  "definitions": {
+                    "certificateType": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Certificate name."
+                          }
+                        },
+                        "location": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Resource location."
+                          }
+                        },
+                        "hostNames": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Certificate host names."
+                          }
+                        },
+                        "tags": {
+                          "type": "object",
+                          "metadata": {
+                            "__bicep_resource_derived_type!": {
+                              "source": "Microsoft.Web/certificates@2024-11-01#properties/tags"
+                            },
+                            "description": "Optional. Tags of the resource."
+                          },
+                          "nullable": true
+                        },
+                        "kind": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Kind of resource."
+                          }
+                        },
+                        "keyVaultResourceId": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Key Vault resource ID."
+                          }
+                        },
+                        "keyVaultSecretName": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Key Vault secret name."
+                          }
+                        },
+                        "serverFarmResourceId": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Server farm resource ID."
+                          }
+                        },
+                        "canonicalName": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. CNAME of the certificate to be issued via free certificate."
+                          }
+                        },
+                        "password": {
+                          "type": "securestring",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Certificate password."
+                          }
+                        },
+                        "pfxBlob": {
+                          "type": "securestring",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Certificate data in PFX format."
+                          }
+                        },
+                        "domainValidationMethod": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Method of domain validation for free certificate."
+                          }
+                        }
+                      },
+                      "metadata": {
+                        "__bicep_export!": true,
+                        "description": "The type of a certificate."
+                      }
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Certificate name."
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "defaultValue": "[resourceGroup().location]",
+                      "metadata": {
+                        "description": "Optional. Resource location."
+                      }
+                    },
+                    "hostNames": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Certificate host names."
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "__bicep_resource_derived_type!": {
+                          "source": "Microsoft.Web/certificates@2024-11-01#properties/tags"
+                        },
+                        "description": "Optional. Tags of the resource."
+                      },
+                      "nullable": true
+                    },
+                    "kind": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Kind of resource."
+                      }
+                    },
+                    "keyVaultResourceId": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Key Vault resource ID."
+                      }
+                    },
+                    "keyVaultSecretName": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Key Vault secret name."
+                      }
+                    },
+                    "serverFarmResourceId": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Server farm resource ID."
+                      }
+                    },
+                    "canonicalName": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. CNAME of the certificate to be issued via free certificate."
+                      }
+                    },
+                    "password": {
+                      "type": "securestring",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Certificate password."
+                      }
+                    },
+                    "pfxBlob": {
+                      "type": "securestring",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Certificate data in PFX format."
+                      }
+                    },
+                    "domainValidationMethod": {
+                      "type": "string",
+                      "nullable": true,
+                      "metadata": {
+                        "description": "Optional. Method of domain validation for free certificate."
+                      }
+                    }
+                  },
+                  "resources": {
+                    "certificate": {
+                      "type": "Microsoft.Web/certificates",
+                      "apiVersion": "2024-11-01",
+                      "name": "[parameters('name')]",
+                      "location": "[parameters('location')]",
+                      "kind": "[parameters('kind')]",
+                      "tags": "[parameters('tags')]",
+                      "properties": {
+                        "hostNames": "[parameters('hostNames')]",
+                        "password": "[parameters('password')]",
+                        "pfxBlob": "[parameters('pfxBlob')]",
+                        "serverFarmId": "[parameters('serverFarmResourceId')]",
+                        "keyVaultId": "[parameters('keyVaultResourceId')]",
+                        "keyVaultSecretName": "[parameters('keyVaultSecretName')]",
+                        "canonicalName": "[parameters('canonicalName')]",
+                        "domainValidationMethod": "[parameters('domainValidationMethod')]"
+                      }
+                    }
+                  },
+                  "outputs": {
+                    "resourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The resource ID of the certificate."
+                      },
+                      "value": "[resourceId('Microsoft.Web/certificates', parameters('name'))]"
+                    },
+                    "resourceGroupName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The resource group the certificate was deployed into."
+                      },
+                      "value": "[resourceGroup().name]"
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The name of the certificate."
+                      },
+                      "value": "[parameters('name')]"
+                    },
+                    "thumbprint": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The thumbprint of the certificate."
+                      },
+                      "value": "[reference('certificate').thumbprint]"
+                    },
+                    "location": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The location the resource was deployed into."
+                      },
+                      "value": "[reference('certificate', '2024-11-01', 'full').location]"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the host name binding."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the host name binding."
+              },
+              "value": "[resourceId('Microsoft.Web/sites/slots/hostNameBindings', parameters('appName'), parameters('slotName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the resource group the resource was deployed into."
+              },
+              "value": "[resourceGroup().name]"
+            },
+            "certificateThumbprint": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "The thumbprint of the certificate."
+              },
+              "value": "[tryGet(tryGet(tryGet(if(not(empty(parameters('certificate'))), reference('sslCertificate'), null()), 'outputs'), 'thumbprint'), 'value')]"
+            },
+            "certificateResourceId": {
+              "type": "string",
+              "nullable": true,
+              "metadata": {
+                "description": "The resource ID of the certificate."
+              },
+              "value": "[tryGet(tryGet(tryGet(if(not(empty(parameters('certificate'))), reference('sslCertificate'), null()), 'outputs'), 'resourceId'), 'value')]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "slot"
+      ]
+    },
     "slot_config": {
       "copy": {
         "name": "slot_config",
         "count": "[length(coalesce(parameters('configs'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-Slot-Config-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -4811,6 +5928,9 @@
           },
           "storageAccountUseIdentityAuthentication": {
             "value": "[tryGet(coalesce(parameters('configs'), createArray())[copyIndex()], 'storageAccountUseIdentityAuthentication')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -4820,8 +5940,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.35.1.17967",
-              "templateHash": "11175158984109206374"
+              "version": "0.43.8.12551",
+              "templateHash": "7503025049132170420"
             },
             "name": "Site App Settings",
             "description": "This module deploys a Site App Setting."
@@ -4898,14 +6018,41 @@
               "metadata": {
                 "description": "Optional. Resource ID of the application insight to leverage for this resource."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": {
             "app::slot": {
               "existing": true,
               "type": "Microsoft.Web/sites/slots",
-              "apiVersion": "2023-12-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}', parameters('appName'), parameters('slotName'))]"
+            },
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.web-site-slotconfig.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
             },
             "applicationInsights": {
               "condition": "[not(empty(parameters('applicationInsightResourceId')))]",
@@ -4920,7 +6067,7 @@
               "condition": "[not(empty(parameters('storageAccountResourceId')))]",
               "existing": true,
               "type": "Microsoft.Storage/storageAccounts",
-              "apiVersion": "2023-05-01",
+              "apiVersion": "2025-01-01",
               "subscriptionId": "[split(parameters('storageAccountResourceId'), '/')[2]]",
               "resourceGroup": "[split(parameters('storageAccountResourceId'), '/')[4]]",
               "name": "[last(split(parameters('storageAccountResourceId'), '/'))]"
@@ -4928,15 +6075,16 @@
             "app": {
               "existing": true,
               "type": "Microsoft.Web/sites",
-              "apiVersion": "2023-12-01",
+              "apiVersion": "2025-03-01",
               "name": "[parameters('appName')]"
             },
             "config": {
               "type": "Microsoft.Web/sites/slots/config",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
-              "properties": "[union(parameters('currentAppSettings'), parameters('properties'), if(and(not(empty(parameters('storageAccountResourceId'))), not(parameters('storageAccountUseIdentityAuthentication'))), createObject('AzureWebJobsStorage', format('DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix={2}', last(split(parameters('storageAccountResourceId'), '/')), listKeys('storageAccount', '2023-05-01').keys[0].value, environment().suffixes.storage)), if(and(not(empty(parameters('storageAccountResourceId'))), parameters('storageAccountUseIdentityAuthentication')), createObject('AzureWebJobsStorage__accountName', last(split(parameters('storageAccountResourceId'), '/')), 'AzureWebJobsStorage__blobServiceUri', reference('storageAccount').primaryEndpoints.blob, 'AzureWebJobsStorage__queueServiceUri', reference('storageAccount').primaryEndpoints.queue, 'AzureWebJobsStorage__tableServiceUri', reference('storageAccount').primaryEndpoints.table), createObject())), if(not(empty(parameters('applicationInsightResourceId'))), createObject('APPLICATIONINSIGHTS_CONNECTION_STRING', reference('applicationInsights').ConnectionString), createObject()))]",
+              "properties": "[union(parameters('currentAppSettings'), parameters('properties'), if(and(not(empty(parameters('storageAccountResourceId'))), not(parameters('storageAccountUseIdentityAuthentication'))), createObject('AzureWebJobsStorage', format('DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix={2}', last(split(parameters('storageAccountResourceId'), '/')), listKeys('storageAccount', '2025-01-01').keys[0].value, environment().suffixes.storage)), if(and(not(empty(parameters('storageAccountResourceId'))), parameters('storageAccountUseIdentityAuthentication')), createObject('AzureWebJobsStorage__accountName', last(split(parameters('storageAccountResourceId'), '/')), 'AzureWebJobsStorage__blobServiceUri', reference('storageAccount').primaryEndpoints.blob, 'AzureWebJobsStorage__queueServiceUri', reference('storageAccount').primaryEndpoints.queue, 'AzureWebJobsStorage__tableServiceUri', reference('storageAccount').primaryEndpoints.table), createObject())), if(not(empty(parameters('applicationInsightResourceId'))), shallowMerge(createArray(createObject('APPLICATIONINSIGHTS_CONNECTION_STRING', reference('applicationInsights').ConnectionString), if(not(contains(parameters('properties'), 'ApplicationInsightsAgent_EXTENSION_VERSION')), createObject('ApplicationInsightsAgent_EXTENSION_VERSION', if(contains(createArray('functionapp,linux', 'functionapp,workflowapp,linux', 'functionapp,linux,container', 'functionapp,linux,container,azurecontainerapps', 'app,linux', 'linux,api', 'app,linux,container'), reference('app::slot', '2025-03-01', 'full').kind), '~3', '~2')), createObject()))), createObject()))]",
               "dependsOn": [
+                "app::slot",
                 "applicationInsights",
                 "storageAccount"
               ]
@@ -4977,7 +6125,7 @@
         "count": "[length(coalesce(parameters('extensions'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-Slot-Extension={1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -4999,6 +6147,9 @@
           },
           "properties": {
             "value": "[coalesce(parameters('extensions'), createArray())[copyIndex()].properties]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -5008,8 +6159,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.35.1.17967",
-              "templateHash": "9136609319642165290"
+              "version": "0.43.8.12551",
+              "templateHash": "8033268013141574535"
             },
             "name": "Site Deployment Extension ",
             "description": "This module deploys a Site extension for MSDeploy."
@@ -5056,24 +6207,51 @@
                 "description": "Optional. Sets the properties."
               },
               "nullable": true
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": {
             "app::slot": {
               "existing": true,
               "type": "Microsoft.Web/sites/slots",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}', parameters('appName'), parameters('slotName'))]"
+            },
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.web-site-slotextension.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
             },
             "app": {
               "existing": true,
               "type": "Microsoft.Web/sites",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[parameters('appName')]"
             },
             "msdeploy": {
               "type": "Microsoft.Web/sites/slots/extensions",
-              "apiVersion": "2024-04-01",
+              "apiVersion": "2025-03-01",
               "name": "[format('{0}/{1}/{2}', parameters('appName'), parameters('slotName'), parameters('name'))]",
               "kind": "[parameters('kind')]",
               "properties": "[parameters('properties')]"
@@ -5114,7 +6292,7 @@
         "count": "[length(coalesce(parameters('privateEndpoints'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-slot-PrivateEndpoint-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "subscriptionId": "[split(coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'resourceGroupResourceId'), resourceGroup().id), '/')[2]]",
       "resourceGroup": "[split(coalesce(tryGet(coalesce(parameters('privateEndpoints'), createArray())[copyIndex()], 'resourceGroupResourceId'), resourceGroup().id), '/')[4]]",
@@ -5170,8 +6348,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "12389807800450456797"
+              "version": "0.41.2.15936",
+              "templateHash": "18436885663402767850"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint."
@@ -5198,115 +6376,8 @@
                 }
               },
               "metadata": {
-                "__bicep_export!": true
-              }
-            },
-            "ipConfigurationType": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "metadata": {
-                    "description": "Required. The name of the resource that is unique within a resource group."
-                  }
-                },
-                "properties": {
-                  "type": "object",
-                  "properties": {
-                    "groupId": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. If used with private link service connection, this property must be defined as empty string."
-                      }
-                    },
-                    "memberName": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. If used with private link service connection, this property must be defined as empty string."
-                      }
-                    },
-                    "privateIPAddress": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Required. A private IP address obtained from the private endpoint's subnet."
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "Required. Properties of private endpoint IP configurations."
-                  }
-                }
-              },
-              "metadata": {
-                "__bicep_export!": true
-              }
-            },
-            "privateLinkServiceConnectionType": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "metadata": {
-                    "description": "Required. The name of the private link service connection."
-                  }
-                },
-                "properties": {
-                  "type": "object",
-                  "properties": {
-                    "groupIds": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "metadata": {
-                        "description": "Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. If used with private link service connection, this property must be defined as empty string array `[]`."
-                      }
-                    },
-                    "privateLinkServiceId": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Required. The resource id of private link service."
-                      }
-                    },
-                    "requestMessage": {
-                      "type": "string",
-                      "nullable": true,
-                      "metadata": {
-                        "description": "Optional. A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars."
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "Required. Properties of private link service connection."
-                  }
-                }
-              },
-              "metadata": {
-                "__bicep_export!": true
-              }
-            },
-            "customDnsConfigType": {
-              "type": "object",
-              "properties": {
-                "fqdn": {
-                  "type": "string",
-                  "nullable": true,
-                  "metadata": {
-                    "description": "Optional. FQDN that resolves to private endpoint IP address."
-                  }
-                },
-                "ipAddresses": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "metadata": {
-                    "description": "Required. A list of private IP addresses of the private endpoint."
-                  }
-                }
-              },
-              "metadata": {
-                "__bicep_export!": true
+                "__bicep_export!": true,
+                "description": "The type of a private dns zone group."
               }
             },
             "lockType": {
@@ -5330,12 +6401,19 @@
                   "metadata": {
                     "description": "Optional. Specify the type of lock."
                   }
+                },
+                "notes": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Specify the notes of the lock."
+                  }
                 }
               },
               "metadata": {
                 "description": "An AVM-aligned type for a lock.",
                 "__bicep_imported_from!": {
-                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                 }
               }
             },
@@ -5357,6 +6435,7 @@
                 }
               },
               "metadata": {
+                "description": "The type of a private DNS zone group configuration.",
                 "__bicep_imported_from!": {
                   "sourceTemplate": "private-dns-zone-group/main.bicep"
                 }
@@ -5433,7 +6512,7 @@
               "metadata": {
                 "description": "An AVM-aligned type for a role assignment.",
                 "__bicep_imported_from!": {
-                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                 }
               }
             }
@@ -5470,13 +6549,23 @@
             },
             "ipConfigurations": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/ipConfigurationType"
-              },
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/ipConfigurations"
+                },
                 "description": "Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints."
-              }
+              },
+              "nullable": true
+            },
+            "ipVersionType": {
+              "type": "string",
+              "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/ipVersionType"
+                },
+                "description": "Optional. Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4."
+              },
+              "defaultValue": "IPv4"
             },
             "privateDnsZoneGroup": {
               "$ref": "#/definitions/privateDnsZoneGroupType",
@@ -5511,40 +6600,43 @@
             },
             "tags": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/tags"
+                },
                 "description": "Optional. Tags to be applied on all resources/resource groups in this deployment."
-              }
+              },
+              "nullable": true
             },
             "customDnsConfigs": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/customDnsConfigType"
-              },
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/customDnsConfigs"
+                },
                 "description": "Optional. Custom DNS configurations."
-              }
+              },
+              "nullable": true
             },
             "manualPrivateLinkServiceConnections": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/privateLinkServiceConnectionType"
-              },
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/manualPrivateLinkServiceConnections"
+                },
                 "description": "Conditional. A grouping of information about the connection to the remote resource. Used when the network admin does not have access to approve connections to the remote resource. Required if `privateLinkServiceConnections` is empty."
-              }
+              },
+              "nullable": true
             },
             "privateLinkServiceConnections": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/privateLinkServiceConnectionType"
-              },
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/privateLinkServiceConnections"
+                },
                 "description": "Conditional. A grouping of information about the connection to the remote resource. Required if `manualPrivateLinkServiceConnections` is empty."
-              }
+              },
+              "nullable": true
             },
             "enableTelemetry": {
               "type": "bool",
@@ -5579,8 +6671,8 @@
             "avmTelemetry": {
               "condition": "[parameters('enableTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2024-03-01",
-              "name": "[format('46d3xbcp.res.network-privateendpoint.{0}.{1}', replace('0.11.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-privateendpoint.{0}.{1}', replace('0.12.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
               "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -5598,7 +6690,7 @@
             },
             "privateEndpoint": {
               "type": "Microsoft.Network/privateEndpoints",
-              "apiVersion": "2024-05-01",
+              "apiVersion": "2025-05-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -5619,18 +6711,19 @@
                 "privateLinkServiceConnections": "[coalesce(parameters('privateLinkServiceConnections'), createArray())]",
                 "subnet": {
                   "id": "[parameters('subnetResourceId')]"
-                }
+                },
+                "ipVersionType": "[parameters('ipVersionType')]"
               }
             },
             "privateEndpoint_lock": {
               "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
               "type": "Microsoft.Authorization/locks",
               "apiVersion": "2020-05-01",
-              "scope": "[format('Microsoft.Network/privateEndpoints/{0}', parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]",
               "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
               "properties": {
                 "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+                "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
               },
               "dependsOn": [
                 "privateEndpoint"
@@ -5643,7 +6736,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/privateEndpoints/{0}', parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -5661,7 +6754,7 @@
             "privateEndpoint_privateDnsZoneGroup": {
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2025-04-01",
               "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name))]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5686,8 +6779,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.34.44.8038",
-                      "templateHash": "13997305779829540948"
+                      "version": "0.41.2.15936",
+                      "templateHash": "9935179114830442414"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group."
@@ -5711,7 +6804,8 @@
                         }
                       },
                       "metadata": {
-                        "__bicep_export!": true
+                        "__bicep_export!": true,
+                        "description": "The type of a private DNS zone group configuration."
                       }
                     }
                   },
@@ -5741,33 +6835,30 @@
                       }
                     }
                   },
-                  "variables": {
-                    "copy": [
-                      {
-                        "name": "privateDnsZoneConfigsVar",
-                        "count": "[length(parameters('privateDnsZoneConfigs'))]",
-                        "input": {
-                          "name": "[coalesce(tryGet(parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigsVar')], 'name'), last(split(parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigsVar')].privateDnsZoneResourceId, '/')))]",
-                          "properties": {
-                            "privateDnsZoneId": "[parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigsVar')].privateDnsZoneResourceId]"
-                          }
-                        }
-                      }
-                    ]
-                  },
                   "resources": {
                     "privateEndpoint": {
                       "existing": true,
                       "type": "Microsoft.Network/privateEndpoints",
-                      "apiVersion": "2024-05-01",
+                      "apiVersion": "2025-05-01",
                       "name": "[parameters('privateEndpointName')]"
                     },
                     "privateDnsZoneGroup": {
                       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-                      "apiVersion": "2024-05-01",
+                      "apiVersion": "2025-05-01",
                       "name": "[format('{0}/{1}', parameters('privateEndpointName'), parameters('name'))]",
                       "properties": {
-                        "privateDnsZoneConfigs": "[variables('privateDnsZoneConfigsVar')]"
+                        "copy": [
+                          {
+                            "name": "privateDnsZoneConfigs",
+                            "count": "[length(parameters('privateDnsZoneConfigs'))]",
+                            "input": {
+                              "name": "[coalesce(tryGet(parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigs')], 'name'), last(split(parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigs')].privateDnsZoneResourceId, '/')))]",
+                              "properties": {
+                                "privateDnsZoneId": "[parameters('privateDnsZoneConfigs')[copyIndex('privateDnsZoneConfigs')].privateDnsZoneResourceId]"
+                              }
+                            }
+                          }
+                        ]
                       }
                     }
                   },
@@ -5828,14 +6919,15 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference('privateEndpoint', '2024-05-01', 'full').location]"
+              "value": "[reference('privateEndpoint', '2025-05-01', 'full').location]"
             },
             "customDnsConfigs": {
               "type": "array",
-              "items": {
-                "$ref": "#/definitions/customDnsConfigType"
-              },
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/privateEndpoints@2025-05-01#properties/properties/properties/customDnsConfigs",
+                  "output": true
+                },
                 "description": "The custom DNS configurations of the private endpoint."
               },
               "value": "[reference('privateEndpoint').customDnsConfigs]"
@@ -5894,14 +6986,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[tryGet(tryGet(reference('slot', '2024-04-01', 'full'), 'identity'), 'principalId')]"
+      "value": "[tryGet(tryGet(reference('slot', '2025-03-01', 'full'), 'identity'), 'principalId')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('slot', '2024-04-01', 'full').location]"
+      "value": "[reference('slot', '2025-03-01', 'full').location]"
     },
     "privateEndpoints": {
       "type": "array",
@@ -5919,6 +7011,25 @@
           "groupId": "[tryGet(tryGet(reference(format('slot_privateEndpoints[{0}]', copyIndex())).outputs, 'groupId'), 'value')]",
           "customDnsConfigs": "[reference(format('slot_privateEndpoints[{0}]', copyIndex())).outputs.customDnsConfigs.value]",
           "networkInterfaceResourceIds": "[reference(format('slot_privateEndpoints[{0}]', copyIndex())).outputs.networkInterfaceResourceIds.value]"
+        }
+      }
+    },
+    "hostNameBindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/hostNameBindingsOutputType"
+      },
+      "metadata": {
+        "description": "The host name bindings of the slot."
+      },
+      "copy": {
+        "count": "[length(coalesce(parameters('hostNameBindings'), createArray()))]",
+        "input": {
+          "name": "[reference(format('slot_hostNameBindings[{0}]', copyIndex())).outputs.name.value]",
+          "resourceId": "[reference(format('slot_hostNameBindings[{0}]', copyIndex())).outputs.resourceId.value]",
+          "resourceGroupName": "[reference(format('slot_hostNameBindings[{0}]', copyIndex())).outputs.resourceGroupName.value]",
+          "certificateThumbprint": "[tryGet(tryGet(reference(format('slot_hostNameBindings[{0}]', copyIndex())).outputs, 'certificateThumbprint'), 'value')]",
+          "certificateResourceId": "[tryGet(tryGet(reference(format('slot_hostNameBindings[{0}]', copyIndex())).outputs, 'certificateResourceId'), 'value')]"
         }
       }
     }

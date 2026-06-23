@@ -12,19 +12,19 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags resourceInput<'Microsoft.DevCenter/devcenters@2025-02-01'>.tags?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
-import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentityAllType?
 
-import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @sys.description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingFullType[]?
 
@@ -40,7 +40,7 @@ param devBoxProvisioningSettings devBoxProvisioningSettingsType?
 @description('Optional. Network settings that will be enforced on network resources associated with the Dev Center.')
 param networkSettings networkSettingsType?
 
-@sys.description('Optional. The catalogs to create in the dev center. Catalogs help you provide a set of curated infrastructure-as-code(IaC) templates, known as environment definitions for your development teams to create environments. You can attach your own source control repository from GitHub or Azure Repos as a catalog and specify the folder with your environment definitions. Deployment Environments scans the folder for environment definitions and makes them available for dev teams to create environments.')
+@description('Optional. The catalogs to create in the dev center. Catalogs help you provide a set of curated infrastructure-as-code(IaC) templates, known as environment definitions for your development teams to create environments. You can attach your own source control repository from GitHub or Azure Repos as a catalog and specify the folder with your environment definitions. Deployment Environments scans the folder for environment definitions and makes them available for dev teams to create environments.')
 param catalogs catalogType[]?
 
 @description('Optional. Dev Center settings to be used when associating a project with a catalog.')
@@ -63,8 +63,6 @@ param devboxDefinitions devboxDefinitionType[]?
 
 @description('Optional. The projects to create in the Dev Center. A project is the point of access to Microsoft Dev Box for the development team members. A project contains dev box pools, which specify the dev box definitions and network connections used when dev boxes are created. Each project is associated with a single dev center. When you associate a project with a dev center, all the settings at the dev center level are applied to the project automatically.')
 param projects projectType[]?
-
-var enableReferencedModulesTelemetry = false
 
 var formattedUserAssignedIdentities = reduce(
   map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }),
@@ -130,6 +128,8 @@ var formattedRoleAssignments = [
   })
 ]
 
+var enableReferencedModulesTelemetry = false
+
 // ============== //
 // Resources      //
 // ============== //
@@ -172,6 +172,7 @@ module project_catalog 'catalog/main.bicep' = [
     params: {
       name: catalog.name
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       gitHub: catalog.?gitHub
       adoGit: catalog.?adoGit
       syncType: catalog.?syncType
@@ -186,6 +187,7 @@ module devcenter_environmentType 'environment-type/main.bicep' = [
     name: '${uniqueString(deployment().name, location)}-Devcenter-EnvironmentType-${index}'
     params: {
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       name: environmentType.name
       tags: environmentType.?tags
       displayName: environmentType.?displayName
@@ -198,6 +200,7 @@ module devcenter_gallery 'gallery/main.bicep' = [
     name: '${uniqueString(deployment().name, location)}-Devcenter-Gallery-${index}'
     params: {
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       name: gallery.name
       galleryResourceId: gallery.galleryResourceId
       devCenterIdentityPrincipalId: gallery.?devCenterIdentityPrincipalId
@@ -210,6 +213,7 @@ module devcenter_attachedNetwork 'attachednetwork/main.bicep' = [
     name: '${uniqueString(deployment().name, location)}-Devcenter-AttachedNetwork-${index}'
     params: {
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       name: attachedNetwork.name
       networkConnectionResourceId: attachedNetwork.networkConnectionResourceId
     }
@@ -221,6 +225,7 @@ module devcenter_devboxDefinition 'devboxdefinition/main.bicep' = [
     name: '${uniqueString(deployment().name, location)}-Devcenter-DevboxDefinition-${index}'
     params: {
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       name: devboxDefinition.name
       imageResourceId: devboxDefinition.imageResourceId
       sku: devboxDefinition.sku
@@ -296,6 +301,7 @@ module devCenter_projectPolicy 'project-policy/main.bicep' = [
     name: '${uniqueString(deployment().name, location)}-Devcenter-ProjectPolicy-${index}'
     params: {
       devcenterName: devcenter.name
+      enableTelemetry: enableReferencedModulesTelemetry
       name: projectPolicy.name
       resourcePolicies: projectPolicy.?resourcePolicies
       projectsResourceIdOrName: projectPolicy.?projectsResourceIdOrName
@@ -545,13 +551,13 @@ type projectType = {
     @description('Required. Each dev box creator will be granted the selected permissions on the dev boxes they create. Indicates whether owners of Dev Boxes in this pool are added as a "local administrator" or "standard user" on the Dev Box.')
     localAdministrator: ('Enabled' | 'Disabled')
 
-    @description('Required. Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource.')
+    @description('Required. Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network. For the easiest configuration experience, the Microsoft hosted network can be used for dev box deployment. For organizations that require customized networking, use a network connection resource. If "microsoftHostedNetworkEnableStatus" is set to "Disabled" at the Dev Center level, this property must be set to "Unmanaged".')
     virtualNetworkType: ('Managed' | 'Unmanaged')
 
     @description('Conditional. The region of the managed virtual network. Required if virtualNetworkType is "Managed".')
     managedVirtualNetworkRegion: string?
 
-    @description('Conditional. Name of a Network Connection in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed".')
+    @description('Conditional. Name of a Network Connection (Attached Network) in parent Project of this Pool. Required if virtualNetworkType is "Unmanaged". The region hosting a pool is determined by the region of the network connection. For best performance, create a dev box pool for every region where your developers are located. The network connection cannot be configured with "None" domain join type and must be first attached to the Dev Center before used by the pool. Will be set to "managedNetwork" if virtualNetworkType is "Managed".')
     networkConnectionName: string?
 
     @description('Optional. Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single sign on be enabled on the tenant. Changing this setting will not affect existing dev boxes.')

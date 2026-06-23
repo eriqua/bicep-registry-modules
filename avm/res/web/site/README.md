@@ -2,6 +2,14 @@
 
 This module deploys a Web or Function App.
 
+You can reference the module as follows:
+```bicep
+module site 'br/public:avm/res/web/site:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -14,25 +22,26 @@ This module deploys a Web or Function App.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints` | [2023-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-11-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-11-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Web/sites` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites) |
-| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/basicPublishingCredentialsPolicies) |
-| `Microsoft.Web/sites/config` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/config) |
-| `Microsoft.Web/sites/extensions` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/extensions) |
-| `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/hybridConnectionNamespaces/relays) |
-| `Microsoft.Web/sites/slots` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/slots) |
-| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/slots/basicPublishingCredentialsPolicies) |
-| `Microsoft.Web/sites/slots/config` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/slots/config) |
-| `Microsoft.Web/sites/slots/extensions` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/slots/extensions) |
-| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-04-01/sites/slots/hybridConnectionNamespaces/relays) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Authorization/roleAssignments` | 2022-04-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_roleassignments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)</li></ul> |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.insights_diagnosticsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)</li></ul> |
+| `Microsoft.Network/privateEndpoints` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints)</li></ul> |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints_privatednszonegroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints/privateDnsZoneGroups)</li></ul> |
+| `Microsoft.Web/certificates` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_certificates.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-11-01/certificates)</li></ul> |
+| `Microsoft.Web/sites` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites)</li></ul> |
+| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_basicpublishingcredentialspolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/basicPublishingCredentialsPolicies)</li></ul> |
+| `Microsoft.Web/sites/config` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_config.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/config)</li></ul> |
+| `Microsoft.Web/sites/extensions` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_extensions.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/extensions)</li></ul> |
+| `Microsoft.Web/sites/hostNameBindings` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_hostnamebindings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-11-01/sites/hostNameBindings)</li></ul> |
+| `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_hybridconnectionnamespaces_relays.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/hybridConnectionNamespaces/relays)</li></ul> |
+| `Microsoft.Web/sites/slots` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/slots)</li></ul> |
+| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots_basicpublishingcredentialspolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/slots/basicPublishingCredentialsPolicies)</li></ul> |
+| `Microsoft.Web/sites/slots/config` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots_config.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/slots/config)</li></ul> |
+| `Microsoft.Web/sites/slots/extensions` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots_extensions.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/slots/extensions)</li></ul> |
+| `Microsoft.Web/sites/slots/hostNameBindings` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots_hostnamebindings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2024-11-01/sites/slots/hostNameBindings)</li></ul> |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | 2025-03-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.web_sites_slots_hybridconnectionnamespaces_relays.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2025-03-01/sites/slots/hybridConnectionNamespaces/relays)</li></ul> |
 
 ## Usage examples
 
@@ -44,17 +53,22 @@ The following section provides usage examples for the module, which were used to
 
 - [Function App, using only defaults](#example-1-function-app-using-only-defaults)
 - [Function App, using large parameter set](#example-2-function-app-using-large-parameter-set)
-- [Linux Container Web App, using only defaults](#example-3-linux-container-web-app-using-only-defaults)
-- [WAF-aligned](#example-4-waf-aligned)
-- [Web App, using only defaults](#example-5-web-app-using-only-defaults)
-- [Web App, using large parameter set](#example-6-web-app-using-large-parameter-set)
-- [Linux Web App, using only defaults](#example-7-linux-web-app-using-only-defaults)
-- [Linux Web App, using large parameter set](#example-8-linux-web-app-using-large-parameter-set)
-- [Windows Web App for Containers, using only defaults](#example-9-windows-web-app-for-containers-using-only-defaults)
+- [Using a custom host name binding](#example-3-using-a-custom-host-name-binding)
+- [Linux Container Web App, using only defaults](#example-4-linux-container-web-app-using-only-defaults)
+- [WAF-aligned](#example-5-waf-aligned)
+- [Access Restrictions](#example-6-access-restrictions)
+- [Web App with Azure Storage Accounts Configuration](#example-7-web-app-with-azure-storage-accounts-configuration)
+- [Web App, using only defaults](#example-8-web-app-using-only-defaults)
+- [Web App, using large parameter set](#example-9-web-app-using-large-parameter-set)
+- [Linux Web App, using only defaults](#example-10-linux-web-app-using-only-defaults)
+- [Linux Web App, using large parameter set](#example-11-linux-web-app-using-large-parameter-set)
+- [Windows Web App for Containers, using only defaults](#example-12-windows-web-app-for-containers-using-only-defaults)
 
 ### Example 1: _Function App, using only defaults_
 
 This instance deploys the module as Function App with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/functionApp.defaults]
 
 
 <details>
@@ -63,7 +77,6 @@ This instance deploys the module as Function App with the minimum set of require
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -122,6 +135,8 @@ param serverFarmResourceId = '<serverFarmResourceId>'
 
 This instance deploys the module as Function App with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/functionApp.max]
+
 
 <details>
 
@@ -129,7 +144,6 @@ This instance deploys the module as Function App with most of its features enabl
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -146,6 +160,8 @@ module site 'br/public:avm/res/web/site:<version>' = {
         name: 'scm'
       }
     ]
+    clientAffinityPartitioningEnabled: false
+    clientAffinityProxyEnabled: true
     configs: [
       {
         applicationInsightResourceId: '<applicationInsightResourceId>'
@@ -239,12 +255,14 @@ module site 'br/public:avm/res/web/site:<version>' = {
         workspaceResourceId: '<workspaceResourceId>'
       }
     ]
+    hostNamesDisabled: false
     hybridConnectionRelays: [
       {
         hybridConnectionResourceId: '<hybridConnectionResourceId>'
         sendKeyName: 'defaultSender'
       }
     ]
+    ipMode: 'IPv4'
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     location: '<location>'
     lock: {
@@ -256,6 +274,11 @@ module site 'br/public:avm/res/web/site:<version>' = {
       userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
+    }
+    outboundVnetRouting: {
+      allTraffic: true
+      contentShareTraffic: true
+      imagePullTraffic: true
     }
     privateEndpoints: [
       {
@@ -284,6 +307,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    publicNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         name: '9efc9c10-f482-4af0-9acb-03b5a16f947e'
@@ -303,10 +327,106 @@ module site 'br/public:avm/res/web/site:<version>' = {
         roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
+    scmSiteAlsoStopped: true
     siteConfig: {
       alwaysOn: true
       use32BitWorkerProcess: false
     }
+    slots: [
+      {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
+        configs: [
+          {
+            applicationInsightResourceId: '<applicationInsightResourceId>'
+            name: 'appsettings'
+            properties: {
+              ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
+            }
+            storageAccountResourceId: '<storageAccountResourceId>'
+            storageAccountUseIdentityAuthentication: true
+          }
+        ]
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        dnsConfiguration: {
+          dnsMaxCacheTimeout: 45
+          dnsRetryAttemptCount: 3
+          dnsRetryAttemptTimeout: 5
+          dnsServers: [
+            '168.63.129.20'
+          ]
+        }
+        hybridConnectionRelays: [
+          {
+            hybridConnectionResourceId: '<hybridConnectionResourceId>'
+            sendKeyName: 'defaultSender'
+          }
+        ]
+        name: 'slot1'
+        privateEndpoints: [
+          {
+            privateDnsZoneGroup: {
+              privateDnsZoneGroupConfigs: [
+                {
+                  privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
+                }
+              ]
+            }
+            service: 'sites-slot1'
+            subnetResourceId: '<subnetResourceId>'
+            tags: {
+              Environment: 'Non-Prod'
+              'hidden-title': 'This is visible in the resource name'
+              Role: 'DeploymentValidation'
+            }
+          }
+        ]
+        roleAssignments: [
+          {
+            name: '845ed19c-78e7-4422-aa3d-b78b67cd1234'
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Owner'
+          }
+          {
+            name: '<name>'
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+          }
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+          }
+        ]
+        siteConfig: {
+          alwaysOn: true
+          metadata: [
+            {
+              name: 'CURRENT_STACK'
+              value: 'dotnetcore'
+            }
+          ]
+        }
+      }
+    ]
   }
 }
 ```
@@ -345,6 +465,12 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "name": "scm"
         }
       ]
+    },
+    "clientAffinityPartitioningEnabled": {
+      "value": false
+    },
+    "clientAffinityProxyEnabled": {
+      "value": true
     },
     "configs": {
       "value": [
@@ -443,6 +569,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "hostNamesDisabled": {
+      "value": false
+    },
     "hybridConnectionRelays": {
       "value": [
         {
@@ -450,6 +579,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "sendKeyName": "defaultSender"
         }
       ]
+    },
+    "ipMode": {
+      "value": "IPv4"
     },
     "keyVaultAccessIdentityResourceId": {
       "value": "<keyVaultAccessIdentityResourceId>"
@@ -469,6 +601,13 @@ module site 'br/public:avm/res/web/site:<version>' = {
         "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
+      }
+    },
+    "outboundVnetRouting": {
+      "value": {
+        "allTraffic": true,
+        "contentShareTraffic": true,
+        "imagePullTraffic": true
       }
     },
     "privateEndpoints": {
@@ -500,6 +639,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -521,11 +663,111 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "scmSiteAlsoStopped": {
+      "value": true
+    },
     "siteConfig": {
       "value": {
         "alwaysOn": true,
         "use32BitWorkerProcess": false
       }
+    },
+    "slots": {
+      "value": [
+        {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
+          "configs": [
+            {
+              "applicationInsightResourceId": "<applicationInsightResourceId>",
+              "name": "appsettings",
+              "properties": {
+                "ApplicationInsightsAgent_EXTENSION_VERSION": "~2"
+              },
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "storageAccountUseIdentityAuthentication": true
+            }
+          ],
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "dnsConfiguration": {
+            "dnsMaxCacheTimeout": 45,
+            "dnsRetryAttemptCount": 3,
+            "dnsRetryAttemptTimeout": 5,
+            "dnsServers": [
+              "168.63.129.20"
+            ]
+          },
+          "hybridConnectionRelays": [
+            {
+              "hybridConnectionResourceId": "<hybridConnectionResourceId>",
+              "sendKeyName": "defaultSender"
+            }
+          ],
+          "name": "slot1",
+          "privateEndpoints": [
+            {
+              "privateDnsZoneGroup": {
+                "privateDnsZoneGroupConfigs": [
+                  {
+                    "privateDnsZoneResourceId": "<privateDnsZoneResourceId>"
+                  }
+                ]
+              },
+              "service": "sites-slot1",
+              "subnetResourceId": "<subnetResourceId>",
+              "tags": {
+                "Environment": "Non-Prod",
+                "hidden-title": "This is visible in the resource name",
+                "Role": "DeploymentValidation"
+              }
+            }
+          ],
+          "roleAssignments": [
+            {
+              "name": "845ed19c-78e7-4422-aa3d-b78b67cd1234",
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Owner"
+            },
+            {
+              "name": "<name>",
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+            },
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+            }
+          ],
+          "siteConfig": {
+            "alwaysOn": true,
+            "metadata": [
+              {
+                "name": "CURRENT_STACK",
+                "value": "dotnetcore"
+              }
+            ]
+          }
+        }
+      ]
     }
   }
 }
@@ -556,6 +798,8 @@ param basicPublishingCredentialsPolicies = [
     name: 'scm'
   }
 ]
+param clientAffinityPartitioningEnabled = false
+param clientAffinityProxyEnabled = true
 param configs = [
   {
     applicationInsightResourceId: '<applicationInsightResourceId>'
@@ -649,12 +893,14 @@ param diagnosticSettings = [
     workspaceResourceId: '<workspaceResourceId>'
   }
 ]
+param hostNamesDisabled = false
 param hybridConnectionRelays = [
   {
     hybridConnectionResourceId: '<hybridConnectionResourceId>'
     sendKeyName: 'defaultSender'
   }
 ]
+param ipMode = 'IPv4'
 param keyVaultAccessIdentityResourceId = '<keyVaultAccessIdentityResourceId>'
 param location = '<location>'
 param lock = {
@@ -666,6 +912,11 @@ param managedIdentities = {
   userAssignedResourceIds: [
     '<managedIdentityResourceId>'
   ]
+}
+param outboundVnetRouting = {
+  allTraffic: true
+  contentShareTraffic: true
+  imagePullTraffic: true
 }
 param privateEndpoints = [
   {
@@ -694,6 +945,7 @@ param privateEndpoints = [
     subnetResourceId: '<subnetResourceId>'
   }
 ]
+param publicNetworkAccess = 'Disabled'
 param roleAssignments = [
   {
     name: '9efc9c10-f482-4af0-9acb-03b5a16f947e'
@@ -713,18 +965,116 @@ param roleAssignments = [
     roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
   }
 ]
+param scmSiteAlsoStopped = true
 param siteConfig = {
   alwaysOn: true
   use32BitWorkerProcess: false
 }
+param slots = [
+  {
+    basicPublishingCredentialsPolicies: [
+      {
+        allow: false
+        name: 'ftp'
+      }
+      {
+        allow: false
+        name: 'scm'
+      }
+    ]
+    configs: [
+      {
+        applicationInsightResourceId: '<applicationInsightResourceId>'
+        name: 'appsettings'
+        properties: {
+          ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
+        }
+        storageAccountResourceId: '<storageAccountResourceId>'
+        storageAccountUseIdentityAuthentication: true
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    dnsConfiguration: {
+      dnsMaxCacheTimeout: 45
+      dnsRetryAttemptCount: 3
+      dnsRetryAttemptTimeout: 5
+      dnsServers: [
+        '168.63.129.20'
+      ]
+    }
+    hybridConnectionRelays: [
+      {
+        hybridConnectionResourceId: '<hybridConnectionResourceId>'
+        sendKeyName: 'defaultSender'
+      }
+    ]
+    name: 'slot1'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDnsZoneGroupConfigs: [
+            {
+              privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
+            }
+          ]
+        }
+        service: 'sites-slot1'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        name: '845ed19c-78e7-4422-aa3d-b78b67cd1234'
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        name: '<name>'
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+      }
+    ]
+    siteConfig: {
+      alwaysOn: true
+      metadata: [
+        {
+          name: 'CURRENT_STACK'
+          value: 'dotnetcore'
+        }
+      ]
+    }
+  }
+]
 ```
 
 </details>
 <p>
 
-### Example 3: _Linux Container Web App, using only defaults_
+### Example 3: _Using a custom host name binding_
 
-This instance deploys the module as Linux Container Web App with the minimum set of required parameters.
+This instance deploys the module as Web App with a custom host name binding.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/hostName]
 
 
 <details>
@@ -733,7 +1083,151 @@ This instance deploys the module as Linux Container Web App with the minimum set
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
+  params: {
+    // Required parameters
+    kind: 'app,linux'
+    name: '<name>'
+    serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    autoGeneratedDomainNameLabelScope: 'NoReuse'
+    hostNameBindings: [
+      {
+        certificate: {
+          canonicalName: '<canonicalName>'
+          hostNames: '<hostNames>'
+          name: 'cert-wsh'
+        }
+        name: '<name>'
+        siteName: '<siteName>'
+        sslState: 'IpBasedEnabled'
+      }
+    ]
+    slots: [
+      {
+        hostNameBindings: [
+          {
+            siteName: '<siteName>'
+          }
+        ]
+        name: 'slot1'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "app,linux"
+    },
+    "name": {
+      "value": "<name>"
+    },
+    "serverFarmResourceId": {
+      "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "autoGeneratedDomainNameLabelScope": {
+      "value": "NoReuse"
+    },
+    "hostNameBindings": {
+      "value": [
+        {
+          "certificate": {
+            "canonicalName": "<canonicalName>",
+            "hostNames": "<hostNames>",
+            "name": "cert-wsh"
+          },
+          "name": "<name>",
+          "siteName": "<siteName>",
+          "sslState": "IpBasedEnabled"
+        }
+      ]
+    },
+    "slots": {
+      "value": [
+        {
+          "hostNameBindings": [
+            {
+              "siteName": "<siteName>"
+            }
+          ],
+          "name": "slot1"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/web/site:<version>'
+
+// Required parameters
+param kind = 'app,linux'
+param name = '<name>'
+param serverFarmResourceId = '<serverFarmResourceId>'
+// Non-required parameters
+param autoGeneratedDomainNameLabelScope = 'NoReuse'
+param hostNameBindings = [
+  {
+    certificate: {
+      canonicalName: '<canonicalName>'
+      hostNames: '<hostNames>'
+      name: 'cert-wsh'
+    }
+    name: '<name>'
+    siteName: '<siteName>'
+    sslState: 'IpBasedEnabled'
+  }
+]
+param slots = [
+  {
+    hostNameBindings: [
+      {
+        siteName: '<siteName>'
+      }
+    ]
+    name: 'slot1'
+  }
+]
+```
+
+</details>
+<p>
+
+### Example 4: _Linux Container Web App, using only defaults_
+
+This instance deploys the module as Linux Container Web App with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/linuxContainerWebApp.defaults]
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module site 'br/public:avm/res/web/site:<version>' = {
   params: {
     // Required parameters
     kind: 'app,linux,container'
@@ -826,9 +1320,11 @@ param siteConfig = {
 </details>
 <p>
 
-### Example 4: _WAF-aligned_
+### Example 5: _WAF-aligned_
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
 
 
 <details>
@@ -837,7 +1333,6 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'app'
@@ -863,6 +1358,33 @@ module site 'br/public:avm/res/web/site:<version>' = {
       }
     ]
     httpsOnly: true
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    outboundVnetRouting: {
+      allTraffic: true
+      contentShareTraffic: true
+      imagePullTraffic: true
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDnsZoneGroupConfigs: [
+            {
+              privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
+            }
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     publicNetworkAccess: 'Disabled'
     scmSiteAlsoStopped: true
     siteConfig: {
@@ -877,9 +1399,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
       ]
       minTlsVersion: '1.2'
     }
-    vnetContentShareEnabled: true
-    vnetImagePullEnabled: true
-    vnetRouteAllEnabled: true
   }
 }
 ```
@@ -932,6 +1451,41 @@ module site 'br/public:avm/res/web/site:<version>' = {
     "httpsOnly": {
       "value": true
     },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "outboundVnetRouting": {
+      "value": {
+        "allTraffic": true,
+        "contentShareTraffic": true,
+        "imagePullTraffic": true
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDnsZoneGroupConfigs": [
+              {
+                "privateDnsZoneResourceId": "<privateDnsZoneResourceId>"
+              }
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
     "publicNetworkAccess": {
       "value": "Disabled"
     },
@@ -951,15 +1505,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
         ],
         "minTlsVersion": "1.2"
       }
-    },
-    "vnetContentShareEnabled": {
-      "value": true
-    },
-    "vnetImagePullEnabled": {
-      "value": true
-    },
-    "vnetRouteAllEnabled": {
-      "value": true
     }
   }
 }
@@ -999,6 +1544,33 @@ param diagnosticSettings = [
   }
 ]
 param httpsOnly = true
+param lock = {
+  kind: 'CanNotDelete'
+  name: 'myCustomLockName'
+}
+param managedIdentities = {
+  systemAssigned: true
+  userAssignedResourceIds: [
+    '<managedIdentityResourceId>'
+  ]
+}
+param outboundVnetRouting = {
+  allTraffic: true
+  contentShareTraffic: true
+  imagePullTraffic: true
+}
+param privateEndpoints = [
+  {
+    privateDnsZoneGroup: {
+      privateDnsZoneGroupConfigs: [
+        {
+          privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
+        }
+      ]
+    }
+    subnetResourceId: '<subnetResourceId>'
+  }
+]
 param publicNetworkAccess = 'Disabled'
 param scmSiteAlsoStopped = true
 param siteConfig = {
@@ -1013,17 +1585,16 @@ param siteConfig = {
   ]
   minTlsVersion: '1.2'
 }
-param vnetContentShareEnabled = true
-param vnetImagePullEnabled = true
-param vnetRouteAllEnabled = true
 ```
 
 </details>
 <p>
 
-### Example 5: _Web App, using only defaults_
+### Example 6: _Access Restrictions_
 
-This instance deploys the module as Web App with the minimum set of required parameters.
+This instance deploys the module demonstrating access restrictions for Front Door and Application Gateway scenarios.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webApp.accessRestrictions]
 
 
 <details>
@@ -1032,7 +1603,432 @@ This instance deploys the module as Web App with the minimum set of required par
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
+  params: {
+    // Required parameters
+    kind: 'app'
+    name: 'wsacr001'
+    serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    configs: [
+      {
+        name: 'web'
+        properties: {
+          ipSecurityRestrictions: [
+            {
+              action: 'Allow'
+              description: 'Allow access from Azure Front Door'
+              ipAddress: 'AzureFrontDoor.Backend'
+              name: 'Azure Front Door'
+              priority: 100
+              tag: 'ServiceTag'
+            }
+            {
+              action: 'Allow'
+              description: 'Allow access from Application Gateway'
+              ipAddress: 'GatewayManager'
+              name: 'Application Gateway'
+              priority: 200
+              tag: 'ServiceTag'
+            }
+            {
+              action: 'Allow'
+              description: 'Allow access from office network'
+              ipAddress: '203.0.113.0/24'
+              name: 'Office Network'
+              priority: 300
+            }
+            {
+              action: 'Allow'
+              description: 'Allow specific Front Door instance with X-Azure-FDID header'
+              headers: {
+                'x-azure-fdid': [
+                  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                ]
+              }
+              ipAddress: 'AzureFrontDoor.Backend'
+              name: 'Specific Front Door Instance'
+              priority: 400
+              tag: 'ServiceTag'
+            }
+          ]
+          ipSecurityRestrictionsDefaultAction: 'Allow'
+        }
+      }
+    ]
+    httpsOnly: true
+    siteConfig: {
+      alwaysOn: true
+      ftpsState: 'FtpsOnly'
+      minTlsVersion: '1.2'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "app"
+    },
+    "name": {
+      "value": "wsacr001"
+    },
+    "serverFarmResourceId": {
+      "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "configs": {
+      "value": [
+        {
+          "name": "web",
+          "properties": {
+            "ipSecurityRestrictions": [
+              {
+                "action": "Allow",
+                "description": "Allow access from Azure Front Door",
+                "ipAddress": "AzureFrontDoor.Backend",
+                "name": "Azure Front Door",
+                "priority": 100,
+                "tag": "ServiceTag"
+              },
+              {
+                "action": "Allow",
+                "description": "Allow access from Application Gateway",
+                "ipAddress": "GatewayManager",
+                "name": "Application Gateway",
+                "priority": 200,
+                "tag": "ServiceTag"
+              },
+              {
+                "action": "Allow",
+                "description": "Allow access from office network",
+                "ipAddress": "203.0.113.0/24",
+                "name": "Office Network",
+                "priority": 300
+              },
+              {
+                "action": "Allow",
+                "description": "Allow specific Front Door instance with X-Azure-FDID header",
+                "headers": {
+                  "x-azure-fdid": [
+                    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                  ]
+                },
+                "ipAddress": "AzureFrontDoor.Backend",
+                "name": "Specific Front Door Instance",
+                "priority": 400,
+                "tag": "ServiceTag"
+              }
+            ],
+            "ipSecurityRestrictionsDefaultAction": "Allow"
+          }
+        }
+      ]
+    },
+    "httpsOnly": {
+      "value": true
+    },
+    "siteConfig": {
+      "value": {
+        "alwaysOn": true,
+        "ftpsState": "FtpsOnly",
+        "minTlsVersion": "1.2"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/web/site:<version>'
+
+// Required parameters
+param kind = 'app'
+param name = 'wsacr001'
+param serverFarmResourceId = '<serverFarmResourceId>'
+// Non-required parameters
+param configs = [
+  {
+    name: 'web'
+    properties: {
+      ipSecurityRestrictions: [
+        {
+          action: 'Allow'
+          description: 'Allow access from Azure Front Door'
+          ipAddress: 'AzureFrontDoor.Backend'
+          name: 'Azure Front Door'
+          priority: 100
+          tag: 'ServiceTag'
+        }
+        {
+          action: 'Allow'
+          description: 'Allow access from Application Gateway'
+          ipAddress: 'GatewayManager'
+          name: 'Application Gateway'
+          priority: 200
+          tag: 'ServiceTag'
+        }
+        {
+          action: 'Allow'
+          description: 'Allow access from office network'
+          ipAddress: '203.0.113.0/24'
+          name: 'Office Network'
+          priority: 300
+        }
+        {
+          action: 'Allow'
+          description: 'Allow specific Front Door instance with X-Azure-FDID header'
+          headers: {
+            'x-azure-fdid': [
+              'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+            ]
+          }
+          ipAddress: 'AzureFrontDoor.Backend'
+          name: 'Specific Front Door Instance'
+          priority: 400
+          tag: 'ServiceTag'
+        }
+      ]
+      ipSecurityRestrictionsDefaultAction: 'Allow'
+    }
+  }
+]
+param httpsOnly = true
+param siteConfig = {
+  alwaysOn: true
+  ftpsState: 'FtpsOnly'
+  minTlsVersion: '1.2'
+}
+```
+
+</details>
+<p>
+
+### Example 7: _Web App with Azure Storage Accounts Configuration_
+
+This instance deploys the module as Web App with azurestorageaccounts configuration demonstrating the correct structure for mounting Azure Storage Accounts.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webApp.azurestorageaccounts]
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module site 'br/public:avm/res/web/site:<version>' = {
+  params: {
+    // Required parameters
+    kind: 'app'
+    name: 'wsazstor001'
+    serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    configs: [
+      {
+        name: 'azurestorageaccounts'
+        properties: {
+          'config-storage': {
+            accessKey: '<accessKey>'
+            accountName: '<accountName>'
+            mountPath: '\\mounts\\config'
+            protocol: 'Smb'
+            shareName: 'config-share'
+            type: 'AzureFiles'
+          }
+          'data-storage': {
+            accessKey: '<accessKey>'
+            accountName: '<accountName>'
+            mountPath: '\\mounts\\data'
+            protocol: 'Smb'
+            shareName: 'data-share'
+            type: 'AzureFiles'
+          }
+          'logs-storage': {
+            accessKey: '<accessKey>'
+            accountName: '<accountName>'
+            mountPath: '\\mounts\\logs'
+            protocol: 'Smb'
+            shareName: 'logs-share'
+            type: 'AzureFiles'
+          }
+        }
+      }
+      {
+        name: 'appsettings'
+        properties: {
+          STORAGE_CONFIG_MOUNT: '\\mounts\\config'
+          STORAGE_DATA_MOUNT: '\\mounts\\data'
+          STORAGE_LOGS_MOUNT: '\\mounts\\logs'
+        }
+      }
+    ]
+    location: '<location>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "app"
+    },
+    "name": {
+      "value": "wsazstor001"
+    },
+    "serverFarmResourceId": {
+      "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "configs": {
+      "value": [
+        {
+          "name": "azurestorageaccounts",
+          "properties": {
+            "config-storage": {
+              "accessKey": "<accessKey>",
+              "accountName": "<accountName>",
+              "mountPath": "\\mounts\\config",
+              "protocol": "Smb",
+              "shareName": "config-share",
+              "type": "AzureFiles"
+            },
+            "data-storage": {
+              "accessKey": "<accessKey>",
+              "accountName": "<accountName>",
+              "mountPath": "\\mounts\\data",
+              "protocol": "Smb",
+              "shareName": "data-share",
+              "type": "AzureFiles"
+            },
+            "logs-storage": {
+              "accessKey": "<accessKey>",
+              "accountName": "<accountName>",
+              "mountPath": "\\mounts\\logs",
+              "protocol": "Smb",
+              "shareName": "logs-share",
+              "type": "AzureFiles"
+            }
+          }
+        },
+        {
+          "name": "appsettings",
+          "properties": {
+            "STORAGE_CONFIG_MOUNT": "\\mounts\\config",
+            "STORAGE_DATA_MOUNT": "\\mounts\\data",
+            "STORAGE_LOGS_MOUNT": "\\mounts\\logs"
+          }
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/web/site:<version>'
+
+// Required parameters
+param kind = 'app'
+param name = 'wsazstor001'
+param serverFarmResourceId = '<serverFarmResourceId>'
+// Non-required parameters
+param configs = [
+  {
+    name: 'azurestorageaccounts'
+    properties: {
+      'config-storage': {
+        accessKey: '<accessKey>'
+        accountName: '<accountName>'
+        mountPath: '\\mounts\\config'
+        protocol: 'Smb'
+        shareName: 'config-share'
+        type: 'AzureFiles'
+      }
+      'data-storage': {
+        accessKey: '<accessKey>'
+        accountName: '<accountName>'
+        mountPath: '\\mounts\\data'
+        protocol: 'Smb'
+        shareName: 'data-share'
+        type: 'AzureFiles'
+      }
+      'logs-storage': {
+        accessKey: '<accessKey>'
+        accountName: '<accountName>'
+        mountPath: '\\mounts\\logs'
+        protocol: 'Smb'
+        shareName: 'logs-share'
+        type: 'AzureFiles'
+      }
+    }
+  }
+  {
+    name: 'appsettings'
+    properties: {
+      STORAGE_CONFIG_MOUNT: '\\mounts\\config'
+      STORAGE_DATA_MOUNT: '\\mounts\\data'
+      STORAGE_LOGS_MOUNT: '\\mounts\\logs'
+    }
+  }
+]
+param location = '<location>'
+```
+
+</details>
+<p>
+
+### Example 8: _Web App, using only defaults_
+
+This instance deploys the module as Web App with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webApp.defaults]
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module site 'br/public:avm/res/web/site:<version>' = {
   params: {
     // Required parameters
     kind: 'app'
@@ -1087,9 +2083,11 @@ param serverFarmResourceId = '<serverFarmResourceId>'
 </details>
 <p>
 
-### Example 6: _Web App, using large parameter set_
+### Example 9: _Web App, using large parameter set_
 
 This instance deploys the module as Web App with most of its features enabled.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webApp.max]
 
 
 <details>
@@ -1098,7 +2096,6 @@ This instance deploys the module as Web App with most of its features enabled.
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'app'
@@ -1115,9 +2112,15 @@ module site 'br/public:avm/res/web/site:<version>' = {
         name: 'scm'
       }
     ]
+    clientAffinityPartitioningEnabled: false
+    clientAffinityProxyEnabled: true
     configs: [
       {
+        applicationInsightResourceId: '<applicationInsightResourceId>'
         name: 'appsettings'
+        properties: {
+          ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
+        }
         storageAccountResourceId: '<storageAccountResourceId>'
         storageAccountUseIdentityAuthentication: true
       }
@@ -1185,6 +2188,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         '168.63.129.16'
       ]
     }
+    hostNamesDisabled: false
     httpsOnly: true
     hybridConnectionRelays: [
       {
@@ -1192,6 +2196,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         sendKeyName: 'defaultSender'
       }
     ]
+    ipMode: 'IPv4'
     location: '<location>'
     lock: {
       kind: 'CanNotDelete'
@@ -1202,6 +2207,11 @@ module site 'br/public:avm/res/web/site:<version>' = {
       userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
+    }
+    outboundVnetRouting: {
+      allTraffic: true
+      contentShareTraffic: true
+      imagePullTraffic: true
     }
     privateEndpoints: [
       {
@@ -1231,6 +2241,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
       }
     ]
     publicNetworkAccess: 'Disabled'
+    reserved: false
     roleAssignments: [
       {
         name: '0c2c82ef-069c-4085-b1bc-01614e0aa5ff'
@@ -1273,6 +2284,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         ]
         configs: [
           {
+            applicationInsightResourceId: '<applicationInsightResourceId>'
             name: 'appsettings'
             storageAccountResourceId: '<storageAccountResourceId>'
             storageAccountUseIdentityAuthentication: true
@@ -1368,9 +2380,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
         name: 'slot2'
       }
     ]
-    vnetContentShareEnabled: true
-    vnetImagePullEnabled: true
-    vnetRouteAllEnabled: true
   }
 }
 ```
@@ -1410,10 +2419,20 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "clientAffinityPartitioningEnabled": {
+      "value": false
+    },
+    "clientAffinityProxyEnabled": {
+      "value": true
+    },
     "configs": {
       "value": [
         {
+          "applicationInsightResourceId": "<applicationInsightResourceId>",
           "name": "appsettings",
+          "properties": {
+            "ApplicationInsightsAgent_EXTENSION_VERSION": "~2"
+          },
           "storageAccountResourceId": "<storageAccountResourceId>",
           "storageAccountUseIdentityAuthentication": true
         },
@@ -1486,6 +2505,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
         ]
       }
     },
+    "hostNamesDisabled": {
+      "value": false
+    },
     "httpsOnly": {
       "value": true
     },
@@ -1496,6 +2518,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "sendKeyName": "defaultSender"
         }
       ]
+    },
+    "ipMode": {
+      "value": "IPv4"
     },
     "location": {
       "value": "<location>"
@@ -1512,6 +2537,13 @@ module site 'br/public:avm/res/web/site:<version>' = {
         "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
+      }
+    },
+    "outboundVnetRouting": {
+      "value": {
+        "allTraffic": true,
+        "contentShareTraffic": true,
+        "imagePullTraffic": true
       }
     },
     "privateEndpoints": {
@@ -1545,6 +2577,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
     },
     "publicNetworkAccess": {
       "value": "Disabled"
+    },
+    "reserved": {
+      "value": false
     },
     "roleAssignments": {
       "value": [
@@ -1595,6 +2630,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
           ],
           "configs": [
             {
+              "applicationInsightResourceId": "<applicationInsightResourceId>",
               "name": "appsettings",
               "storageAccountResourceId": "<storageAccountResourceId>",
               "storageAccountUseIdentityAuthentication": true
@@ -1690,15 +2726,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "name": "slot2"
         }
       ]
-    },
-    "vnetContentShareEnabled": {
-      "value": true
-    },
-    "vnetImagePullEnabled": {
-      "value": true
-    },
-    "vnetRouteAllEnabled": {
-      "value": true
     }
   }
 }
@@ -1729,9 +2756,15 @@ param basicPublishingCredentialsPolicies = [
     name: 'scm'
   }
 ]
+param clientAffinityPartitioningEnabled = false
+param clientAffinityProxyEnabled = true
 param configs = [
   {
+    applicationInsightResourceId: '<applicationInsightResourceId>'
     name: 'appsettings'
+    properties: {
+      ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
+    }
     storageAccountResourceId: '<storageAccountResourceId>'
     storageAccountUseIdentityAuthentication: true
   }
@@ -1799,6 +2832,7 @@ param dnsConfiguration = {
     '168.63.129.16'
   ]
 }
+param hostNamesDisabled = false
 param httpsOnly = true
 param hybridConnectionRelays = [
   {
@@ -1806,6 +2840,7 @@ param hybridConnectionRelays = [
     sendKeyName: 'defaultSender'
   }
 ]
+param ipMode = 'IPv4'
 param location = '<location>'
 param lock = {
   kind: 'CanNotDelete'
@@ -1816,6 +2851,11 @@ param managedIdentities = {
   userAssignedResourceIds: [
     '<managedIdentityResourceId>'
   ]
+}
+param outboundVnetRouting = {
+  allTraffic: true
+  contentShareTraffic: true
+  imagePullTraffic: true
 }
 param privateEndpoints = [
   {
@@ -1845,6 +2885,7 @@ param privateEndpoints = [
   }
 ]
 param publicNetworkAccess = 'Disabled'
+param reserved = false
 param roleAssignments = [
   {
     name: '0c2c82ef-069c-4085-b1bc-01614e0aa5ff'
@@ -1887,6 +2928,7 @@ param slots = [
     ]
     configs: [
       {
+        applicationInsightResourceId: '<applicationInsightResourceId>'
         name: 'appsettings'
         storageAccountResourceId: '<storageAccountResourceId>'
         storageAccountUseIdentityAuthentication: true
@@ -1982,17 +3024,16 @@ param slots = [
     name: 'slot2'
   }
 ]
-param vnetContentShareEnabled = true
-param vnetImagePullEnabled = true
-param vnetRouteAllEnabled = true
 ```
 
 </details>
 <p>
 
-### Example 7: _Linux Web App, using only defaults_
+### Example 10: _Linux Web App, using only defaults_
 
 This instance deploys the module as a Linux Web App with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webAppLinux.defaults]
 
 
 <details>
@@ -2001,7 +3042,6 @@ This instance deploys the module as a Linux Web App with the minimum set of requ
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'app,linux'
@@ -2056,9 +3096,11 @@ param serverFarmResourceId = '<serverFarmResourceId>'
 </details>
 <p>
 
-### Example 8: _Linux Web App, using large parameter set_
+### Example 11: _Linux Web App, using large parameter set_
 
 This instance deploys the module asa Linux Web App with most of its features enabled.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/webAppLinux.max]
 
 
 <details>
@@ -2067,7 +3109,6 @@ This instance deploys the module asa Linux Web App with most of its features ena
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'app,linux'
@@ -2084,9 +3125,15 @@ module site 'br/public:avm/res/web/site:<version>' = {
         name: 'scm'
       }
     ]
+    clientAffinityPartitioningEnabled: false
+    clientAffinityProxyEnabled: true
     configs: [
       {
+        applicationInsightResourceId: '<applicationInsightResourceId>'
         name: 'appsettings'
+        properties: {
+          ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
+        }
         storageAccountResourceId: '<storageAccountResourceId>'
         storageAccountUseIdentityAuthentication: true
       }
@@ -2105,6 +3152,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         workspaceResourceId: '<workspaceResourceId>'
       }
     ]
+    hostNamesDisabled: false
     httpsOnly: true
     hybridConnectionRelays: [
       {
@@ -2112,6 +3160,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         sendKeyName: 'defaultSender'
       }
     ]
+    ipMode: 'IPv4'
     location: '<location>'
     lock: {
       kind: 'CanNotDelete'
@@ -2122,6 +3171,11 @@ module site 'br/public:avm/res/web/site:<version>' = {
       userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
+    }
+    outboundVnetRouting: {
+      allTraffic: true
+      contentShareTraffic: true
+      imagePullTraffic: true
     }
     privateEndpoints: [
       {
@@ -2151,6 +3205,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
       }
     ]
     publicNetworkAccess: 'Disabled'
+    reserved: true
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -2192,6 +3247,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
         ]
         configs: [
           {
+            applicationInsightResourceId: '<applicationInsightResourceId>'
             name: 'appsettings'
             storageAccountResourceId: '<storageAccountResourceId>'
             storageAccountUseIdentityAuthentication: true
@@ -2277,9 +3333,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
         name: 'slot2'
       }
     ]
-    vnetContentShareEnabled: true
-    vnetImagePullEnabled: true
-    vnetRouteAllEnabled: true
   }
 }
 ```
@@ -2319,10 +3372,20 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "clientAffinityPartitioningEnabled": {
+      "value": false
+    },
+    "clientAffinityProxyEnabled": {
+      "value": true
+    },
     "configs": {
       "value": [
         {
+          "applicationInsightResourceId": "<applicationInsightResourceId>",
           "name": "appsettings",
+          "properties": {
+            "ApplicationInsightsAgent_EXTENSION_VERSION": "~3"
+          },
           "storageAccountResourceId": "<storageAccountResourceId>",
           "storageAccountUseIdentityAuthentication": true
         }
@@ -2344,6 +3407,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
         }
       ]
     },
+    "hostNamesDisabled": {
+      "value": false
+    },
     "httpsOnly": {
       "value": true
     },
@@ -2354,6 +3420,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "sendKeyName": "defaultSender"
         }
       ]
+    },
+    "ipMode": {
+      "value": "IPv4"
     },
     "location": {
       "value": "<location>"
@@ -2370,6 +3439,13 @@ module site 'br/public:avm/res/web/site:<version>' = {
         "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
+      }
+    },
+    "outboundVnetRouting": {
+      "value": {
+        "allTraffic": true,
+        "contentShareTraffic": true,
+        "imagePullTraffic": true
       }
     },
     "privateEndpoints": {
@@ -2403,6 +3479,9 @@ module site 'br/public:avm/res/web/site:<version>' = {
     },
     "publicNetworkAccess": {
       "value": "Disabled"
+    },
+    "reserved": {
+      "value": true
     },
     "roleAssignments": {
       "value": [
@@ -2452,6 +3531,7 @@ module site 'br/public:avm/res/web/site:<version>' = {
           ],
           "configs": [
             {
+              "applicationInsightResourceId": "<applicationInsightResourceId>",
               "name": "appsettings",
               "storageAccountResourceId": "<storageAccountResourceId>",
               "storageAccountUseIdentityAuthentication": true
@@ -2537,15 +3617,6 @@ module site 'br/public:avm/res/web/site:<version>' = {
           "name": "slot2"
         }
       ]
-    },
-    "vnetContentShareEnabled": {
-      "value": true
-    },
-    "vnetImagePullEnabled": {
-      "value": true
-    },
-    "vnetRouteAllEnabled": {
-      "value": true
     }
   }
 }
@@ -2576,9 +3647,15 @@ param basicPublishingCredentialsPolicies = [
     name: 'scm'
   }
 ]
+param clientAffinityPartitioningEnabled = false
+param clientAffinityProxyEnabled = true
 param configs = [
   {
+    applicationInsightResourceId: '<applicationInsightResourceId>'
     name: 'appsettings'
+    properties: {
+      ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
+    }
     storageAccountResourceId: '<storageAccountResourceId>'
     storageAccountUseIdentityAuthentication: true
   }
@@ -2597,6 +3674,7 @@ param diagnosticSettings = [
     workspaceResourceId: '<workspaceResourceId>'
   }
 ]
+param hostNamesDisabled = false
 param httpsOnly = true
 param hybridConnectionRelays = [
   {
@@ -2604,6 +3682,7 @@ param hybridConnectionRelays = [
     sendKeyName: 'defaultSender'
   }
 ]
+param ipMode = 'IPv4'
 param location = '<location>'
 param lock = {
   kind: 'CanNotDelete'
@@ -2614,6 +3693,11 @@ param managedIdentities = {
   userAssignedResourceIds: [
     '<managedIdentityResourceId>'
   ]
+}
+param outboundVnetRouting = {
+  allTraffic: true
+  contentShareTraffic: true
+  imagePullTraffic: true
 }
 param privateEndpoints = [
   {
@@ -2643,6 +3727,7 @@ param privateEndpoints = [
   }
 ]
 param publicNetworkAccess = 'Disabled'
+param reserved = true
 param roleAssignments = [
   {
     principalId: '<principalId>'
@@ -2684,6 +3769,7 @@ param slots = [
     ]
     configs: [
       {
+        applicationInsightResourceId: '<applicationInsightResourceId>'
         name: 'appsettings'
         storageAccountResourceId: '<storageAccountResourceId>'
         storageAccountUseIdentityAuthentication: true
@@ -2769,17 +3855,16 @@ param slots = [
     name: 'slot2'
   }
 ]
-param vnetContentShareEnabled = true
-param vnetImagePullEnabled = true
-param vnetRouteAllEnabled = true
 ```
 
 </details>
 <p>
 
-### Example 9: _Windows Web App for Containers, using only defaults_
+### Example 12: _Windows Web App for Containers, using only defaults_
 
 This instance deploys the module as a Windows based Container Web App with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/winContainerWebApp.defaults]
 
 
 <details>
@@ -2788,7 +3873,6 @@ This instance deploys the module as a Windows based Container Web App with the m
 
 ```bicep
 module site 'br/public:avm/res/web/site:<version>' = {
-  name: 'siteDeployment'
   params: {
     // Required parameters
     kind: 'app,container,windows'
@@ -2889,7 +3973,7 @@ param siteConfig = {
 | :-- | :-- | :-- |
 | [`kind`](#parameter-kind) | string | Type of site to deploy. |
 | [`name`](#parameter-name) | string | Name of the site. |
-| [`serverFarmResourceId`](#parameter-serverfarmresourceid) | string | The resource ID of the app service plan to use for the site. |
+| [`serverFarmResourceId`](#parameter-serverfarmresourceid) | string | The resource ID of the app service plan to use for the site. Set as empty string when using a managed environment id for container apps. |
 
 **Optional parameters**
 
@@ -2899,6 +3983,8 @@ param siteConfig = {
 | [`autoGeneratedDomainNameLabelScope`](#parameter-autogenerateddomainnamelabelscope) | string | Specifies the scope of uniqueness for the default hostname during resource creation. |
 | [`basicPublishingCredentialsPolicies`](#parameter-basicpublishingcredentialspolicies) | array | The site publishing credential policy names which are associated with the sites. |
 | [`clientAffinityEnabled`](#parameter-clientaffinityenabled) | bool | If client affinity is enabled. |
+| [`clientAffinityPartitioningEnabled`](#parameter-clientaffinitypartitioningenabled) | bool | To enable client affinity partitioning using CHIPS cookies, this will add the partitioned property to the affinity cookies; false to stop sending partitioned affinity cookies. Default is false. |
+| [`clientAffinityProxyEnabled`](#parameter-clientaffinityproxyenabled) | bool | To enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is true. |
 | [`clientCertEnabled`](#parameter-clientcertenabled) | bool | To enable client certificate authentication (TLS mutual authentication). |
 | [`clientCertExclusionPaths`](#parameter-clientcertexclusionpaths) | string | Client certificate authentication comma-separated exclusion paths. |
 | [`clientCertMode`](#parameter-clientcertmode) | string | This composes with ClientCertEnabled setting.<li>ClientCertEnabled=false means ClientCert is ignored.<li>ClientCertEnabled=true and ClientCertMode=Required means ClientCert is required.<li>ClientCertEnabled=true and ClientCertMode=Optional means ClientCert is optional or accepted.<p> |
@@ -2906,35 +3992,42 @@ param siteConfig = {
 | [`configs`](#parameter-configs) | array | The web site config. |
 | [`containerSize`](#parameter-containersize) | int | Size of the function container. |
 | [`dailyMemoryTimeQuota`](#parameter-dailymemorytimequota) | int | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
+| [`daprConfig`](#parameter-daprconfig) | object | Dapr configuration of the app. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`dnsConfiguration`](#parameter-dnsconfiguration) | object | Property to configure various DNS related settings for a site. |
 | [`e2eEncryptionEnabled`](#parameter-e2eencryptionenabled) | bool | End to End Encryption Setting. |
 | [`enabled`](#parameter-enabled) | bool | Setting this value to false disables the app (takes the app offline). |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
+| [`extendedLocation`](#parameter-extendedlocation) | object | Extended location of the resource. |
 | [`extensions`](#parameter-extensions) | array | The extensions configuration. |
 | [`functionAppConfig`](#parameter-functionappconfig) | object | The Function App configuration object. |
+| [`hostNameBindings`](#parameter-hostnamebindings) | array | Host Name Bindings for the site. |
+| [`hostNamesDisabled`](#parameter-hostnamesdisabled) | bool | True to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process. |
 | [`hostNameSslStates`](#parameter-hostnamesslstates) | array | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | [`httpsOnly`](#parameter-httpsonly) | bool | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | [`hybridConnectionRelays`](#parameter-hybridconnectionrelays) | array | Names of hybrid connection relays to connect app with. |
 | [`hyperV`](#parameter-hyperv) | bool | Hyper-V sandbox. |
+| [`ipMode`](#parameter-ipmode) | string | Specifies the IP mode of the app. |
 | [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedEnvironmentId`](#parameter-managedenvironmentid) | string | Azure Resource Manager ID of the customers selected Managed Environment on which to host this app. |
+| [`managedEnvironmentResourceId`](#parameter-managedenvironmentresourceid) | string | Azure Resource Manager ID of the customers selected Managed Environment on which to host this app. |
 | [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
+| [`outboundVnetRouting`](#parameter-outboundvnetrouting) | object | The outbound VNET routing configuration for the site. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
+| [`reserved`](#parameter-reserved) | bool | True if reserved (Linux); otherwise, false (Windows). |
+| [`resourceConfig`](#parameter-resourceconfig) | object | Function app resource requirements. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`scmSiteAlsoStopped`](#parameter-scmsitealsostopped) | bool | Stop SCM (KUDU) site when the app is stopped. |
 | [`siteConfig`](#parameter-siteconfig) | object | The site config object. The defaults are set to the following values: alwaysOn: true, minTlsVersion: '1.2', ftpsState: 'FtpsOnly'. |
 | [`slots`](#parameter-slots) | array | Configuration for deployment slots for an app. |
+| [`sshEnabled`](#parameter-sshenabled) | bool | Whether to enable SSH access. |
 | [`storageAccountRequired`](#parameter-storageaccountrequired) | bool | Checks if Customer provided storage account is required. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
-| [`vnetContentShareEnabled`](#parameter-vnetcontentshareenabled) | bool | To enable accessing content over virtual network. |
-| [`vnetImagePullEnabled`](#parameter-vnetimagepullenabled) | bool | To enable pulling image over Virtual Network. |
-| [`vnetRouteAllEnabled`](#parameter-vnetrouteallenabled) | bool | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
+| [`virtualNetworkSubnetResourceId`](#parameter-virtualnetworksubnetresourceid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
+| [`workloadProfileName`](#parameter-workloadprofilename) | string | Workload profile name for function app to execute on. |
 
 ### Parameter: `kind`
 
@@ -2969,7 +4062,7 @@ Name of the site.
 
 ### Parameter: `serverFarmResourceId`
 
-The resource ID of the app service plan to use for the site.
+The resource ID of the app service plan to use for the site. Set as empty string when using a managed environment id for container apps.
 
 - Required: Yes
 - Type: string
@@ -2987,15 +4080,6 @@ Specifies the scope of uniqueness for the default hostname during resource creat
 
 - Required: No
 - Type: string
-- Allowed:
-  ```Bicep
-  [
-    'NoReuse'
-    'ResourceGroupReuse'
-    'SubscriptionReuse'
-    'TenantReuse'
-  ]
-  ```
 
 ### Parameter: `basicPublishingCredentialsPolicies`
 
@@ -3053,6 +4137,22 @@ If client affinity is enabled.
 - Type: bool
 - Default: `True`
 
+### Parameter: `clientAffinityPartitioningEnabled`
+
+To enable client affinity partitioning using CHIPS cookies, this will add the partitioned property to the affinity cookies; false to stop sending partitioned affinity cookies. Default is false.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `clientAffinityProxyEnabled`
+
+To enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is true.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `clientCertEnabled`
 
 To enable client certificate authentication (TLS mutual authentication).
@@ -3075,14 +4175,6 @@ This composes with ClientCertEnabled setting.<li>ClientCertEnabled=false means C
 - Required: No
 - Type: string
 - Default: `'Optional'`
-- Allowed:
-  ```Bicep
-  [
-    'Optional'
-    'OptionalInteractiveUser'
-    'Required'
-  ]
-  ```
 
 ### Parameter: `cloningInfo`
 
@@ -7493,6 +8585,13 @@ Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 - Required: No
 - Type: int
 
+### Parameter: `daprConfig`
+
+Dapr configuration of the app.
+
+- Required: No
+- Type: object
+
 ### Parameter: `diagnosticSettings`
 
 The diagnostic settings of the service.
@@ -7669,6 +8768,13 @@ Enable/Disable usage telemetry for module.
 - Type: bool
 - Default: `True`
 
+### Parameter: `extendedLocation`
+
+Extended location of the resource.
+
+- Required: No
+- Type: object
+
 ### Parameter: `extensions`
 
 The extensions configuration.
@@ -7695,6 +8801,248 @@ The Function App configuration object.
 
 - Required: No
 - Type: object
+
+### Parameter: `hostNameBindings`
+
+Host Name Bindings for the site.
+
+- Required: No
+- Type: array
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`azureResourceName`](#parameter-hostnamebindingsazureresourcename) | string | Azure resource name. |
+| [`azureResourceType`](#parameter-hostnamebindingsazureresourcetype) | string | Azure resource type. Possible values are Website and TrafficManager. |
+| [`certificate`](#parameter-hostnamebindingscertificate) | object | Certificate creation properties. If specified, a certificate will be created and used for this hostname binding. |
+| [`customHostNameDnsRecordType`](#parameter-hostnamebindingscustomhostnamednsrecordtype) | string | Custom DNS record type. Possible values are CName and A. |
+| [`domainResourceId`](#parameter-hostnamebindingsdomainresourceid) | string | Fully qualified ARM domain resource URI. |
+| [`hostNameType`](#parameter-hostnamebindingshostnametype) | string | Hostname type. Possible values are Verified and Managed. |
+| [`kind`](#parameter-hostnamebindingskind) | string | Kind of resource. |
+| [`name`](#parameter-hostnamebindingsname) | string | Hostname in the hostname binding. Defaults to the host name of the app/slot if not specified. |
+| [`siteName`](#parameter-hostnamebindingssitename) | string | App Service app name. |
+| [`sslState`](#parameter-hostnamebindingssslstate) | string | SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled. |
+| [`thumbprint`](#parameter-hostnamebindingsthumbprint) | string | SSL certificate thumbprint. |
+
+### Parameter: `hostNameBindings.azureResourceName`
+
+Azure resource name.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.azureResourceType`
+
+Azure resource type. Possible values are Website and TrafficManager.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'TrafficManager'
+    'Website'
+  ]
+  ```
+
+### Parameter: `hostNameBindings.certificate`
+
+Certificate creation properties. If specified, a certificate will be created and used for this hostname binding.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-hostnamebindingscertificatename) | string | Certificate name. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`canonicalName`](#parameter-hostnamebindingscertificatecanonicalname) | string | CNAME of the certificate to be issued via free certificate. |
+| [`domainValidationMethod`](#parameter-hostnamebindingscertificatedomainvalidationmethod) | string | Method of domain validation for free certificate. |
+| [`hostNames`](#parameter-hostnamebindingscertificatehostnames) | array | Certificate host names. |
+| [`keyVaultResourceId`](#parameter-hostnamebindingscertificatekeyvaultresourceid) | string | Key Vault resource ID. |
+| [`keyVaultSecretName`](#parameter-hostnamebindingscertificatekeyvaultsecretname) | string | Key Vault secret name. |
+| [`kind`](#parameter-hostnamebindingscertificatekind) | string | Kind of resource. |
+| [`location`](#parameter-hostnamebindingscertificatelocation) | string | Resource location. |
+| [`password`](#parameter-hostnamebindingscertificatepassword) | securestring | Certificate password. |
+| [`pfxBlob`](#parameter-hostnamebindingscertificatepfxblob) | securestring | Certificate data in PFX format. |
+| [`serverFarmResourceId`](#parameter-hostnamebindingscertificateserverfarmresourceid) | string | Server farm resource ID. |
+| [`tags`](#parameter-hostnamebindingscertificatetags) | object | Tags of the resource. |
+
+### Parameter: `hostNameBindings.certificate.name`
+
+Certificate name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.canonicalName`
+
+CNAME of the certificate to be issued via free certificate.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.domainValidationMethod`
+
+Method of domain validation for free certificate.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.hostNames`
+
+Certificate host names.
+
+- Required: No
+- Type: array
+
+### Parameter: `hostNameBindings.certificate.keyVaultResourceId`
+
+Key Vault resource ID.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.keyVaultSecretName`
+
+Key Vault secret name.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.kind`
+
+Kind of resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.location`
+
+Resource location.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.password`
+
+Certificate password.
+
+- Required: No
+- Type: securestring
+
+### Parameter: `hostNameBindings.certificate.pfxBlob`
+
+Certificate data in PFX format.
+
+- Required: No
+- Type: securestring
+
+### Parameter: `hostNameBindings.certificate.serverFarmResourceId`
+
+Server farm resource ID.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.certificate.tags`
+
+Tags of the resource.
+
+- Required: No
+- Type: object
+
+### Parameter: `hostNameBindings.customHostNameDnsRecordType`
+
+Custom DNS record type. Possible values are CName and A.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'A'
+    'CName'
+  ]
+  ```
+
+### Parameter: `hostNameBindings.domainResourceId`
+
+Fully qualified ARM domain resource URI.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.hostNameType`
+
+Hostname type. Possible values are Verified and Managed.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Managed'
+    'Verified'
+  ]
+  ```
+
+### Parameter: `hostNameBindings.kind`
+
+Kind of resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.name`
+
+Hostname in the hostname binding. Defaults to the host name of the app/slot if not specified.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.siteName`
+
+App Service app name.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNameBindings.sslState`
+
+SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'IpBasedEnabled'
+    'SniEnabled'
+  ]
+  ```
+
+### Parameter: `hostNameBindings.thumbprint`
+
+SSL certificate thumbprint.
+
+- Required: No
+- Type: string
+
+### Parameter: `hostNamesDisabled`
+
+True to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `hostNameSslStates`
 
@@ -7752,6 +9100,13 @@ Hyper-V sandbox.
 - Type: bool
 - Default: `False`
 
+### Parameter: `ipMode`
+
+Specifies the IP mode of the app.
+
+- Required: No
+- Type: string
+
 ### Parameter: `keyVaultAccessIdentityResourceId`
 
 The resource ID of the assigned identity to be used to access a key vault with.
@@ -7780,6 +9135,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -7803,7 +9159,14 @@ Specify the name of lock.
 - Required: No
 - Type: string
 
-### Parameter: `managedEnvironmentId`
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `managedEnvironmentResourceId`
 
 Azure Resource Manager ID of the customers selected Managed Environment on which to host this app.
 
@@ -7837,6 +9200,13 @@ The resource ID(s) to assign to the resource. Required if a user assigned identi
 
 - Required: No
 - Type: array
+
+### Parameter: `outboundVnetRouting`
+
+The outbound VNET routing configuration for the site.
+
+- Required: No
+- Type: object
 
 ### Parameter: `privateEndpoints`
 
@@ -8017,6 +9387,7 @@ Specify the type of lock.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-privateendpointslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `privateEndpoints.lock.kind`
 
@@ -8036,6 +9407,13 @@ Specify the type of lock.
 ### Parameter: `privateEndpoints.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -8244,13 +9622,6 @@ Whether or not public network access is allowed for this resource. For security 
 
 - Required: No
 - Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Disabled'
-    'Enabled'
-  ]
-  ```
 
 ### Parameter: `redundancyMode`
 
@@ -8259,16 +9630,20 @@ Site redundancy mode.
 - Required: No
 - Type: string
 - Default: `'None'`
-- Allowed:
-  ```Bicep
-  [
-    'ActiveActive'
-    'Failover'
-    'GeoRedundant'
-    'Manual'
-    'None'
-  ]
-  ```
+
+### Parameter: `reserved`
+
+True if reserved (Linux); otherwise, false (Windows).
+
+- Required: No
+- Type: bool
+
+### Parameter: `resourceConfig`
+
+Function app resource requirements.
+
+- Required: No
+- Type: object
 
 ### Parameter: `roleAssignments`
 
@@ -8420,6 +9795,8 @@ Configuration for deployment slots for an app.
 | [`autoGeneratedDomainNameLabelScope`](#parameter-slotsautogenerateddomainnamelabelscope) | string | Specifies the scope of uniqueness for the default hostname during resource creation. |
 | [`basicPublishingCredentialsPolicies`](#parameter-slotsbasicpublishingcredentialspolicies) | array | The site publishing credential policy names which are associated with the site slot. |
 | [`clientAffinityEnabled`](#parameter-slotsclientaffinityenabled) | bool | If client affinity is enabled. |
+| [`clientAffinityPartitioningEnabled`](#parameter-slotsclientaffinitypartitioningenabled) | bool | To enable client affinity partitioning using CHIPS cookies. |
+| [`clientAffinityProxyEnabled`](#parameter-slotsclientaffinityproxyenabled) | bool | To enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance. |
 | [`clientCertEnabled`](#parameter-slotsclientcertenabled) | bool | To enable client certificate authentication (TLS mutual authentication). |
 | [`clientCertExclusionPaths`](#parameter-slotsclientcertexclusionpaths) | string | Client certificate authentication comma-separated exclusion paths. |
 | [`clientCertMode`](#parameter-slotsclientcertmode) | string | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
@@ -8428,31 +9805,40 @@ Configuration for deployment slots for an app.
 | [`containerSize`](#parameter-slotscontainersize) | int | Size of the function container. |
 | [`customDomainVerificationId`](#parameter-slotscustomdomainverificationid) | string | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
 | [`dailyMemoryTimeQuota`](#parameter-slotsdailymemorytimequota) | int | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
+| [`daprConfig`](#parameter-slotsdaprconfig) | object | Dapr configuration of the app. |
 | [`diagnosticSettings`](#parameter-slotsdiagnosticsettings) | array | The diagnostic settings of the service. |
 | [`dnsConfiguration`](#parameter-slotsdnsconfiguration) | object | Property to configure various DNS related settings for a site. |
+| [`e2eEncryptionEnabled`](#parameter-slotse2eencryptionenabled) | bool | End to End Encryption Setting. |
 | [`enabled`](#parameter-slotsenabled) | bool | Setting this value to false disables the app (takes the app offline). |
 | [`extensions`](#parameter-slotsextensions) | array | The extensions configuration. |
 | [`functionAppConfig`](#parameter-slotsfunctionappconfig) | object | The Function App config object. |
+| [`hostNameBindings`](#parameter-slotshostnamebindings) | array | Host Name Bindings for the slot. |
+| [`hostNamesDisabled`](#parameter-slotshostnamesdisabled) | bool | True to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process. |
 | [`hostNameSslStates`](#parameter-slotshostnamesslstates) | array | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | [`httpsOnly`](#parameter-slotshttpsonly) | bool | Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | [`hybridConnectionRelays`](#parameter-slotshybridconnectionrelays) | array | Names of hybrid connection relays to connect app with. |
 | [`hyperV`](#parameter-slotshyperv) | bool | Hyper-V sandbox. |
+| [`ipMode`](#parameter-slotsipmode) | string | Specifies the IP mode of the app. |
 | [`keyVaultAccessIdentityResourceId`](#parameter-slotskeyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
 | [`location`](#parameter-slotslocation) | string | Location for all Resources. |
 | [`lock`](#parameter-slotslock) | object | The lock settings of the service. |
+| [`managedEnvironmentResourceId`](#parameter-slotsmanagedenvironmentresourceid) | string | Azure Resource Manager ID of the customers selected Managed Environment on which to host this app. |
 | [`managedIdentities`](#parameter-slotsmanagedidentities) | object | The managed identity definition for this resource. |
+| [`outboundVnetRouting`](#parameter-slotsoutboundvnetrouting) | object | The outbound VNET routing configuration for the slot. |
 | [`privateEndpoints`](#parameter-slotsprivateendpoints) | array | Configuration details for private endpoints. |
 | [`publicNetworkAccess`](#parameter-slotspublicnetworkaccess) | string | Allow or block all public traffic. |
 | [`redundancyMode`](#parameter-slotsredundancymode) | string | Site redundancy mode. |
+| [`reserved`](#parameter-slotsreserved) | bool | True if reserved (Linux); otherwise, false (Windows). |
+| [`resourceConfig`](#parameter-slotsresourceconfig) | object | Function app resource requirements. |
 | [`roleAssignments`](#parameter-slotsroleassignments) | array | Array of role assignments to create. |
+| [`scmSiteAlsoStopped`](#parameter-slotsscmsitealsostopped) | bool | Stop SCM (KUDU) site when the app is stopped. |
 | [`serverFarmResourceId`](#parameter-slotsserverfarmresourceid) | string | The resource ID of the app service plan to use for the slot. |
 | [`siteConfig`](#parameter-slotssiteconfig) | object | The site config object. |
+| [`sshEnabled`](#parameter-slotssshenabled) | bool | Whether to enable SSH access. |
 | [`storageAccountRequired`](#parameter-slotsstorageaccountrequired) | bool | Checks if Customer provided storage account is required. |
 | [`tags`](#parameter-slotstags) | object | Tags of the resource. |
-| [`virtualNetworkSubnetId`](#parameter-slotsvirtualnetworksubnetid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
-| [`vnetContentShareEnabled`](#parameter-slotsvnetcontentshareenabled) | bool | To enable accessing content over virtual network. |
-| [`vnetImagePullEnabled`](#parameter-slotsvnetimagepullenabled) | bool | To enable pulling image over Virtual Network. |
-| [`vnetRouteAllEnabled`](#parameter-slotsvnetrouteallenabled) | bool | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
+| [`virtualNetworkSubnetResourceId`](#parameter-slotsvirtualnetworksubnetresourceid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
+| [`workloadProfileName`](#parameter-slotsworkloadprofilename) | string | Workload profile name for function app to execute on. |
 
 ### Parameter: `slots.name`
 
@@ -8474,15 +9860,6 @@ Specifies the scope of uniqueness for the default hostname during resource creat
 
 - Required: No
 - Type: string
-- Allowed:
-  ```Bicep
-  [
-    'NoReuse'
-    'ResourceGroupReuse'
-    'SubscriptionReuse'
-    'TenantReuse'
-  ]
-  ```
 
 ### Parameter: `slots.basicPublishingCredentialsPolicies`
 
@@ -8535,6 +9912,20 @@ Location for all Resources.
 ### Parameter: `slots.clientAffinityEnabled`
 
 If client affinity is enabled.
+
+- Required: No
+- Type: bool
+
+### Parameter: `slots.clientAffinityPartitioningEnabled`
+
+To enable client affinity partitioning using CHIPS cookies.
+
+- Required: No
+- Type: bool
+
+### Parameter: `slots.clientAffinityProxyEnabled`
+
+To enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance.
 
 - Required: No
 - Type: bool
@@ -12976,6 +14367,13 @@ Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 - Required: No
 - Type: int
 
+### Parameter: `slots.daprConfig`
+
+Dapr configuration of the app.
+
+- Required: No
+- Type: object
+
 ### Parameter: `slots.diagnosticSettings`
 
 The diagnostic settings of the service.
@@ -13129,6 +14527,13 @@ Property to configure various DNS related settings for a site.
 - Required: No
 - Type: object
 
+### Parameter: `slots.e2eEncryptionEnabled`
+
+End to End Encryption Setting.
+
+- Required: No
+- Type: bool
+
 ### Parameter: `slots.enabled`
 
 Setting this value to false disables the app (takes the app offline).
@@ -13149,6 +14554,248 @@ The Function App config object.
 
 - Required: No
 - Type: object
+
+### Parameter: `slots.hostNameBindings`
+
+Host Name Bindings for the slot.
+
+- Required: No
+- Type: array
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`azureResourceName`](#parameter-slotshostnamebindingsazureresourcename) | string | Azure resource name. |
+| [`azureResourceType`](#parameter-slotshostnamebindingsazureresourcetype) | string | Azure resource type. Possible values are Website and TrafficManager. |
+| [`certificate`](#parameter-slotshostnamebindingscertificate) | object | Certificate creation properties. If specified, a certificate will be created and used for this hostname binding. |
+| [`customHostNameDnsRecordType`](#parameter-slotshostnamebindingscustomhostnamednsrecordtype) | string | Custom DNS record type. Possible values are CName and A. |
+| [`domainResourceId`](#parameter-slotshostnamebindingsdomainresourceid) | string | Fully qualified ARM domain resource URI. |
+| [`hostNameType`](#parameter-slotshostnamebindingshostnametype) | string | Hostname type. Possible values are Verified and Managed. |
+| [`kind`](#parameter-slotshostnamebindingskind) | string | Kind of resource. |
+| [`name`](#parameter-slotshostnamebindingsname) | string | Hostname in the hostname binding. Defaults to the host name of the app/slot if not specified. |
+| [`siteName`](#parameter-slotshostnamebindingssitename) | string | App Service app name. |
+| [`sslState`](#parameter-slotshostnamebindingssslstate) | string | SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled. |
+| [`thumbprint`](#parameter-slotshostnamebindingsthumbprint) | string | SSL certificate thumbprint. |
+
+### Parameter: `slots.hostNameBindings.azureResourceName`
+
+Azure resource name.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.azureResourceType`
+
+Azure resource type. Possible values are Website and TrafficManager.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'TrafficManager'
+    'Website'
+  ]
+  ```
+
+### Parameter: `slots.hostNameBindings.certificate`
+
+Certificate creation properties. If specified, a certificate will be created and used for this hostname binding.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-slotshostnamebindingscertificatename) | string | Certificate name. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`canonicalName`](#parameter-slotshostnamebindingscertificatecanonicalname) | string | CNAME of the certificate to be issued via free certificate. |
+| [`domainValidationMethod`](#parameter-slotshostnamebindingscertificatedomainvalidationmethod) | string | Method of domain validation for free certificate. |
+| [`hostNames`](#parameter-slotshostnamebindingscertificatehostnames) | array | Certificate host names. |
+| [`keyVaultResourceId`](#parameter-slotshostnamebindingscertificatekeyvaultresourceid) | string | Key Vault resource ID. |
+| [`keyVaultSecretName`](#parameter-slotshostnamebindingscertificatekeyvaultsecretname) | string | Key Vault secret name. |
+| [`kind`](#parameter-slotshostnamebindingscertificatekind) | string | Kind of resource. |
+| [`location`](#parameter-slotshostnamebindingscertificatelocation) | string | Resource location. |
+| [`password`](#parameter-slotshostnamebindingscertificatepassword) | securestring | Certificate password. |
+| [`pfxBlob`](#parameter-slotshostnamebindingscertificatepfxblob) | securestring | Certificate data in PFX format. |
+| [`serverFarmResourceId`](#parameter-slotshostnamebindingscertificateserverfarmresourceid) | string | Server farm resource ID. |
+| [`tags`](#parameter-slotshostnamebindingscertificatetags) | object | Tags of the resource. |
+
+### Parameter: `slots.hostNameBindings.certificate.name`
+
+Certificate name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.canonicalName`
+
+CNAME of the certificate to be issued via free certificate.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.domainValidationMethod`
+
+Method of domain validation for free certificate.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.hostNames`
+
+Certificate host names.
+
+- Required: No
+- Type: array
+
+### Parameter: `slots.hostNameBindings.certificate.keyVaultResourceId`
+
+Key Vault resource ID.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.keyVaultSecretName`
+
+Key Vault secret name.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.kind`
+
+Kind of resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.location`
+
+Resource location.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.password`
+
+Certificate password.
+
+- Required: No
+- Type: securestring
+
+### Parameter: `slots.hostNameBindings.certificate.pfxBlob`
+
+Certificate data in PFX format.
+
+- Required: No
+- Type: securestring
+
+### Parameter: `slots.hostNameBindings.certificate.serverFarmResourceId`
+
+Server farm resource ID.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.certificate.tags`
+
+Tags of the resource.
+
+- Required: No
+- Type: object
+
+### Parameter: `slots.hostNameBindings.customHostNameDnsRecordType`
+
+Custom DNS record type. Possible values are CName and A.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'A'
+    'CName'
+  ]
+  ```
+
+### Parameter: `slots.hostNameBindings.domainResourceId`
+
+Fully qualified ARM domain resource URI.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.hostNameType`
+
+Hostname type. Possible values are Verified and Managed.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Managed'
+    'Verified'
+  ]
+  ```
+
+### Parameter: `slots.hostNameBindings.kind`
+
+Kind of resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.name`
+
+Hostname in the hostname binding. Defaults to the host name of the app/slot if not specified.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.siteName`
+
+App Service app name.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNameBindings.sslState`
+
+SSL type. Possible values are Disabled, SniEnabled, and IpBasedEnabled.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'IpBasedEnabled'
+    'SniEnabled'
+  ]
+  ```
+
+### Parameter: `slots.hostNameBindings.thumbprint`
+
+SSL certificate thumbprint.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.hostNamesDisabled`
+
+True to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `slots.hostNameSslStates`
 
@@ -13204,6 +14851,13 @@ Hyper-V sandbox.
 - Required: No
 - Type: bool
 
+### Parameter: `slots.ipMode`
+
+Specifies the IP mode of the app.
+
+- Required: No
+- Type: string
+
 ### Parameter: `slots.keyVaultAccessIdentityResourceId`
 
 The resource ID of the assigned identity to be used to access a key vault with.
@@ -13231,6 +14885,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-slotslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-slotslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-slotslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `slots.lock.kind`
 
@@ -13250,6 +14905,20 @@ Specify the type of lock.
 ### Parameter: `slots.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.lock.notes`
+
+Specify the notes of the lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.managedEnvironmentResourceId`
+
+Azure Resource Manager ID of the customers selected Managed Environment on which to host this app.
 
 - Required: No
 - Type: string
@@ -13281,6 +14950,13 @@ The resource ID(s) to assign to the resource. Required if a user assigned identi
 
 - Required: No
 - Type: array
+
+### Parameter: `slots.outboundVnetRouting`
+
+The outbound VNET routing configuration for the slot.
+
+- Required: No
+- Type: object
 
 ### Parameter: `slots.privateEndpoints`
 
@@ -13461,6 +15137,7 @@ Specify the type of lock.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-slotsprivateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-slotsprivateendpointslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-slotsprivateendpointslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `slots.privateEndpoints.lock.kind`
 
@@ -13480,6 +15157,13 @@ Specify the type of lock.
 ### Parameter: `slots.privateEndpoints.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `slots.privateEndpoints.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -13705,6 +15389,20 @@ Site redundancy mode.
 - Required: No
 - Type: string
 
+### Parameter: `slots.reserved`
+
+True if reserved (Linux); otherwise, false (Windows).
+
+- Required: No
+- Type: bool
+
+### Parameter: `slots.resourceConfig`
+
+Function app resource requirements.
+
+- Required: No
+- Type: object
+
 ### Parameter: `slots.roleAssignments`
 
 Array of role assignments to create.
@@ -13811,6 +15509,13 @@ The principal type of the assigned principal ID.
   ]
   ```
 
+### Parameter: `slots.scmSiteAlsoStopped`
+
+Stop SCM (KUDU) site when the app is stopped.
+
+- Required: No
+- Type: bool
+
 ### Parameter: `slots.serverFarmResourceId`
 
 The resource ID of the app service plan to use for the slot.
@@ -13824,6 +15529,13 @@ The site config object.
 
 - Required: No
 - Type: object
+
+### Parameter: `slots.sshEnabled`
+
+Whether to enable SSH access.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `slots.storageAccountRequired`
 
@@ -13839,30 +15551,23 @@ Tags of the resource.
 - Required: No
 - Type: object
 
-### Parameter: `slots.virtualNetworkSubnetId`
+### Parameter: `slots.virtualNetworkSubnetResourceId`
 
 Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
 
 - Required: No
 - Type: string
 
-### Parameter: `slots.vnetContentShareEnabled`
+### Parameter: `slots.workloadProfileName`
 
-To enable accessing content over virtual network.
-
-- Required: No
-- Type: bool
-
-### Parameter: `slots.vnetImagePullEnabled`
-
-To enable pulling image over Virtual Network.
+Workload profile name for function app to execute on.
 
 - Required: No
-- Type: bool
+- Type: string
 
-### Parameter: `slots.vnetRouteAllEnabled`
+### Parameter: `sshEnabled`
 
-Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
+Whether to enable SSH access.
 
 - Required: No
 - Type: bool
@@ -13882,36 +15587,19 @@ Tags of the resource.
 - Required: No
 - Type: object
 
-### Parameter: `virtualNetworkSubnetId`
+### Parameter: `virtualNetworkSubnetResourceId`
 
 Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
 
 - Required: No
 - Type: string
 
-### Parameter: `vnetContentShareEnabled`
+### Parameter: `workloadProfileName`
 
-To enable accessing content over virtual network.
-
-- Required: No
-- Type: bool
-- Default: `False`
-
-### Parameter: `vnetImagePullEnabled`
-
-To enable pulling image over Virtual Network.
+Workload profile name for function app to execute on.
 
 - Required: No
-- Type: bool
-- Default: `False`
-
-### Parameter: `vnetRouteAllEnabled`
-
-Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
-
-- Required: No
-- Type: bool
-- Default: `False`
+- Type: string
 
 ## Outputs
 
@@ -13919,6 +15607,7 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 | :-- | :-- | :-- |
 | `customDomainVerificationId` | string | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
 | `defaultHostname` | string | Default hostname of the app. |
+| `hostNameBindings` | array | The host name bindings of the site. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the site. |
 | `outboundIpAddresses` | string | The outbound IP addresses of the app. |
@@ -13934,9 +15623,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/res/network/private-endpoint:0.10.1` | Remote reference |
-| `br/public:avm/res/network/private-endpoint:0.11.0` | Remote reference |
-| `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/res/network/private-endpoint:0.12.0` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.1` | Remote reference |
 
 ## Notes
 
@@ -13980,4 +15668,4 @@ appSettingsKeyValuePairs: {
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

@@ -18,17 +18,17 @@ param location string = resourceGroup().location
 
 var addressPrefix = '192.168.1.0'
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
   name: managedIdentityName
   location: location
 }
 
-resource devCenter 'Microsoft.DevCenter/devcenters@2024-02-01' = {
+resource devCenter 'Microsoft.DevCenter/devcenters@2025-02-01' = {
   name: devCenterName
   location: location
 }
 
-resource devCenterProject 'Microsoft.DevCenter/projects@2024-02-01' = {
+resource devCenterProject 'Microsoft.DevCenter/projects@2025-02-01' = {
   name: devCenterProjectName
   location: location
   properties: {
@@ -36,7 +36,7 @@ resource devCenterProject 'Microsoft.DevCenter/projects@2024-02-01' = {
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-02-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-07-01' = {
   name: virtualNetworkName
   location: location
   properties: {
@@ -65,12 +65,12 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-02-01' = {
 }
 
 // Network Contributor role assignment
-resource roleAssignments 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(subscription().subscriptionId, 'DevOpsInfrastructure', 'Network Contributor', 'waf')
+resource roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().subscriptionId, 'DevOpsInfrastructure', 'Network Contributor', devOpsInfrastructureObjectID)
   properties: {
     principalId: devOpsInfrastructureObjectID // DevOpsInfrastructure service principal
     #disable-next-line use-resource-id-functions
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7'
+    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7' // Network Contributor
     principalType: 'ServicePrincipal'
   }
   scope: virtualNetwork

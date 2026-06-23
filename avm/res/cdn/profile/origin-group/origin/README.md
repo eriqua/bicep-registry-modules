@@ -2,17 +2,26 @@
 
 This module deploys a CDN Profile Origin.
 
+You can reference the module as follows:
+```bicep
+module profile 'br/public:avm/res/cdn/profile/origin-group/origin:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Data Collection](#Data-Collection)
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Cdn/profiles/originGroups/origins` | [2025-04-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2025-04-15/profiles/originGroups/origins) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Cdn/profiles/originGroups/origins` | 2025-04-15 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.cdn_profiles_origingroups_origins.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2025-04-15/profiles/originGroups/origins)</li></ul> |
 
 ## Parameters
 
@@ -30,10 +39,11 @@ This module deploys a CDN Profile Origin.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`enabledState`](#parameter-enabledstate) | string | Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend pool. |
+| [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`enforceCertificateNameCheck`](#parameter-enforcecertificatenamecheck) | bool | Whether to enable certificate name check at origin level. |
 | [`httpPort`](#parameter-httpport) | int | The value of the HTTP port. Must be between 1 and 65535. |
 | [`httpsPort`](#parameter-httpsport) | int | The value of the HTTPS port. Must be between 1 and 65535. |
-| [`originHostHeader`](#parameter-originhostheader) | string | The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint. |
+| [`originHostHeader`](#parameter-originhostheader) | string | The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. If you don't provide the value (or null), the host name would be used, otherwise the specified value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint. |
 | [`priority`](#parameter-priority) | int | Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5. |
 | [`sharedPrivateLinkResource`](#parameter-sharedprivatelinkresource) | object | The properties of the private link resource for private origin. |
 | [`weight`](#parameter-weight) | int | Weight of the origin in given origin group for load balancing. Must be between 1 and 1000. |
@@ -81,6 +91,14 @@ Whether to enable health probes to be made against backends defined under backen
   ]
   ```
 
+### Parameter: `enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `enforceCertificateNameCheck`
 
 Whether to enable certificate name check at origin level.
@@ -107,11 +125,10 @@ The value of the HTTPS port. Must be between 1 and 65535.
 
 ### Parameter: `originHostHeader`
 
-The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint.
+The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. If you don't provide the value (or null), the host name would be used, otherwise the specified value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint.
 
 - Required: No
 - Type: string
-- Default: `''`
 
 ### Parameter: `priority`
 
@@ -143,3 +160,7 @@ Weight of the origin in given origin group for load balancing. Must be between 1
 | `name` | string | The name of the origin. |
 | `resourceGroupName` | string | The name of the resource group the origin was created in. |
 | `resourceId` | string | The resource id of the origin. |
+
+## Data Collection
+
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

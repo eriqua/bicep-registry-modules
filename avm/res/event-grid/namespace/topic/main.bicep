@@ -1,6 +1,9 @@
 metadata name = 'Eventgrid Namespace Topics'
 metadata description = 'This module deploys an Eventgrid Namespace Topic.'
 
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
 @description('Conditional. The name of the parent EventGrid namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
@@ -11,7 +14,7 @@ import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
@@ -86,9 +89,29 @@ var formattedRoleAssignments = [
   })
 ]
 
+var enableReferencedModulesTelemetry = false
+
 // ============== //
 // Resources      //
 // ============== //
+
+resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.eventgrid-namespace-topic.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, 'eastus'), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
 
 resource namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' existing = {
   name: namespaceName
@@ -108,9 +131,9 @@ resource topic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: topic
 }
@@ -142,6 +165,7 @@ module topic_eventSubscriptions 'event-subscription/main.bicep' = [
       eventDeliverySchema: eventSubscription.?eventDeliverySchema
       filtersConfiguration: eventSubscription.?filtersConfiguration
       roleAssignments: eventSubscription.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]

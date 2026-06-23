@@ -13,10 +13,10 @@ param resourceGroupName string = 'dep-${namePrefix}-compute.virtualMachines-${se
 
 // Capacity constraints for VM type
 #disable-next-line no-hardcoded-location
-var enforcedLocation = 'uksouth'
+var enforcedLocation = 'germanywestcentral'
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmlinmax'
+param serviceShort string = 'vmlimax'
 
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '#_namePrefix_#'
@@ -31,7 +31,7 @@ param backupManagementServiceEnterpriseApplicationObjectId string = ''
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: enforcedLocation
 }
@@ -40,7 +40,6 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, enforcedLocation)}-nestedDependencies'
   params: {
-    location: enforcedLocation
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     applicationSecurityGroupName: 'dep-${namePrefix}-asg-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
@@ -53,6 +52,7 @@ module nestedDependencies 'dependencies.bicep' = {
     sshKeyName: 'dep-${namePrefix}-ssh-${serviceShort}'
     dcrName: 'dep-${namePrefix}-dcr-${serviceShort}'
     backupManagementServiceApplicationObjectId: backupManagementServiceEnterpriseApplicationObjectId
+    waitDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}-waitForBackupRolePropagation'
     logAnalyticsWorkspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
   }
 }
@@ -67,7 +67,6 @@ module diagnosticDependencies '../../../../../../../utilities/e2e-template-asset
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: enforcedLocation
   }
 }
 
@@ -86,7 +85,7 @@ module testDeployment '../../../main.bicep' = {
     imageReference: {
       publisher: 'Canonical'
       offer: '0001-com-ubuntu-server-focal'
-      sku: '20_04-lts-gen2' // Note: 22.04 does not support OMS extension
+      sku: '20_04-lts-gen2' // Note: 22.04 does not support DependencyAgent
       version: 'latest'
     }
     nicConfigurations: [
@@ -107,7 +106,7 @@ module testDeployment '../../../main.bicep' = {
             name: 'ipconfig01'
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
-              zones: [
+              availabilityZones: [
                 1
                 2
                 3
@@ -205,8 +204,8 @@ module testDeployment '../../../main.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_D2s_v3'
-    zone: 1
+    vmSize: 'Standard_D2s_v6'
+    availabilityZone: 1
     backupPolicyName: nestedDependencies.outputs.recoveryServicesVaultBackupPolicyName
     backupVaultName: nestedDependencies.outputs.recoveryServicesVaultName
     backupVaultResourceGroup: nestedDependencies.outputs.recoveryServicesVaultResourceGroupName
@@ -238,22 +237,22 @@ module testDeployment '../../../main.bicep' = {
     disablePasswordAuthentication: true
     encryptionAtHost: false
     extensionCustomScriptConfig: {
-      enabled: true
       name: 'myCustomScript'
-      fileData: [
-        {
-          storageAccountId: nestedDependencies.outputs.storageAccountResourceId
-          uri: nestedDependencies.outputs.storageAccountCSEFileUrl
-        }
-      ]
+      settings: {
+        commandToExecute: 'bash ${nestedDependencies.outputs.storageAccountCSEFileName}'
+      }
+      protectedSettings: {
+        // Needs 'Storage Blob Data Reader' role on the storage account
+        managedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+        fileUris: [
+          nestedDependencies.outputs.storageAccountCSEFileUrl
+        ]
+      }
       tags: {
         'hidden-title': 'This is visible in the resource name'
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
-    }
-    extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${nestedDependencies.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -369,7 +368,4 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
-  dependsOn: [
-    nestedDependencies // Required to leverage `existing` SSH key reference
-  ]
 }

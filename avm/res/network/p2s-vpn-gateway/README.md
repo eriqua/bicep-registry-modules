@@ -2,6 +2,14 @@
 
 This module deploys a Virtual Hub P2S Gateway.
 
+You can reference the module as follows:
+```bicep
+module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -13,10 +21,10 @@ This module deploys a Virtual Hub P2S Gateway.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/p2svpnGateways` | [2024-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-01-01/p2svpnGateways) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Network/p2svpnGateways` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_p2svpngateways.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/p2svpnGateways)</li></ul> |
 
 ## Usage examples
 
@@ -34,6 +42,8 @@ The following section provides usage examples for the module, which were used to
 
 This instance deploys the module with the minimum set of required parameters.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
+
 
 <details>
 
@@ -41,7 +51,6 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
-  name: 'p2sVpnGatewayDeployment'
   params: {
     // Required parameters
     name: 'npvgminp2sVpnGw'
@@ -124,6 +133,8 @@ param vpnServerConfigurationResourceId = '<vpnServerConfigurationResourceId>'
 
 This instance deploys the module with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
+
 
 <details>
 
@@ -131,22 +142,30 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
-  name: 'p2sVpnGatewayDeployment'
   params: {
     // Required parameters
     name: 'npvgmaxp2sVpnGw'
     virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     associatedRouteTableName: 'noneRouteTable'
+    configurationPolicyGroupAssociationResourceIds: [
+      '<configurationPolicyGroupResourceId>'
+    ]
     customDnsServers: [
       '10.50.10.50'
       '10.50.50.50'
     ]
     enableInternetSecurity: false
-    inboundRouteMapResourceId: '<inboundRouteMapResourceId>'
+    ipamPoolPrefixAllocations: [
+      {
+        numberOfIpAddresses: '256'
+        pool: {
+          id: 'testIpamPoolResourceId'
+        }
+      }
+    ]
     isRoutingPreferenceInternet: false
     location: '<location>'
-    outboundRouteMapResourceId: '<outboundRouteMapResourceId>'
     p2SConnectionConfigurationsName: 'p2sConnectionConfig'
     propagatedLabelNames: '<propagatedLabelNames>'
     propagatedRouteTableNames: [
@@ -185,6 +204,11 @@ module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
     "associatedRouteTableName": {
       "value": "noneRouteTable"
     },
+    "configurationPolicyGroupAssociationResourceIds": {
+      "value": [
+        "<configurationPolicyGroupResourceId>"
+      ]
+    },
     "customDnsServers": {
       "value": [
         "10.50.10.50",
@@ -194,17 +218,21 @@ module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
     "enableInternetSecurity": {
       "value": false
     },
-    "inboundRouteMapResourceId": {
-      "value": "<inboundRouteMapResourceId>"
+    "ipamPoolPrefixAllocations": {
+      "value": [
+        {
+          "numberOfIpAddresses": "256",
+          "pool": {
+            "id": "testIpamPoolResourceId"
+          }
+        }
+      ]
     },
     "isRoutingPreferenceInternet": {
       "value": false
     },
     "location": {
       "value": "<location>"
-    },
-    "outboundRouteMapResourceId": {
-      "value": "<outboundRouteMapResourceId>"
     },
     "p2SConnectionConfigurationsName": {
       "value": "p2sConnectionConfig"
@@ -248,15 +276,24 @@ param name = 'npvgmaxp2sVpnGw'
 param virtualHubResourceId = '<virtualHubResourceId>'
 // Non-required parameters
 param associatedRouteTableName = 'noneRouteTable'
+param configurationPolicyGroupAssociationResourceIds = [
+  '<configurationPolicyGroupResourceId>'
+]
 param customDnsServers = [
   '10.50.10.50'
   '10.50.50.50'
 ]
 param enableInternetSecurity = false
-param inboundRouteMapResourceId = '<inboundRouteMapResourceId>'
+param ipamPoolPrefixAllocations = [
+  {
+    numberOfIpAddresses: '256'
+    pool: {
+      id: 'testIpamPoolResourceId'
+    }
+  }
+]
 param isRoutingPreferenceInternet = false
 param location = '<location>'
-param outboundRouteMapResourceId = '<outboundRouteMapResourceId>'
 p2SConnectionConfigurationsName: 'p2sConnectionConfig'
 param propagatedLabelNames = '<propagatedLabelNames>'
 param propagatedRouteTableNames = [
@@ -277,6 +314,8 @@ param vpnServerConfigurationResourceId = '<vpnServerConfigurationResourceId>'
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
+
 
 <details>
 
@@ -284,7 +323,6 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module p2sVpnGateway 'br/public:avm/res/network/p2s-vpn-gateway:<version>' = {
-  name: 'p2sVpnGatewayDeployment'
   params: {
     // Required parameters
     name: 'npvgwafp2sVpnGw'
@@ -406,10 +444,12 @@ param vpnServerConfigurationResourceId = '<vpnServerConfigurationResourceId>'
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`configurationPolicyGroupAssociationResourceIds`](#parameter-configurationpolicygroupassociationresourceids) | array | The resource IDs of configuration policy groups to associate with the P2S connection configuration. |
 | [`customDnsServers`](#parameter-customdnsservers) | array | The custom DNS servers for the P2S VPN Gateway. |
 | [`enableInternetSecurity`](#parameter-enableinternetsecurity) | bool | Enable/Disable Internet Security; "Propagate Default Route". |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`inboundRouteMapResourceId`](#parameter-inboundroutemapresourceid) | string | The Resource ID of the inbound route map. |
+| [`ipamPoolPrefixAllocations`](#parameter-ipampoolprefixallocations) | array | A list of IPAM Pool prefix allocations for the VPN Client Address Pool. |
 | [`isRoutingPreferenceInternet`](#parameter-isroutingpreferenceinternet) | bool | The routing preference for the P2S VPN Gateway, Internet or Microsoft network. |
 | [`location`](#parameter-location) | string | Location where all resources will be created. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
@@ -451,6 +491,13 @@ The name of the associated route table. Required if deploying in a Secure Virtua
   ]
   ```
 
+### Parameter: `configurationPolicyGroupAssociationResourceIds`
+
+The resource IDs of configuration policy groups to associate with the P2S connection configuration.
+
+- Required: No
+- Type: array
+
 ### Parameter: `customDnsServers`
 
 The custom DNS servers for the P2S VPN Gateway.
@@ -481,6 +528,47 @@ The Resource ID of the inbound route map.
 - Required: No
 - Type: string
 
+### Parameter: `ipamPoolPrefixAllocations`
+
+A list of IPAM Pool prefix allocations for the VPN Client Address Pool.
+
+- Required: No
+- Type: array
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`numberOfIpAddresses`](#parameter-ipampoolprefixallocationsnumberofipaddresses) | string | The number of IP addresses to allocate. |
+| [`pool`](#parameter-ipampoolprefixallocationspool) | object | The associated Azure IPAM Pool resource. |
+
+### Parameter: `ipamPoolPrefixAllocations.numberOfIpAddresses`
+
+The number of IP addresses to allocate.
+
+- Required: No
+- Type: string
+
+### Parameter: `ipamPoolPrefixAllocations.pool`
+
+The associated Azure IPAM Pool resource.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`id`](#parameter-ipampoolprefixallocationspoolid) | string | The resource ID of the Azure IPAM Pool resource. |
+
+### Parameter: `ipamPoolPrefixAllocations.pool.id`
+
+The resource ID of the Azure IPAM Pool resource.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `isRoutingPreferenceInternet`
 
 The routing preference for the P2S VPN Gateway, Internet or Microsoft network.
@@ -509,6 +597,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -528,6 +617,13 @@ Specify the type of lock.
 ### Parameter: `lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -676,8 +772,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.1` | Remote reference |
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

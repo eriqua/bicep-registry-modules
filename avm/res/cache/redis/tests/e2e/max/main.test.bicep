@@ -26,7 +26,7 @@ param namePrefix string = '#_namePrefix_#'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: resourceLocation
 }
@@ -36,7 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, resourceLocation)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-    location: resourceLocation
+    managedIdentityName2: 'dep-${namePrefix}-msi2-${serviceShort}'
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
@@ -51,7 +51,6 @@ module diagnosticDependencies '../../../../../../../utilities/e2e-template-asset
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
-    location: resourceLocation
   }
 }
 
@@ -105,8 +104,8 @@ module testDeployment '../../../main.bicep' = [
         name: 'myCustomLockName'
       }
       minimumTlsVersion: '1.2'
-      zoneRedundant: true
-      zones: [1, 2]
+      availabilityZones: [1, 2]
+      zonalAllocationPolicy: 'UserDefined'
       privateEndpoints: [
         {
           privateDnsZoneGroup: {
@@ -184,6 +183,36 @@ module testDeployment '../../../main.bicep' = [
           )
           principalId: nestedDependencies.outputs.managedIdentityPrincipalId
           principalType: 'ServicePrincipal'
+        }
+      ]
+      accessPolicies: [
+        {
+          name: 'Read Only Policy'
+          permissions: '+@read'
+        }
+        {
+          name: 'Write Only Policy'
+          permissions: '+@write'
+        }
+        {
+          name: 'Admin Policy'
+          permissions: '+@all'
+        }
+        {
+          name: 'Custom Pattern Policy'
+          permissions: '+@read +set ~cache:*'
+        }
+      ]
+      accessPolicyAssignments: [
+        {
+          objectId: nestedDependencies.outputs.managedIdentityPrincipalId
+          objectIdAlias: 'dep-${namePrefix}-msi-${serviceShort}'
+          accessPolicyName: 'Custom Pattern Policy'
+        }
+        {
+          objectId: nestedDependencies.outputs.managedIdentityPrincipalId2
+          objectIdAlias: 'dep-${namePrefix}-msi2-${serviceShort}'
+          accessPolicyName: 'Admin Policy'
         }
       ]
       tags: {

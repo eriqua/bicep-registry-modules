@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.34.44.8038",
-      "templateHash": "13694499984980659314"
+      "version": "0.43.8.12551",
+      "templateHash": "1927332082839548531"
     },
     "name": "Public DNS Zones",
     "description": "This module deploys a Public DNS zone."
@@ -23,10 +23,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/A@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -54,22 +57,18 @@
         },
         "aRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "ipv4Address": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The IPv4 address of this A record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/A@2018-05-01#properties/properties/properties/ARecords"
+            },
             "description": "Optional. The list of A records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an A record."
       }
     },
     "aaaaType": {
@@ -83,10 +82,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/AAAA@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -114,22 +116,18 @@
         },
         "aaaaRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "ipv6Address": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The IPv6 address of this AAAA record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/AAAA@2018-05-01#properties/properties/properties/AAAARecords"
+            },
             "description": "Optional. The list of AAAA records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an AAAA record."
       }
     },
     "cnameType": {
@@ -143,10 +141,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/CNAME@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -174,19 +175,18 @@
         },
         "cnameRecord": {
           "type": "object",
-          "properties": {
-            "cname": {
-              "type": "string",
-              "metadata": {
-                "description": "Required. The canonical name of the CNAME record."
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/CNAME@2018-05-01#properties/properties/properties/CNAMERecord"
+            },
             "description": "Optional. The CNAME record in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a CNAME record."
       }
     },
     "caaType": {
@@ -200,10 +200,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/CAA@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -224,36 +227,70 @@
         },
         "caaRecords": {
           "type": "array",
+          "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/CAA@2018-05-01#properties/properties/properties/caaRecords"
+            },
+            "description": "Optional. The list of CAA records in the record set."
+          },
+          "nullable": true
+        }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a CAA record."
+      }
+    },
+    "dsType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the record."
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/DS@2023-07-01-preview#properties/properties/properties/metadata"
+            },
+            "description": "Optional. The metadata of the record."
+          },
+          "nullable": true
+        },
+        "ttl": {
+          "type": "int",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The TTL of the record."
+          }
+        },
+        "roleAssignments": {
+          "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "flags": {
-                "type": "int",
-                "minValue": 0,
-                "maxValue": 255,
-                "metadata": {
-                  "description": "Required. The flags for this CAA record as an integer between 0 and 255."
-                }
-              },
-              "tag": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The tag for this CAA record.."
-                }
-              },
-              "value": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The value for this CAA record."
-                }
-              }
-            }
+            "$ref": "#/definitions/roleAssignmentType"
           },
           "nullable": true,
           "metadata": {
-            "description": "Optional. The list of CAA records in the record set."
+            "description": "Optional. Array of role assignments to create."
           }
+        },
+        "dsRecords": {
+          "type": "array",
+          "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/DS@2023-07-01-preview#properties/properties/properties/DSRecords"
+            },
+            "description": "Optional. The list of DS records in the record set."
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a DS record."
       }
     },
     "mxType": {
@@ -267,10 +304,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/MX@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -291,28 +331,18 @@
         },
         "mxRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "exchange": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The domain name of the mail host for this MX record."
-                }
-              },
-              "preference": {
-                "type": "int",
-                "metadata": {
-                  "description": "Required. The preference value for this MX record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/MX@2018-05-01#properties/properties/properties/MXRecords"
+            },
             "description": "Optional. The list of MX records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an MX record."
       }
     },
     "nsType": {
@@ -326,10 +356,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/NS@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -350,22 +383,18 @@
         },
         "nsRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "nsdname": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The name server name for this NS record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/NS@2018-05-01#properties/properties/properties/NSRecords"
+            },
             "description": "Optional. The list of NS records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an NS record."
       }
     },
     "ptrType": {
@@ -379,10 +408,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/PTR@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -403,22 +435,18 @@
         },
         "ptrRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "ptrdname": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The PTR target domain name for this PTR record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/PTR@2018-05-01#properties/properties/properties/PTRRecords"
+            },
             "description": "Optional. The list of PTR records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a PTR record."
       }
     },
     "soaType": {
@@ -432,10 +460,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/SOA@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -456,55 +487,18 @@
         },
         "soaRecord": {
           "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "metadata": {
-                "description": "Required. The email contact for this SOA record."
-              }
-            },
-            "expireTime": {
-              "type": "int",
-              "metadata": {
-                "description": "Required. The expire time for this SOA record."
-              }
-            },
-            "host": {
-              "type": "string",
-              "metadata": {
-                "description": "Required. The domain name of the authoritative name server for this SOA record."
-              }
-            },
-            "minimumTTL": {
-              "type": "int",
-              "metadata": {
-                "description": "Required. The minimum value for this SOA record. By convention this is used to determine the negative caching duration."
-              }
-            },
-            "refreshTime": {
-              "type": "int",
-              "metadata": {
-                "description": "Required. The refresh value for this SOA record."
-              }
-            },
-            "retryTime": {
-              "type": "int",
-              "metadata": {
-                "description": "Required. The retry time for this SOA record."
-              }
-            },
-            "serialNumber": {
-              "type": "int",
-              "metadata": {
-                "description": "Required. The serial number for this SOA record."
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/SOA@2018-05-01#properties/properties/properties/SOARecord"
+            },
             "description": "Optional. The SOA record in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an SOA record."
       }
     },
     "srvType": {
@@ -518,10 +512,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/SRV@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -542,40 +539,18 @@
         },
         "srvRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "priority": {
-                "type": "int",
-                "metadata": {
-                  "description": "Required. The priority value for this SRV record."
-                }
-              },
-              "weight": {
-                "type": "int",
-                "metadata": {
-                  "description": "Required. The weight value for this SRV record."
-                }
-              },
-              "port": {
-                "type": "int",
-                "metadata": {
-                  "description": "Required. The port value for this SRV record."
-                }
-              },
-              "target": {
-                "type": "string",
-                "metadata": {
-                  "description": "Required. The target domain name for this SRV record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/SRV@2018-05-01#properties/properties/properties/SRVRecords"
+            },
             "description": "Optional. The list of SRV records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for an SRV record."
       }
     },
     "txtType": {
@@ -589,10 +564,13 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/TXT@2018-05-01#properties/properties/properties/metadata"
+            },
             "description": "Optional. The metadata of the record."
-          }
+          },
+          "nullable": true
         },
         "ttl": {
           "type": "int",
@@ -613,25 +591,18 @@
         },
         "txtRecords": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "value": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "metadata": {
-                  "description": "Required. The text value of this TXT record."
-                }
-              }
-            }
-          },
-          "nullable": true,
           "metadata": {
+            "__bicep_resource_derived_type!": {
+              "source": "Microsoft.Network/dnsZones/TXT@2018-05-01#properties/properties/properties/TXTRecords"
+            },
             "description": "Optional. The list of TXT records in the record set."
-          }
+          },
+          "nullable": true
         }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for a TXT record."
       }
     },
     "lockType": {
@@ -655,12 +626,19 @@
           "metadata": {
             "description": "Optional. Specify the type of lock."
           }
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the notes of the lock."
+          }
         }
       },
       "metadata": {
         "description": "An AVM-aligned type for a lock.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -735,7 +713,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a role assignment.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     }
@@ -787,6 +765,16 @@
       "nullable": true,
       "metadata": {
         "description": "Optional. Array of CAA records."
+      }
+    },
+    "ds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/dsType"
+      },
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Array of DS records."
       }
     },
     "mx": {
@@ -849,6 +837,13 @@
         "description": "Optional. Array of TXT records."
       }
     },
+    "enableDnsSec": {
+      "type": "bool",
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. Enable DNSSEC for the DNS zone. Public keys from the RP are ½ of the public/private keypairs used to sign requests. They are exposed because they need to be configured as DS recorded in the parent zone to create a chain of trust (which is a secondary manual step)."
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "global",
@@ -868,10 +863,13 @@
     },
     "tags": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Network/dnsZones@2018-05-01#properties/tags"
+        },
         "description": "Optional. Tags of the resource."
-      }
+      },
+      "nullable": true
     },
     "lock": {
       "$ref": "#/definitions/lockType",
@@ -908,13 +906,14 @@
       "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
       "Role Based Access Control Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
       "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
-    }
+    },
+    "enableReferencedModulesTelemetry": false
   },
   "resources": {
     "avmTelemetry": {
       "condition": "[parameters('enableTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2024-03-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('46d3xbcp.res.network-dnszone.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
       "properties": {
         "mode": "Incremental",
@@ -945,11 +944,11 @@
       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
-      "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]",
       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+        "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
       },
       "dependsOn": [
         "dnsZone"
@@ -962,7 +961,7 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Network/dnsZones/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Network/dnsZones', parameters('name'))]",
       "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones', parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
       "properties": {
         "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -983,7 +982,7 @@
         "count": "[length(coalesce(parameters('a'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-ARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1011,6 +1010,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('a'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -1020,8 +1022,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "13050408210894589328"
+              "version": "0.43.8.12551",
+              "templateHash": "389598384472155140"
             },
             "name": "Public DNS Zone A record",
             "description": "This module deploys a Public DNS Zone A record."
@@ -1118,17 +1120,23 @@
             },
             "aRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/A@2018-05-01#properties/properties/properties/ARecords"
+                },
                 "description": "Optional. The list of A records in the record set. Cannot be used in conjuction with the \"targetResource\" property."
-              }
+              },
+              "nullable": true
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/A@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -1152,6 +1160,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -1178,6 +1193,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-a.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -1202,7 +1237,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/A/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/A', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/A', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -1253,7 +1288,7 @@
         "count": "[length(coalesce(parameters('aaaa'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-AAAARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1281,6 +1316,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('aaaa'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -1290,8 +1328,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "15089066645661427475"
+              "version": "0.43.8.12551",
+              "templateHash": "4561615538146891446"
             },
             "name": "Public DNS Zone AAAA record",
             "description": "This module deploys a Public DNS Zone AAAA record."
@@ -1388,17 +1426,23 @@
             },
             "aaaaRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/AAAA@2018-05-01#properties/properties/properties/AAAARecords"
+                },
                 "description": "Optional. The list of AAAA records in the record set. Cannot be used in conjuction with the \"targetResource\" property."
-              }
+              },
+              "nullable": true
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/AAAA@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -1422,6 +1466,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -1448,6 +1499,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-aaaa.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -1472,7 +1543,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/AAAA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/AAAA', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/AAAA', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -1523,7 +1594,7 @@
         "count": "[length(coalesce(parameters('cname'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-CNAMERecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1551,6 +1622,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('cname'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -1560,8 +1634,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "2517212374743712090"
+              "version": "0.43.8.12551",
+              "templateHash": "15322646638744456568"
             },
             "name": "Public DNS Zone CNAME record",
             "description": "This module deploys a Public DNS Zone CNAME record."
@@ -1658,17 +1732,23 @@
             },
             "cnameRecord": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/CNAME@2018-05-01#properties/properties/properties/CNAMERecord"
+                },
                 "description": "Optional. A CNAME record. Cannot be used in conjuction with the \"targetResource\" property."
-              }
+              },
+              "nullable": true
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/CNAME@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -1692,6 +1772,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -1718,6 +1805,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-cname.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -1742,7 +1849,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/CNAME/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/CNAME', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/CNAME', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -1793,7 +1900,7 @@
         "count": "[length(coalesce(parameters('caa'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-CAARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1818,6 +1925,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('caa'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -1827,8 +1937,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "8441284361954821444"
+              "version": "0.43.8.12551",
+              "templateHash": "12572188588694819689"
             },
             "name": "Public DNS Zone CAA record",
             "description": "This module deploys a Public DNS Zone CAA record."
@@ -1925,17 +2035,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/CAA@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "caaRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/CAA@2018-05-01#properties/properties/properties/caaRecords"
+                },
                 "description": "Optional. The list of CAA records in the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -1952,6 +2068,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -1978,6 +2101,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-caa.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -2001,7 +2144,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/CAA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/CAA', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/CAA', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -2046,13 +2189,308 @@
         "dnsZone"
       ]
     },
+    "dnsZone_DS": {
+      "copy": {
+        "name": "dnsZone_DS",
+        "count": "[length(coalesce(parameters('ds'), createArray()))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-dnsZone-DSRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[coalesce(parameters('ds'), createArray())[copyIndex()].name]"
+          },
+          "metadata": {
+            "value": "[tryGet(coalesce(parameters('ds'), createArray())[copyIndex()], 'metadata')]"
+          },
+          "dsRecords": {
+            "value": "[tryGet(coalesce(parameters('ds'), createArray())[copyIndex()], 'dsRecords')]"
+          },
+          "ttl": {
+            "value": "[coalesce(tryGet(coalesce(parameters('ds'), createArray())[copyIndex()], 'ttl'), 3600)]"
+          },
+          "roleAssignments": {
+            "value": "[tryGet(coalesce(parameters('ds'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "535073538653211011"
+            },
+            "name": "Public DNS Zone DS record",
+            "description": "This module deploys a Public DNS Zone DS record."
+          },
+          "definitions": {
+            "roleAssignmentType": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The name (as GUID) of the role assignment. If not provided, a GUID will be generated."
+                  }
+                },
+                "roleDefinitionIdOrName": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+                  }
+                },
+                "principalId": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                  }
+                },
+                "principalType": {
+                  "type": "string",
+                  "allowedValues": [
+                    "Device",
+                    "ForeignGroup",
+                    "Group",
+                    "ServicePrincipal",
+                    "User"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The principal type of the assigned principal ID."
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The description of the role assignment."
+                  }
+                },
+                "condition": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\"."
+                  }
+                },
+                "conditionVersion": {
+                  "type": "string",
+                  "allowedValues": [
+                    "2.0"
+                  ],
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Version of the condition."
+                  }
+                },
+                "delegatedManagedIdentityResourceId": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. The Resource Id of the delegated managed identity resource."
+                  }
+                }
+              },
+              "metadata": {
+                "description": "An AVM-aligned type for a role assignment.",
+                "__bicep_imported_from!": {
+                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                }
+              }
+            }
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the DS record."
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/DS@2023-07-01-preview#properties/properties/properties/metadata"
+                },
+                "description": "Optional. The metadata attached to the record set."
+              },
+              "nullable": true
+            },
+            "dsRecords": {
+              "type": "array",
+              "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/DS@2023-07-01-preview#properties/properties/properties/DSRecords"
+                },
+                "description": "Optional. The list of DS records in the record set."
+              },
+              "nullable": true
+            },
+            "ttl": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Optional. The TTL (time-to-live) of the records in the record set."
+              }
+            },
+            "roleAssignments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/roleAssignmentType"
+              },
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
+            }
+          },
+          "variables": {
+            "copy": [
+              {
+                "name": "formattedRoleAssignments",
+                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]",
+                "input": "[union(coalesce(parameters('roleAssignments'), createArray())[copyIndex('formattedRoleAssignments')], createObject('roleDefinitionId', coalesce(tryGet(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex('formattedRoleAssignments')].roleDefinitionIdOrName), if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex('formattedRoleAssignments')].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex('formattedRoleAssignments')].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex('formattedRoleAssignments')].roleDefinitionIdOrName)))))]"
+              }
+            ],
+            "builtInRoleNames": {
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+              "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+              "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+              "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+              "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Role Based Access Control Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+            }
+          },
+          "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-ds.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            "dnsZone": {
+              "existing": true,
+              "type": "Microsoft.Network/dnsZones",
+              "apiVersion": "2018-05-01",
+              "name": "[parameters('dnsZoneName')]"
+            },
+            "DS": {
+              "type": "Microsoft.Network/dnsZones/DS",
+              "apiVersion": "2023-07-01-preview",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "properties": {
+                "metadata": "[parameters('metadata')]",
+                "DSRecords": "[parameters('dsRecords')]",
+                "TTL": "[parameters('ttl')]"
+              }
+            },
+            "DS_roleAssignments": {
+              "copy": {
+                "name": "DS_roleAssignments",
+                "count": "[length(coalesce(variables('formattedRoleAssignments'), createArray()))]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/DS', parameters('dnsZoneName'), parameters('name'))]",
+              "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/DS', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
+              "properties": {
+                "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
+                "principalId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId]",
+                "description": "[tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'description')]",
+                "principalType": "[tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'principalType')]",
+                "condition": "[tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'condition')]",
+                "conditionVersion": "[if(not(empty(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
+                "delegatedManagedIdentityResourceId": "[tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+              },
+              "dependsOn": [
+                "DS"
+              ]
+            }
+          },
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the deployed DS record."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the deployed DS record."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/DS', parameters('dnsZoneName'), parameters('name'))]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group of the deployed DS record."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
     "dnsZone_MX": {
       "copy": {
         "name": "dnsZone_MX",
         "count": "[length(coalesce(parameters('mx'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-MXRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2077,6 +2515,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('mx'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -2086,8 +2527,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "3558727736610302576"
+              "version": "0.43.8.12551",
+              "templateHash": "3603389633205469501"
             },
             "name": "Public DNS Zone MX record",
             "description": "This module deploys a Public DNS Zone MX record."
@@ -2184,17 +2625,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/MX@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "mxRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/MX@2018-05-01#properties/properties/properties/MXRecords"
+                },
                 "description": "Optional. The list of MX records in the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -2211,6 +2658,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -2237,6 +2691,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-mx.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -2260,7 +2734,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/MX/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/MX', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/MX', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -2311,7 +2785,7 @@
         "count": "[length(coalesce(parameters('ns'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-NSRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2336,6 +2810,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('ns'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -2345,8 +2822,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "14315870150258270228"
+              "version": "0.43.8.12551",
+              "templateHash": "2196351621223769421"
             },
             "name": "Public DNS Zone NS record",
             "description": "This module deploys a Public DNS Zone NS record."
@@ -2443,17 +2920,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/NS@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "nsRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/NS@2018-05-01#properties/properties/properties/NSRecords"
+                },
                 "description": "Optional. The list of NS records in the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -2470,6 +2953,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -2496,6 +2986,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-ns.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -2519,7 +3029,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/NS/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/NS', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/NS', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -2570,7 +3080,7 @@
         "count": "[length(coalesce(parameters('ptr'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-PTRRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2595,6 +3105,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('ptr'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -2604,8 +3117,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "3147345432559843017"
+              "version": "0.43.8.12551",
+              "templateHash": "5850229438353848349"
             },
             "name": "Public DNS Zone PTR record",
             "description": "This module deploys a Public DNS Zone PTR record."
@@ -2702,17 +3215,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/PTR@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "ptrRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/PTR@2018-05-01#properties/properties/properties/PTRRecords"
+                },
                 "description": "Optional. The list of PTR records in the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -2729,6 +3248,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -2755,6 +3281,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-ptr.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -2778,7 +3324,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/PTR/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/PTR', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/PTR', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -2829,7 +3375,7 @@
         "count": "[length(coalesce(parameters('soa'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-SOARecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2854,6 +3400,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('soa'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -2863,8 +3412,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "17514835811263769713"
+              "version": "0.43.8.12551",
+              "templateHash": "2095767860511428152"
             },
             "name": "Public DNS Zone SOA record",
             "description": "This module deploys a Public DNS Zone SOA record."
@@ -2961,17 +3510,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/SOA@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "soaRecord": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/SOA@2018-05-01#properties/properties/properties/SOARecord"
+                },
                 "description": "Optional. A SOA record."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -2988,6 +3543,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -3014,6 +3576,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-soa.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -3037,7 +3619,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/SOA/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/SOA', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/SOA', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -3088,7 +3670,7 @@
         "count": "[length(coalesce(parameters('srv'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-SRVRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -3113,6 +3695,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('srv'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -3122,8 +3707,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "11224367300955558445"
+              "version": "0.43.8.12551",
+              "templateHash": "10421457380195711612"
             },
             "name": "Public DNS Zone SRV record",
             "description": "This module deploys a Public DNS Zone SRV record."
@@ -3220,17 +3805,23 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/SRV@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "srvRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/SRV@2018-05-01#properties/properties/properties/SRVRecords"
+                },
                 "description": "Optional. The list of SRV records in the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -3247,6 +3838,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -3273,6 +3871,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-srv.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -3296,7 +3914,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/SRV/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/SRV', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/SRV', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -3347,7 +3965,7 @@
         "count": "[length(coalesce(parameters('txt'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-dnsZone-TXTRecord-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -3372,6 +3990,9 @@
           },
           "roleAssignments": {
             "value": "[tryGet(coalesce(parameters('txt'), createArray())[copyIndex()], 'roleAssignments')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -3381,8 +4002,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.34.44.8038",
-              "templateHash": "1999603597680394703"
+              "version": "0.43.8.12551",
+              "templateHash": "14332126828407715809"
             },
             "name": "Public DNS Zone TXT record",
             "description": "This module deploys a Public DNS Zone TXT record."
@@ -3479,10 +4100,13 @@
             },
             "metadata": {
               "type": "object",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/TXT@2018-05-01#properties/properties/properties/metadata"
+                },
                 "description": "Optional. The metadata attached to the record set."
-              }
+              },
+              "nullable": true
             },
             "ttl": {
               "type": "int",
@@ -3493,10 +4117,13 @@
             },
             "txtRecords": {
               "type": "array",
-              "nullable": true,
               "metadata": {
+                "__bicep_resource_derived_type!": {
+                  "source": "Microsoft.Network/dnsZones/TXT@2018-05-01#properties/properties/properties/TXTRecords"
+                },
                 "description": "Optional. The list of TXT records in the record set."
-              }
+              },
+              "nullable": true
             },
             "roleAssignments": {
               "type": "array",
@@ -3506,6 +4133,13 @@
               "nullable": true,
               "metadata": {
                 "description": "Optional. Array of role assignments to create."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
               }
             }
           },
@@ -3532,6 +4166,26 @@
             }
           },
           "resources": {
+            "avmTelemetry": {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-txt.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
             "dnsZone": {
               "existing": true,
               "type": "Microsoft.Network/dnsZones",
@@ -3555,7 +4209,7 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/dnsZones/{0}/TXT/{1}', parameters('dnsZoneName'), parameters('name'))]",
+              "scope": "[resourceId('Microsoft.Network/dnsZones/TXT', parameters('dnsZoneName'), parameters('name'))]",
               "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Network/dnsZones/TXT', parameters('dnsZoneName'), parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
               "properties": {
                 "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -3592,6 +4246,114 @@
                 "description": "The resource group of the deployed TXT record."
               },
               "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dnsZone"
+      ]
+    },
+    "dnsZone_dnssecConfig": {
+      "condition": "[equals(parameters('enableDnsSec'), true())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-dnsZone-DnssecConfig', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dnsZoneName": {
+            "value": "[parameters('name')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "10291808938274577934"
+            },
+            "name": "Public DNS Zone DNSSEC Config",
+            "description": "This module deploys a Public DNS Zone DNSSEC configuration."
+          },
+          "parameters": {
+            "dnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.network-dnszone-dnssecconfig.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Network/dnsZones/dnssecConfigs",
+              "apiVersion": "2023-07-01-preview",
+              "name": "[format('{0}/{1}', parameters('dnsZoneName'), 'default')]"
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the DNSSEC configuration."
+              },
+              "value": "default"
+            },
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the DNSSEC configuration."
+              },
+              "value": "[resourceId('Microsoft.Network/dnsZones/dnssecConfigs', parameters('dnsZoneName'), 'default')]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource group the DNSSEC configuration was deployed into."
+              },
+              "value": "[resourceGroup().name]"
+            },
+            "signingKeys": {
+              "type": "array",
+              "metadata": {
+                "description": "The signing keys of the DNSSEC configuration."
+              },
+              "value": "[reference(resourceId('Microsoft.Network/dnsZones/dnssecConfigs', parameters('dnsZoneName'), 'default'), '2023-07-01-preview').signingKeys]"
             }
           }
         }

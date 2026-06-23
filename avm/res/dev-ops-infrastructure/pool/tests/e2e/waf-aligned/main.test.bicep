@@ -36,6 +36,11 @@ var enforcedLocation = 'uksouth'
 // ============ //
 // Dependencies //
 // ============ //
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
+  name: resourceGroupName
+  location: enforcedLocation
+}
+
 module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, enforcedLocation)}-nestedDependencies'
@@ -46,13 +51,6 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     devOpsInfrastructureObjectID: devOpsInfrastructureObjectID
   }
-}
-
-// General resources
-// =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: resourceGroupName
-  location: enforcedLocation
 }
 
 // ============== //
@@ -66,7 +64,6 @@ module testDeployment '../../../main.bicep' = [
     name: '${uniqueString(deployment().name, enforcedLocation)}-test-${serviceShort}-${iteration}'
     params: {
       name: '${namePrefix}${serviceShort}001'
-      location: enforcedLocation
       agentProfile: {
         kind: 'Stateless'
         resourcePredictionsProfile: {
@@ -82,7 +79,7 @@ module testDeployment '../../../main.bicep' = [
           ephemeralType: 'CacheDisk'
         }
       ]
-      fabricProfileSkuName: 'Standard_D2_v2'
+      fabricProfileSkuName: 'Standard_DS2_v2'
       subnetResourceId: nestedDependencies.outputs.subnetResourceId
       organizationProfile: {
         kind: 'AzureDevOps'

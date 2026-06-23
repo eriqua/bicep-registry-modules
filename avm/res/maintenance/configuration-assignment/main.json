@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.36.1.42791",
-      "templateHash": "3336929556126511635"
+      "version": "0.43.1.21952",
+      "templateHash": "18345408418316753894"
     },
     "name": "Maintenance Configuration Assignments",
     "description": "This module deploys a Maintenance Configuration Assignment."
@@ -144,7 +144,7 @@
     "avmTelemetry": {
       "condition": "[parameters('enableTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2024-03-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('46d3xbcp.res.maintenance-configurationassignment.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
       "properties": {
         "mode": "Incremental",
@@ -172,7 +172,7 @@
       "condition": "[not(equals(parameters('resourceId'), null()))]",
       "type": "Microsoft.Maintenance/configurationAssignments",
       "apiVersion": "2023-04-01",
-      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', last(split(coalesce(parameters('resourceId'), ''), '/')))]",
+      "scope": "[resourceId('Microsoft.Compute/virtualMachines', last(split(coalesce(parameters('resourceId'), ''), '/')))]",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "properties": {

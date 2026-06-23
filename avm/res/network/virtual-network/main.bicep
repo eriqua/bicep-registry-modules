@@ -8,7 +8,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Required. An Array of 1 or more IP Address Prefixes OR the resource ID of the IPAM pool to be used for the Virtual Network. When specifying an IPAM pool resource ID you must also set a value for the parameter called `ipamPoolNumberOfIpAddresses`.')
-param addressPrefixes array
+param addressPrefixes string[]
 
 @description('Optional. Number of IP addresses allocated from the pool. To be used only when the addressPrefix param is defined with a resource ID of an IPAM pool.')
 param ipamPoolNumberOfIpAddresses string?
@@ -42,26 +42,36 @@ param vnetEncryptionEnforcement string = 'AllowUnencrypted'
 @description('Optional. The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null.')
 param flowTimeoutInMinutes int = 0
 
-import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.2.1'
+import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingFullType[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.2.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.2.1'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.7.0'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
 @description('Optional. Tags of the resource.')
-param tags object?
+param tags resourceInput<'Microsoft.Network/virtualNetworks@2025-05-01'>.tags?
 
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
 
 @description('Optional. Indicates if VM protection is enabled for all the subnets in the virtual network.')
 param enableVmProtection bool?
+
+@allowed([
+  'Basic'
+  'Disabled'
+])
+@description('Optional. Enables high scale private endpoints for the virtual network. This is necessary if the virtual network requires more than 1000 private endpoints or is peered to virtual networks with a total of more than 4000 private endpoints.')
+param enablePrivateEndpointVNetPolicies string = 'Disabled'
+
+@description('Optional. Array of IpAllocation which reference this VNET.')
+param ipAllocations resourceInput<'Microsoft.Network/virtualNetworks@2025-05-01'>.properties.ipAllocations?
 
 var enableReferencedModulesTelemetry = false
 
@@ -99,7 +109,7 @@ var formattedRoleAssignments = [
 // ============ //
 
 #disable-next-line no-deployments-resources
-resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
   name: '46d3xbcp.res.network-virtualnetwork.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
   properties: {
     mode: 'Incremental'
@@ -117,11 +127,12 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' = {
   name: name
   location: location
   tags: tags
   properties: {
+    ipAllocations: ipAllocations
     addressSpace: contains(addressPrefixes[0], '/Microsoft.Network/networkManagers/')
       ? {
           ipamPoolPrefixAllocations: [
@@ -160,13 +171,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
       : null
     flowTimeoutInMinutes: flowTimeoutInMinutes != 0 ? flowTimeoutInMinutes : null
     enableVmProtection: enableVmProtection
+    privateEndpointVNetPolicies: enablePrivateEndpointVNetPolicies
   }
 }
 
 @batchSize(1)
 module virtualNetwork_subnets 'subnet/main.bicep' = [
   for (subnet, index) in (subnets ?? []): {
-    name: '${uniqueString(deployment().name, location)}-subnet-${index}'
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-subnet-${index}'
     params: {
       virtualNetworkName: virtualNetwork.name
       name: subnet.name
@@ -185,6 +197,8 @@ module virtualNetwork_subnets 'subnet/main.bicep' = [
       serviceEndpoints: subnet.?serviceEndpoints
       defaultOutboundAccess: subnet.?defaultOutboundAccess
       sharingScope: subnet.?sharingScope
+      ipAllocations: subnet.?ipAllocations
+      serviceGateway: subnet.?serviceGateway
       enableTelemetry: enableReferencedModulesTelemetry
     }
   }
@@ -193,7 +207,7 @@ module virtualNetwork_subnets 'subnet/main.bicep' = [
 // Local to Remote peering
 module virtualNetwork_peering_local 'virtual-network-peering/main.bicep' = [
   for (peering, index) in (peerings ?? []): {
-    name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-virtualNetworkPeering-local-${index}'
     // This is a workaround for an error in which the peering is deployed whilst the subnet creation is still taking place
     // TODO: https://github.com/Azure/bicep/issues/1013 would be a better solution
     dependsOn: [
@@ -208,6 +222,8 @@ module virtualNetwork_peering_local 'virtual-network-peering/main.bicep' = [
       allowVirtualNetworkAccess: peering.?allowVirtualNetworkAccess
       doNotVerifyRemoteGateways: peering.?doNotVerifyRemoteGateways
       useRemoteGateways: peering.?useRemoteGateways
+      enableOnlyIPv6Peering: peering.?enableOnlyIPv6Peering
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -215,7 +231,7 @@ module virtualNetwork_peering_local 'virtual-network-peering/main.bicep' = [
 // Remote to local peering (reverse)
 module virtualNetwork_peering_remote 'virtual-network-peering/main.bicep' = [
   for (peering, index) in (peerings ?? []): if (peering.?remotePeeringEnabled ?? false) {
-    name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-virtualNetworkPeering-remote-${index}'
     // This is a workaround for an error in which the peering is deployed whilst the subnet creation is still taking place
     // TODO: https://github.com/Azure/bicep/issues/1013 would be a better solution
     dependsOn: [
@@ -234,6 +250,8 @@ module virtualNetwork_peering_remote 'virtual-network-peering/main.bicep' = [
       allowVirtualNetworkAccess: peering.?remotePeeringAllowVirtualNetworkAccess
       doNotVerifyRemoteGateways: peering.?remotePeeringDoNotVerifyRemoteGateways
       useRemoteGateways: peering.?remotePeeringUseRemoteGateways
+      enableOnlyIPv6Peering: peering.?enableOnlyIPv6Peering
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -242,9 +260,9 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: virtualNetwork
 }
@@ -318,6 +336,7 @@ output location string = virtualNetwork.location
 //   Definitions   //
 // =============== //
 
+@export()
 type peeringType = {
   @description('Optional. The Name of VNET Peering resource. If not provided, default value will be peer-localVnetName-remoteVnetName.')
   name: string?
@@ -360,8 +379,12 @@ type peeringType = {
 
   @description('Optional. If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway. Default is false.')
   remotePeeringUseRemoteGateways: bool?
+
+  @description('Optional. Whether only Ipv6 address space is peered for subnet peering.')
+  enableOnlyIPv6Peering: bool?
 }
 
+@export()
 type subnetType = {
   @description('Required. The Name of the subnet resource.')
   name: string
@@ -373,20 +396,10 @@ type subnetType = {
   addressPrefixes: string[]?
 
   @description('Conditional. The address space for the subnet, deployed from IPAM Pool. Required if `addressPrefixes` and `addressPrefix` is empty and the VNet address space configured to use IPAM Pool.')
-  ipamPoolPrefixAllocations: [
-    {
-      @description('Required. The Resource ID of the IPAM pool.')
-      pool: {
-        @description('Required. The Resource ID of the IPAM pool.')
-        id: string
-      }
-      @description('Required. Number of IP addresses allocated from the pool.')
-      numberOfIpAddresses: string
-    }
-  ]?
+  ipamPoolPrefixAllocations: resourceInput<'Microsoft.Network/virtualNetworks/subnets@2025-05-01'>.properties.ipamPoolPrefixAllocations?
 
   @description('Optional. Application gateway IP configurations of virtual network resource.')
-  applicationGatewayIPConfigurations: object[]?
+  applicationGatewayIPConfigurations: resourceInput<'Microsoft.Network/virtualNetworks/subnets@2025-05-01'>.properties.applicationGatewayIPConfigurations?
 
   @description('Optional. The delegation to enable on the subnet.')
   delegation: string?
@@ -410,7 +423,7 @@ type subnetType = {
   routeTableResourceId: string?
 
   @description('Optional. An array of service endpoint policies.')
-  serviceEndpointPolicies: object[]?
+  serviceEndpointPolicies: resourceInput<'Microsoft.Network/virtualNetworks/subnets@2025-05-01'>.properties.serviceEndpointPolicies?
 
   @description('Optional. The service endpoints to enable on the subnet.')
   serviceEndpoints: string[]?
@@ -420,4 +433,10 @@ type subnetType = {
 
   @description('Optional. Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.')
   sharingScope: ('DelegatedServices' | 'Tenant')?
+
+  @description('Optional. Array of IpAllocation which reference this subnet.')
+  ipAllocations: resourceInput<'Microsoft.Network/virtualNetworks/subnets@2025-05-01'>.properties.ipAllocations?
+
+  @description('Optional. Reference to an existing service gateway.')
+  serviceGateway: resourceInput<'Microsoft.Network/virtualNetworks/subnets@2025-05-01'>.properties.serviceGateway?
 }

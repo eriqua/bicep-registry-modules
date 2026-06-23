@@ -9,11 +9,11 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
@@ -103,6 +103,8 @@ var formattedRoleAssignments = [
   })
 ]
 
+var enableReferencedModulesTelemetry = false
+
 #disable-next-line no-deployments-resources
 resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
   name: '46d3xbcp.res.healthcareapis-workspace.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
@@ -135,9 +137,9 @@ resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: workspace
 }
@@ -192,6 +194,7 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [
       resourceVersionPolicy: fhir.?resourceVersionPolicy
       resourceVersionOverrides: fhir.?resourceVersionOverrides
       smartProxyEnabled: fhir.?smartProxyEnabled
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -213,6 +216,7 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [
       corsAllowCredentials: dicom.?corsAllowCredentials
       diagnosticSettings: dicom.?diagnosticSettings
       lock: dicom.?lock ?? lock
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -233,6 +237,7 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [
       managedIdentities: iotConnector.?managedIdentities
       diagnosticSettings: iotConnector.?diagnosticSettings
       lock: iotConnector.?lock ?? lock
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]

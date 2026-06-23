@@ -24,17 +24,17 @@ param enableTelemetry bool = true
   }
 '''
 })
-param api object?
+param api resourceInput<'Microsoft.Web/connections@2016-06-01'>.properties.api?
 
 @description('Optional. Dictionary of custom parameter values for specific connections.')
-param customParameterValues object?
+param customParameterValues resourceInput<'Microsoft.Web/connections@2016-06-01'>.properties.customParameterValues?
 
 @description('Required. Display name connection. Example: `blobconnection` when using blobs. It can change depending on the resource.')
 param displayName string
 
 @description('Optional. Dictionary of nonsecret parameter values.')
 #disable-next-line secure-secrets-in-params // Not a secret
-param nonSecretParameterValues object?
+param nonSecretParameterValues resourceInput<'Microsoft.Web/connections@2016-06-01'>.properties.nonSecretParameterValues?
 
 @description('Optional. Connection strings or access keys for connection. Example: `accountName` and `accessKey` when using blobs. It can change depending on the resource.')
 @secure()
@@ -57,7 +57,14 @@ param nonSecretParameterValues object?
     }
   '''
 })
-param parameterValues object?
+param parameterValues resourceInput<'Microsoft.Web/connections@2016-06-01'>.properties.parameterValues?
+
+@description('Optional. The kind of the connection. Use `V2` for managed identity authentication.')
+param kind string?
+
+@description('Optional. Alternative parameter values for single-authentication (MSI). When provided, `parameterValueType` is automatically set to `Alternative`.')
+@secure()
+param alternativeParameterValues object?
 
 @description('Optional. Additional parameter value set used for authentication settings.')
 @metadata({
@@ -82,7 +89,7 @@ param roleAssignments roleAssignmentType[]?
 @description('Optional. The status of the connection.')
 param statuses object[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.2.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
@@ -98,7 +105,7 @@ param lock lockType?
 param tags resourceInput<'Microsoft.Web/connections@2016-06-01'>.tags?
 
 @description('Optional. Links to test the API connection.')
-param testLinks object[]?
+param testLinks resourceInput<'Microsoft.Web/connections@2016-06-01'>.properties.testLinks?
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -152,6 +159,8 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   name: name
   location: location
   tags: tags
+  #disable-next-line BCP037 BCP187 // The 'kind' property is not yet available in the Bicep type definition but is supported by the API.
+  kind: any(kind)
   properties: {
     displayName: displayName
     customParameterValues: customParameterValues
@@ -160,7 +169,11 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
     nonSecretParameterValues: nonSecretParameterValues
     testLinks: testLinks
     statuses: statuses
-    #disable-next-line BCP037 // the parameterValueSet is not yet made available in the resource provider, which generates warnings. Disable the warning for now.
+    #disable-next-line BCP037 // The 'parameterValueType' property is not yet available in the Bicep type definition but is supported by the API.
+    parameterValueType: !empty(alternativeParameterValues) ? 'Alternative' : null
+    #disable-next-line BCP037 // The 'alternativeParameterValues' property is not yet available in the Bicep type definition but is supported by the API.
+    alternativeParameterValues: alternativeParameterValues
+    #disable-next-line BCP037 // The 'parameterValueSet' property is not yet available in the Bicep type definition but is supported by the API.
     parameterValueSet: parameterValueSet
   }
 }
@@ -169,9 +182,9 @@ resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: connection
 }

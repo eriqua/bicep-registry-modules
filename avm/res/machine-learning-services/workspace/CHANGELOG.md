@@ -2,6 +2,41 @@
 
 The latest version of the changelog can be found [here](https://github.com/Azure/bicep-registry-modules/blob/main/avm/res/machine-learning-services/workspace/CHANGELOG.md).
 
+## 0.13.2
+
+### Changes
+
+- Publishing child module `avm/res/machine-learning-services/workspace/compute`
+- Publishing child module `avm/res/machine-learning-services/workspace/connection`
+- Publishing child module `avm/res/machine-learning-services/workspace/datastore`
+
+### Breaking Changes
+
+- None
+
+## 0.13.1
+
+### Changes
+
+- Recompiled the template with latest Bicep version `0.42.1.51946`
+
+### Breaking Changes
+
+- None
+
+## 0.13.0
+
+### Changes
+
+- Add support for datastores
+- Updated ReadMe with AzAdvertizer reference
+- Updated LockType to 'avm-common-types version' `0.6.0`, enabling custom notes for locks.
+- Updated `privateEndpoints` parameter type to 'avm-common-types' `0.6.1`, adding a type to its `tags` property
+
+### Breaking Changes
+
+- None
+
 ## 0.12.1
 
 ### Changes

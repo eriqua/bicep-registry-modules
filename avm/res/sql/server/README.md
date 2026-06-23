@@ -2,6 +2,14 @@
 
 This module deploys an Azure SQL Server.
 
+You can reference the module as follows:
+```bicep
+module server 'br/public:avm/res/sql/server:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -14,28 +22,29 @@ This module deploys an Azure SQL Server.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.KeyVault/vaults/secrets` | [2024-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2024-11-01/vaults/secrets) |
-| `Microsoft.Network/privateEndpoints` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Sql/servers` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers) |
-| `Microsoft.Sql/servers/auditingSettings` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/auditingSettings) |
-| `Microsoft.Sql/servers/connectionPolicies` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/connectionPolicies) |
-| `Microsoft.Sql/servers/databases` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/databases) |
-| `Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/databases/backupLongTermRetentionPolicies) |
-| `Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/databases/backupShortTermRetentionPolicies) |
-| `Microsoft.Sql/servers/elasticPools` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/elasticPools) |
-| `Microsoft.Sql/servers/encryptionProtector` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/encryptionProtector) |
-| `Microsoft.Sql/servers/failoverGroups` | [2024-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2024-05-01-preview/servers/failoverGroups) |
-| `Microsoft.Sql/servers/firewallRules` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/firewallRules) |
-| `Microsoft.Sql/servers/keys` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/keys) |
-| `Microsoft.Sql/servers/securityAlertPolicies` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/securityAlertPolicies) |
-| `Microsoft.Sql/servers/virtualNetworkRules` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/virtualNetworkRules) |
-| `Microsoft.Sql/servers/vulnerabilityAssessments` | [2023-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2023-08-01/servers/vulnerabilityAssessments) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Authorization/roleAssignments` | 2022-04-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_roleassignments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)</li></ul> |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.insights_diagnosticsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)</li></ul> |
+| `Microsoft.KeyVault/vaults/secrets` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults_secrets.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2025-05-01/vaults/secrets)</li></ul> |
+| `Microsoft.Network/privateEndpoints` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints)</li></ul> |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints_privatednszonegroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints/privateDnsZoneGroups)</li></ul> |
+| `Microsoft.Sql/servers` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers)</li></ul> |
+| `Microsoft.Sql/servers/auditingSettings` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_auditingsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/auditingSettings)</li></ul> |
+| `Microsoft.Sql/servers/connectionPolicies` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_connectionpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/connectionPolicies)</li></ul> |
+| `Microsoft.Sql/servers/databases` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_databases.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/databases)</li></ul> |
+| `Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_databases_backuplongtermretentionpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/databases/backupLongTermRetentionPolicies)</li></ul> |
+| `Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_databases_backupshorttermretentionpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/databases/backupShortTermRetentionPolicies)</li></ul> |
+| `Microsoft.Sql/servers/elasticPools` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_elasticpools.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/elasticPools)</li></ul> |
+| `Microsoft.Sql/servers/encryptionProtector` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_encryptionprotector.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/encryptionProtector)</li></ul> |
+| `Microsoft.Sql/servers/failoverGroups` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_failovergroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/failoverGroups)</li></ul> |
+| `Microsoft.Sql/servers/firewallRules` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_firewallrules.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/firewallRules)</li></ul> |
+| `Microsoft.Sql/servers/keys` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_keys.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/keys)</li></ul> |
+| `Microsoft.Sql/servers/outboundFirewallRules` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_outboundfirewallrules.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/outboundFirewallRules)</li></ul> |
+| `Microsoft.Sql/servers/securityAlertPolicies` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_securityalertpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/securityAlertPolicies)</li></ul> |
+| `Microsoft.Sql/servers/virtualNetworkRules` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_virtualnetworkrules.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/virtualNetworkRules)</li></ul> |
+| `Microsoft.Sql/servers/vulnerabilityAssessments` | 2025-01-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_servers_vulnerabilityassessments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2025-01-01/servers/vulnerabilityAssessments)</li></ul> |
 
 ## Usage examples
 
@@ -47,19 +56,22 @@ The following section provides usage examples for the module, which were used to
 
 - [With an administrator](#example-1-with-an-administrator)
 - [With audit settings](#example-2-with-audit-settings)
-- [Using Customer-Managed-Keys with User-Assigned identity](#example-3-using-customer-managed-keys-with-user-assigned-identity)
-- [Using only defaults](#example-4-using-only-defaults)
-- [Using elastic pool](#example-5-using-elastic-pool)
-- [Using failover groups](#example-6-using-failover-groups)
-- [Deploying with a key vault reference to save secrets](#example-7-deploying-with-a-key-vault-reference-to-save-secrets)
-- [Using large parameter set](#example-8-using-large-parameter-set)
-- [With a secondary database](#example-9-with-a-secondary-database)
-- [With vulnerability assessment](#example-10-with-vulnerability-assessment)
-- [WAF-aligned](#example-11-waf-aligned)
+- [Using managed HSM Customer-Managed-Keys with User-Assigned identity](#example-3-using-managed-hsm-customer-managed-keys-with-user-assigned-identity)
+- [Using Customer-Managed-Keys with User-Assigned identity](#example-4-using-customer-managed-keys-with-user-assigned-identity)
+- [Using only defaults](#example-5-using-only-defaults)
+- [Using elastic pool](#example-6-using-elastic-pool)
+- [Using failover groups](#example-7-using-failover-groups)
+- [Deploying with a key vault reference to save secrets](#example-8-deploying-with-a-key-vault-reference-to-save-secrets)
+- [Using large parameter set](#example-9-using-large-parameter-set)
+- [With a secondary database](#example-10-with-a-secondary-database)
+- [With vulnerability assessment](#example-11-with-vulnerability-assessment)
+- [WAF-aligned](#example-12-waf-aligned)
 
 ### Example 1: _With an administrator_
 
 This instance deploys the module with a Microsoft Entra ID identity as SQL administrator.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/admin]
 
 
 <details>
@@ -68,7 +80,6 @@ This instance deploys the module with a Microsoft Entra ID identity as SQL admin
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlsadmin'
@@ -145,6 +156,8 @@ param location = '<location>'
 
 This instance deploys the module with auditing settings.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/audit]
+
 
 <details>
 
@@ -152,7 +165,6 @@ This instance deploys the module with auditing settings.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'ssaud001'
@@ -243,9 +255,208 @@ param managedIdentities = {
 </details>
 <p>
 
-### Example 3: _Using Customer-Managed-Keys with User-Assigned identity_
+### Example 3: _Using managed HSM Customer-Managed-Keys with User-Assigned identity_
+
+This instance deploys the module with Managed HSM-based Customer Managed Key (CMK) encryption, using a User-Assigned Managed Identity to access the HSM key.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/cmk-hsm-uami]
+
+> **Note**: This test is skipped from the CI deployment validation due to the presence of a `.e2eignore` file in the test folder. The reason for skipping the deployment is:
+```text
+The test is skipped because running the HSM scenario requires a persistent Managed HSM instance to be available and configured at all times, which would incur significant costs for contributors.
+```
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module server 'br/public:avm/res/sql/server:<version>' = {
+  params: {
+    // Required parameters
+    name: 'sshsmu001'
+    // Non-required parameters
+    administrators: {
+      azureADOnlyAuthentication: true
+      login: 'myspn'
+      principalType: 'Application'
+      sid: '<sid>'
+      tenantId: '<tenantId>'
+    }
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      keyVersion: '<keyVersion>'
+    }
+    databases: [
+      {
+        availabilityZone: -1
+        customerManagedKey: {
+          keyName: '<keyName>'
+          keyVaultResourceId: '<keyVaultResourceId>'
+          keyVersion: '<keyVersion>'
+        }
+        managedIdentities: {
+          userAssignedResourceIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        maxSizeBytes: 2147483648
+        name: 'sshsmu-db-001'
+        sku: {
+          name: 'Basic'
+          tier: 'Basic'
+        }
+        zoneRedundant: false
+      }
+    ]
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentityResourceId: '<primaryUserAssignedIdentityResourceId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sshsmu001"
+    },
+    // Non-required parameters
+    "administrators": {
+      "value": {
+        "azureADOnlyAuthentication": true,
+        "login": "myspn",
+        "principalType": "Application",
+        "sid": "<sid>",
+        "tenantId": "<tenantId>"
+      }
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "keyVersion": "<keyVersion>"
+      }
+    },
+    "databases": {
+      "value": [
+        {
+          "availabilityZone": -1,
+          "customerManagedKey": {
+            "keyName": "<keyName>",
+            "keyVaultResourceId": "<keyVaultResourceId>",
+            "keyVersion": "<keyVersion>"
+          },
+          "managedIdentities": {
+            "userAssignedResourceIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "maxSizeBytes": 2147483648,
+          "name": "sshsmu-db-001",
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic"
+          },
+          "zoneRedundant": false
+        }
+      ]
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentityResourceId": {
+      "value": "<primaryUserAssignedIdentityResourceId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/sql/server:<version>'
+
+// Required parameters
+param name = 'sshsmu001'
+// Non-required parameters
+param administrators = {
+  azureADOnlyAuthentication: true
+  login: 'myspn'
+  principalType: 'Application'
+  sid: '<sid>'
+  tenantId: '<tenantId>'
+}
+param customerManagedKey = {
+  keyName: '<keyName>'
+  keyVaultResourceId: '<keyVaultResourceId>'
+  keyVersion: '<keyVersion>'
+}
+param databases = [
+  {
+    availabilityZone: -1
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      keyVersion: '<keyVersion>'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    maxSizeBytes: 2147483648
+    name: 'sshsmu-db-001'
+    sku: {
+      name: 'Basic'
+      tier: 'Basic'
+    }
+    zoneRedundant: false
+  }
+]
+param managedIdentities = {
+  systemAssigned: false
+  userAssignedResourceIds: [
+    '<managedIdentityResourceId>'
+  ]
+}
+param primaryUserAssignedIdentityResourceId = '<primaryUserAssignedIdentityResourceId>'
+```
+
+</details>
+<p>
+
+### Example 4: _Using Customer-Managed-Keys with User-Assigned identity_
 
 This instance deploys the module with Customer-Managed-Keys using a User-Assigned Identity to access the key.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/cmk-uami]
 
 
 <details>
@@ -254,7 +465,6 @@ This instance deploys the module with Customer-Managed-Keys using a User-Assigne
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sscmk001'
@@ -270,7 +480,6 @@ module server 'br/public:avm/res/sql/server:<version>' = {
       autoRotationEnabled: true
       keyName: '<keyName>'
       keyVaultResourceId: '<keyVaultResourceId>'
-      keyVersion: '<keyVersion>'
     }
     databases: [
       {
@@ -336,8 +545,7 @@ module server 'br/public:avm/res/sql/server:<version>' = {
       "value": {
         "autoRotationEnabled": true,
         "keyName": "<keyName>",
-        "keyVaultResourceId": "<keyVaultResourceId>",
-        "keyVersion": "<keyVersion>"
+        "keyVaultResourceId": "<keyVaultResourceId>"
       }
     },
     "databases": {
@@ -404,7 +612,6 @@ param customerManagedKey = {
   autoRotationEnabled: true
   keyName: '<keyName>'
   keyVaultResourceId: '<keyVaultResourceId>'
-  keyVersion: '<keyVersion>'
 }
 param databases = [
   {
@@ -441,9 +648,11 @@ param primaryUserAssignedIdentityResourceId = '<primaryUserAssignedIdentityResou
 </details>
 <p>
 
-### Example 4: _Using only defaults_
+### Example 5: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
 
 
 <details>
@@ -452,7 +661,6 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'ssmin001'
@@ -525,9 +733,11 @@ param location = '<location>'
 </details>
 <p>
 
-### Example 5: _Using elastic pool_
+### Example 6: _Using elastic pool_
 
 This instance deploys the module with an elastic pool.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/elasticPool]
 
 
 <details>
@@ -536,7 +746,6 @@ This instance deploys the module with an elastic pool.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'ssep001'
@@ -664,9 +873,11 @@ param location = '<location>'
 </details>
 <p>
 
-### Example 6: _Using failover groups_
+### Example 7: _Using failover groups_
 
 This instance deploys the module with failover groups.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/failover-group]
 
 
 <details>
@@ -675,7 +886,6 @@ This instance deploys the module with failover groups.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'ssfog001'
@@ -721,8 +931,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           'ssfog-db1'
         ]
         name: 'ssfog-fg-geo'
-        partnerServers: [
-          '<secondaryServerName>'
+        partnerServerResourceIds: [
+          '<secondaryServerResourceId>'
         ]
         readWriteEndpoint: {
           failoverPolicy: 'Manual'
@@ -734,8 +944,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           'ssfog-db2'
         ]
         name: 'ssfog-fg-standby'
-        partnerServers: [
-          '<secondaryServerName>'
+        partnerServerResourceIds: [
+          '<secondaryServerResourceId>'
         ]
         readWriteEndpoint: {
           failoverPolicy: 'Automatic'
@@ -748,8 +958,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           'ssfog-db3'
         ]
         name: 'ssfog-fg-readonly'
-        partnerServers: [
-          '<secondaryServerName>'
+        partnerServerResourceIds: [
+          '<secondaryServerResourceId>'
         ]
         readOnlyEndpoint: {
           failoverPolicy: 'Enabled'
@@ -831,8 +1041,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
             "ssfog-db1"
           ],
           "name": "ssfog-fg-geo",
-          "partnerServers": [
-            "<secondaryServerName>"
+          "partnerServerResourceIds": [
+            "<secondaryServerResourceId>"
           ],
           "readWriteEndpoint": {
             "failoverPolicy": "Manual"
@@ -844,8 +1054,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
             "ssfog-db2"
           ],
           "name": "ssfog-fg-standby",
-          "partnerServers": [
-            "<secondaryServerName>"
+          "partnerServerResourceIds": [
+            "<secondaryServerResourceId>"
           ],
           "readWriteEndpoint": {
             "failoverPolicy": "Automatic",
@@ -858,8 +1068,8 @@ module server 'br/public:avm/res/sql/server:<version>' = {
             "ssfog-db3"
           ],
           "name": "ssfog-fg-readonly",
-          "partnerServers": [
-            "<secondaryServerName>"
+          "partnerServerResourceIds": [
+            "<secondaryServerResourceId>"
           ],
           "readOnlyEndpoint": {
             "failoverPolicy": "Enabled",
@@ -933,8 +1143,8 @@ param failoverGroups = [
       'ssfog-db1'
     ]
     name: 'ssfog-fg-geo'
-    partnerServers: [
-      '<secondaryServerName>'
+    partnerServerResourceIds: [
+      '<secondaryServerResourceId>'
     ]
     readWriteEndpoint: {
       failoverPolicy: 'Manual'
@@ -946,8 +1156,8 @@ param failoverGroups = [
       'ssfog-db2'
     ]
     name: 'ssfog-fg-standby'
-    partnerServers: [
-      '<secondaryServerName>'
+    partnerServerResourceIds: [
+      '<secondaryServerResourceId>'
     ]
     readWriteEndpoint: {
       failoverPolicy: 'Automatic'
@@ -960,8 +1170,8 @@ param failoverGroups = [
       'ssfog-db3'
     ]
     name: 'ssfog-fg-readonly'
-    partnerServers: [
-      '<secondaryServerName>'
+    partnerServerResourceIds: [
+      '<secondaryServerResourceId>'
     ]
     readOnlyEndpoint: {
       failoverPolicy: 'Enabled'
@@ -979,9 +1189,11 @@ param location = '<location>'
 </details>
 <p>
 
-### Example 7: _Deploying with a key vault reference to save secrets_
+### Example 8: _Deploying with a key vault reference to save secrets_
 
 This instance deploys the module saving all its secrets in a key vault.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/kvSecrets]
 
 
 <details>
@@ -990,7 +1202,6 @@ This instance deploys the module saving all its secrets in a key vault.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlkvs001'
@@ -1093,9 +1304,11 @@ param secretsExportConfiguration = {
 </details>
 <p>
 
-### Example 8: _Using large parameter set_
+### Example 9: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
 
 
 <details>
@@ -1104,7 +1317,6 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlsmax'
@@ -1202,6 +1414,10 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         '<serverIdentityResourceId>'
       ]
     }
+    outboundFirewallRules: [
+      'www.bing.com'
+      'www.microsoft.com'
+    ]
     primaryUserAssignedIdentityResourceId: '<primaryUserAssignedIdentityResourceId>'
     privateEndpoints: [
       {
@@ -1413,6 +1629,12 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         ]
       }
     },
+    "outboundFirewallRules": {
+      "value": [
+        "www.bing.com",
+        "www.microsoft.com"
+      ]
+    },
     "primaryUserAssignedIdentityResourceId": {
       "value": "<primaryUserAssignedIdentityResourceId>"
     },
@@ -1618,6 +1840,10 @@ param managedIdentities = {
     '<serverIdentityResourceId>'
   ]
 }
+param outboundFirewallRules = [
+  'www.bing.com'
+  'www.microsoft.com'
+]
 param primaryUserAssignedIdentityResourceId = '<primaryUserAssignedIdentityResourceId>'
 param privateEndpoints = [
   {
@@ -1702,9 +1928,11 @@ param vulnerabilityAssessmentsObj = {
 </details>
 <p>
 
-### Example 9: _With a secondary database_
+### Example 10: _With a secondary database_
 
 This instance deploys the module with a secondary database.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/secondary]
 
 
 <details>
@@ -1713,7 +1941,6 @@ This instance deploys the module with a secondary database.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlsec-sec'
@@ -1837,9 +2064,11 @@ param tags = {
 </details>
 <p>
 
-### Example 10: _With vulnerability assessment_
+### Example 11: _With vulnerability assessment_
 
 This instance deploys the module with a vulnerability assessment.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/vulnAssm]
 
 
 <details>
@@ -1848,7 +2077,6 @@ This instance deploys the module with a vulnerability assessment.
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlsvln'
@@ -2020,9 +2248,11 @@ param vulnerabilityAssessmentsObj = {
 </details>
 <p>
 
-### Example 11: _WAF-aligned_
+### Example 12: _WAF-aligned_
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
 
 
 <details>
@@ -2031,7 +2261,6 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module server 'br/public:avm/res/sql/server:<version>' = {
-  name: 'serverDeployment'
   params: {
     // Required parameters
     name: 'sqlswaf'
@@ -2485,6 +2714,7 @@ param vulnerabilityAssessmentsObj = {
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`minimalTlsVersion`](#parameter-minimaltlsversion) | string | Minimal TLS version allowed. |
+| [`outboundFirewallRules`](#parameter-outboundfirewallrules) | array | The outbound firewall rules for the server. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set. |
 | [`restrictOutboundNetworkAccess`](#parameter-restrictoutboundnetworkaccess) | string | Whether or not to restrict outbound network access for this server. |
@@ -2620,6 +2850,7 @@ The audit settings configuration. If you want to disable auditing, set the parma
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`auditActionsAndGroups`](#parameter-auditsettingsauditactionsandgroups) | array | Specifies the Actions-Groups and Actions to audit. |
+| [`enableTelemetry`](#parameter-auditsettingsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`isAzureMonitorTargetEnabled`](#parameter-auditsettingsisazuremonitortargetenabled) | bool | Specifies whether audit events are sent to Azure Monitor. |
 | [`isDevopsAuditEnabled`](#parameter-auditsettingsisdevopsauditenabled) | bool | Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor. |
 | [`isManagedIdentityInUse`](#parameter-auditsettingsismanagedidentityinuse) | bool | Specifies whether Managed Identity is used to access blob storage. |
@@ -2636,6 +2867,13 @@ Specifies the Actions-Groups and Actions to audit.
 
 - Required: No
 - Type: array
+
+### Parameter: `auditSettings.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `auditSettings.isAzureMonitorTargetEnabled`
 
@@ -2807,6 +3045,7 @@ The databases to create in the server.
 | [`customerManagedKey`](#parameter-databasescustomermanagedkey) | object | The customer managed key definition for database TDE. |
 | [`diagnosticSettings`](#parameter-databasesdiagnosticsettings) | array | The diagnostic settings of the service. |
 | [`elasticPoolResourceId`](#parameter-databaseselasticpoolresourceid) | string | The resource identifier of the elastic pool containing this database. |
+| [`enableTelemetry`](#parameter-databasesenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`federatedClientId`](#parameter-databasesfederatedclientid) | string | The Client id used for cross tenant per database CMK scenario. |
 | [`freeLimitExhaustionBehavior`](#parameter-databasesfreelimitexhaustionbehavior) | string | Specifies the behavior when monthly free limits are exhausted for the free database. |
 | [`highAvailabilityReplicaCount`](#parameter-databaseshighavailabilityreplicacount) | int | The number of secondary replicas associated with the database that are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool. |
@@ -2878,10 +3117,18 @@ The long term backup retention policy for the database.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-databasesbackuplongtermretentionpolicyenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`monthlyRetention`](#parameter-databasesbackuplongtermretentionpolicymonthlyretention) | string | Monthly retention in ISO 8601 duration format. |
 | [`weeklyRetention`](#parameter-databasesbackuplongtermretentionpolicyweeklyretention) | string | Weekly retention in ISO 8601 duration format. |
 | [`weekOfYear`](#parameter-databasesbackuplongtermretentionpolicyweekofyear) | int | Week of year backup to keep for yearly retention. |
 | [`yearlyRetention`](#parameter-databasesbackuplongtermretentionpolicyyearlyretention) | string | Yearly retention in ISO 8601 duration format. |
+
+### Parameter: `databases.backupLongTermRetentionPolicy.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `databases.backupLongTermRetentionPolicy.monthlyRetention`
 
@@ -2923,6 +3170,7 @@ The short term backup retention policy for the database.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`diffBackupIntervalInHours`](#parameter-databasesbackupshorttermretentionpolicydiffbackupintervalinhours) | int | Differential backup interval in hours. For Hyperscale tiers this value will be ignored. |
+| [`enableTelemetry`](#parameter-databasesbackupshorttermretentionpolicyenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`retentionDays`](#parameter-databasesbackupshorttermretentionpolicyretentiondays) | int | Point-in-time retention in days. |
 
 ### Parameter: `databases.backupShortTermRetentionPolicy.diffBackupIntervalInHours`
@@ -2931,6 +3179,13 @@ Differential backup interval in hours. For Hyperscale tiers this value will be i
 
 - Required: No
 - Type: int
+
+### Parameter: `databases.backupShortTermRetentionPolicy.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `databases.backupShortTermRetentionPolicy.retentionDays`
 
@@ -3185,6 +3440,13 @@ The resource identifier of the elastic pool containing this database.
 - Required: No
 - Type: string
 
+### Parameter: `databases.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
 ### Parameter: `databases.federatedClientId`
 
 The Client id used for cross tenant per database CMK scenario.
@@ -3247,6 +3509,7 @@ The lock settings of the database.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-databaseslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-databaseslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-databaseslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `databases.lock.kind`
 
@@ -3266,6 +3529,13 @@ Specify the type of lock.
 ### Parameter: `databases.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `databases.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -3544,6 +3814,7 @@ The Elastic Pools to create in the server.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`autoPauseDelay`](#parameter-elasticpoolsautopausedelay) | int | Time in minutes after which elastic pool is automatically paused. A value of -1 means that automatic pause is disabled. |
+| [`enableTelemetry`](#parameter-elasticpoolsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`highAvailabilityReplicaCount`](#parameter-elasticpoolshighavailabilityreplicacount) | int | The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools. |
 | [`licenseType`](#parameter-elasticpoolslicensetype) | string | The license type to apply for this elastic pool. |
 | [`lock`](#parameter-elasticpoolslock) | object | The lock settings of the elastic pool. |
@@ -3587,6 +3858,13 @@ Time in minutes after which elastic pool is automatically paused. A value of -1 
 - Required: No
 - Type: int
 
+### Parameter: `elasticPools.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
 ### Parameter: `elasticPools.highAvailabilityReplicaCount`
 
 The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools.
@@ -3621,6 +3899,7 @@ The lock settings of the elastic pool.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-elasticpoolslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-elasticpoolslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-elasticpoolslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `elasticPools.lock.kind`
 
@@ -3640,6 +3919,13 @@ Specify the type of lock.
 ### Parameter: `elasticPools.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `elasticPools.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -3941,7 +4227,7 @@ The failover groups configuration.
 | :-- | :-- | :-- |
 | [`databases`](#parameter-failovergroupsdatabases) | array | List of databases in the failover group. |
 | [`name`](#parameter-failovergroupsname) | string | The name of the failover group. |
-| [`partnerServers`](#parameter-failovergroupspartnerservers) | array | List of the partner servers for the failover group. |
+| [`partnerServerResourceIds`](#parameter-failovergroupspartnerserverresourceids) | array | List of the partner server Resource Id for the failover group. |
 | [`readWriteEndpoint`](#parameter-failovergroupsreadwriteendpoint) | object | Read-write endpoint of the failover group instance. |
 | [`secondaryType`](#parameter-failovergroupssecondarytype) | string | Databases secondary type on partner server. |
 
@@ -3949,6 +4235,7 @@ The failover groups configuration.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-failovergroupsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`readOnlyEndpoint`](#parameter-failovergroupsreadonlyendpoint) | object | Read-only endpoint of the failover group instance. |
 | [`tags`](#parameter-failovergroupstags) | object | Tags of the resource. |
 
@@ -3966,9 +4253,9 @@ The name of the failover group.
 - Required: Yes
 - Type: string
 
-### Parameter: `failoverGroups.partnerServers`
+### Parameter: `failoverGroups.partnerServerResourceIds`
 
-List of the partner servers for the failover group.
+List of the partner server Resource Id for the failover group.
 
 - Required: Yes
 - Type: array
@@ -4026,6 +4313,13 @@ Databases secondary type on partner server.
     'Standby'
   ]
   ```
+
+### Parameter: `failoverGroups.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `failoverGroups.readOnlyEndpoint`
 
@@ -4093,6 +4387,7 @@ The firewall rules to create in the server.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-firewallrulesenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`endIpAddress`](#parameter-firewallrulesendipaddress) | string | The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 | [`startIpAddress`](#parameter-firewallrulesstartipaddress) | string | The start IP address of the firewall rule. Must be IPv4 format. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 
@@ -4102,6 +4397,13 @@ The name of the firewall rule.
 
 - Required: Yes
 - Type: string
+
+### Parameter: `firewallRules.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `firewallRules.endIpAddress`
 
@@ -4143,9 +4445,17 @@ The keys to configure.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-keysenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`name`](#parameter-keysname) | string | The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern. |
 | [`serverKeyType`](#parameter-keysserverkeytype) | string | The server key type. |
 | [`uri`](#parameter-keysuri) | string | The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required. The AKV URI is required to be in this format: 'https://YourVaultName.azure.net/keys/YourKeyName/YourKeyVersion'. |
+
+### Parameter: `keys.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `keys.name`
 
@@ -4196,6 +4506,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -4215,6 +4526,13 @@ Specify the type of lock.
 ### Parameter: `lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -4263,6 +4581,13 @@ Minimal TLS version allowed.
     '1.3'
   ]
   ```
+
+### Parameter: `outboundFirewallRules`
+
+The outbound firewall rules for the server.
+
+- Required: No
+- Type: array
 
 ### Parameter: `privateEndpoints`
 
@@ -4443,6 +4768,7 @@ Specify the type of lock.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-privateendpointslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `privateEndpoints.lock.kind`
 
@@ -4462,6 +4788,13 @@ Specify the type of lock.
 ### Parameter: `privateEndpoints.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -4879,6 +5212,7 @@ The security alert policies to create in the server.
 | [`disabledAlerts`](#parameter-securityalertpoliciesdisabledalerts) | array | Alerts to disable. |
 | [`emailAccountAdmins`](#parameter-securityalertpoliciesemailaccountadmins) | bool | Specifies that the alert is sent to the account administrators. |
 | [`emailAddresses`](#parameter-securityalertpoliciesemailaddresses) | array | Specifies an array of email addresses to which the alert is sent. |
+| [`enableTelemetry`](#parameter-securityalertpoliciesenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`retentionDays`](#parameter-securityalertpoliciesretentiondays) | int | Specifies the number of days to keep in the Threat Detection audit logs. |
 | [`state`](#parameter-securityalertpoliciesstate) | string | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
 | [`storageAccountAccessKey`](#parameter-securityalertpoliciesstorageaccountaccesskey) | string | Specifies the identifier key of the Threat Detection audit storage account. |
@@ -4922,6 +5256,13 @@ Specifies an array of email addresses to which the alert is sent.
 
 - Required: No
 - Type: array
+
+### Parameter: `securityAlertPolicies.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `securityAlertPolicies.retentionDays`
 
@@ -4983,6 +5324,7 @@ The virtual network rules to create in the server.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-virtualnetworkrulesenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`ignoreMissingVnetServiceEndpoint`](#parameter-virtualnetworkrulesignoremissingvnetserviceendpoint) | bool | Allow creating a firewall rule before the virtual network has vnet service endpoint enabled. |
 
 ### Parameter: `virtualNetworkRules.name`
@@ -4998,6 +5340,13 @@ The resource ID of the virtual network subnet.
 
 - Required: Yes
 - Type: string
+
+### Parameter: `virtualNetworkRules.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
 
 ### Parameter: `virtualNetworkRules.ignoreMissingVnetServiceEndpoint`
 
@@ -5025,6 +5374,7 @@ The vulnerability assessment configuration.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`createStorageRoleAssignment`](#parameter-vulnerabilityassessmentsobjcreatestorageroleassignment) | bool | Specifies whether to create a role assignment for the storage account. |
+| [`enableTelemetry`](#parameter-vulnerabilityassessmentsobjenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`recurringScans`](#parameter-vulnerabilityassessmentsobjrecurringscans) | object | The recurring scans settings. |
 | [`useStorageAccountAccessKey`](#parameter-vulnerabilityassessmentsobjusestorageaccountaccesskey) | bool | Specifies whether to use the storage account access key to access the storage account. |
 
@@ -5045,6 +5395,13 @@ The resource ID of the storage account to store the scan reports.
 ### Parameter: `vulnerabilityAssessmentsObj.createStorageRoleAssignment`
 
 Specifies whether to create a role assignment for the storage account.
+
+- Required: No
+- Type: bool
+
+### Parameter: `vulnerabilityAssessmentsObj.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
 
 - Required: No
 - Type: bool
@@ -5116,8 +5473,11 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/res/network/private-endpoint:0.11.0` | Remote reference |
+| `br/public:avm/res/network/private-endpoint:0.12.1` | Remote reference |
 | `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.0` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.1` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.7.0` | Remote reference |
 
 ## Notes
 
@@ -5163,4 +5523,4 @@ administrators: {
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

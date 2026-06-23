@@ -17,17 +17,39 @@ param containers string[]?
 param tables string[]?
 
 @description('Optional. Tags to configure in the resource.')
-param tags resourceInput<'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2025-02-01'>.tags?
+param tags resourceInput<'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2025-07-01'>.tags?
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing = {
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.opins-worksp-stginsightconfig.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-06-01' existing = {
   name: last(split(storageAccountResourceId, '/'))!
 }
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = {
   name: logAnalyticsWorkspaceName
 }
 
-resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2025-02-01' = {
+resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2025-07-01' = {
   name: name
   parent: workspace
   tags: tags

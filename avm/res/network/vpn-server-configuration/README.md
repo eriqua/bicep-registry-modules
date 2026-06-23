@@ -2,6 +2,14 @@
 
 This module deploys a VPN Server Configuration for a Virtual Hub P2S Gateway.
 
+You can reference the module as follows:
+```bicep
+module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuration:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -13,10 +21,10 @@ This module deploys a VPN Server Configuration for a Virtual Hub P2S Gateway.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/vpnServerConfigurations` | [2023-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-11-01/vpnServerConfigurations) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Network/vpnServerConfigurations` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_vpnserverconfigurations.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/vpnServerConfigurations)</li></ul> |
 
 ## Usage examples
 
@@ -34,6 +42,8 @@ The following section provides usage examples for the module, which were used to
 
 This instance deploys the module with the minimum set of required parameters.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
+
 
 <details>
 
@@ -41,7 +51,6 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuration:<version>' = {
-  name: 'vpnServerConfigurationDeployment'
   params: {
     // Required parameters
     name: 'vscminVPNConfig'
@@ -174,6 +183,8 @@ param vpnProtocols = [
 
 This instance deploys the module with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
+
 
 <details>
 
@@ -181,7 +192,6 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuration:<version>' = {
-  name: 'vpnServerConfigurationDeployment'
   params: {
     // Required parameters
     name: 'vscmaxVPNConfig'
@@ -241,12 +251,12 @@ module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuratio
     radiusServers: [
       {
         radiusServerAddress: '10.150.1.50'
-        radiusServerScore: '10'
+        radiusServerScore: 10
         radiusServerSecret: 'TestSecret'
       }
       {
         radiusServerAddress: '10.150.1.150'
-        radiusServerScore: '20'
+        radiusServerScore: 20
         radiusServerSecret: 'TestSecret2'
       }
     ]
@@ -381,12 +391,12 @@ module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuratio
       "value": [
         {
           "radiusServerAddress": "10.150.1.50",
-          "radiusServerScore": "10",
+          "radiusServerScore": 10,
           "radiusServerSecret": "TestSecret"
         },
         {
           "radiusServerAddress": "10.150.1.150",
-          "radiusServerScore": "20",
+          "radiusServerScore": 20,
           "radiusServerSecret": "TestSecret2"
         }
       ]
@@ -513,12 +523,12 @@ param radiusServerRootCertificates = [
 param radiusServers = [
   {
     radiusServerAddress: '10.150.1.50'
-    radiusServerScore: '10'
+    radiusServerScore: 10
     radiusServerSecret: 'TestSecret'
   }
   {
     radiusServerAddress: '10.150.1.150'
-    radiusServerScore: '20'
+    radiusServerScore: 20
     radiusServerSecret: 'TestSecret2'
   }
 ]
@@ -571,6 +581,8 @@ param vpnProtocols = [
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
+
 
 <details>
 
@@ -578,7 +590,6 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module vpnServerConfiguration 'br/public:avm/res/network/vpn-server-configuration:<version>' = {
-  name: 'vpnServerConfigurationDeployment'
   params: {
     // Required parameters
     name: 'vscwafVPNConfig'
@@ -822,6 +833,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -841,6 +853,13 @@ Specify the type of lock.
 ### Parameter: `lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -918,7 +937,7 @@ The IPsec policies for the configuration.
 | [`ipsecIntegrity`](#parameter-vpnclientipsecpoliciesipsecintegrity) | string | The integrity algorithm used in IKE phase 2. Required if using IKEv2. |
 | [`pfsGroup`](#parameter-vpnclientipsecpoliciespfsgroup) | string | The Perfect Forward Secrecy (PFS) group used in IKE phase 2. Required if using IKEv2. |
 | [`saDataSizeKilobytes`](#parameter-vpnclientipsecpoliciessadatasizekilobytes) | int | The size of the SA data in kilobytes. Required if using IKEv2. |
-| [`salfetimeSeconds`](#parameter-vpnclientipsecpoliciessalfetimeseconds) | int | The lifetime of the SA in seconds. Required if using IKEv2. |
+| [`saLifeTimeSeconds`](#parameter-vpnclientipsecpoliciessalifetimeseconds) | int | The lifetime of the SA in seconds. Required if using IKEv2. |
 
 ### Parameter: `vpnClientIpsecPolicies.dhGroup`
 
@@ -969,7 +988,7 @@ The size of the SA data in kilobytes. Required if using IKEv2.
 - Required: No
 - Type: int
 
-### Parameter: `vpnClientIpsecPolicies.salfetimeSeconds`
+### Parameter: `vpnClientIpsecPolicies.saLifeTimeSeconds`
 
 The lifetime of the SA in seconds. Required if using IKEv2.
 
@@ -1014,8 +1033,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.0` | Remote reference |
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

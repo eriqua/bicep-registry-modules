@@ -17,6 +17,51 @@ param state string = 'Disabled'
 @description('Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators.')
 param emailAccountAdmins bool = false
 
+@description('Optional. Specifies an array of e-mail addresses to which the alert is sent.')
+param emailAddresses string[]?
+
+@description('Optional. Specifies the number of days to keep in the Threat Detection audit logs.')
+param retentionDays int?
+
+@description('Optional. Specifies an array of alerts that are disabled.')
+param disabledAlerts (
+  | 'Sql_Injection'
+  | 'Sql_Injection_Vulnerability'
+  | 'Access_Anomaly'
+  | 'Data_Exfiltration'
+  | 'Unsafe_Action'
+  | 'Brute_Force')[]?
+
+@description('Conditional. A blob storage to hold all Threat Detection audit logs. Required if state is \'Enabled\'.')
+param storageAccountResourceId string?
+
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.sql-mi-securityalertpolicy.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' existing = if (!empty(storageAccountResourceId)) {
+  name: last(split(storageAccountResourceId!, '/'))
+  scope: resourceGroup(split(storageAccountResourceId!, '/')[2], split(storageAccountResourceId!, '/')[4])
+}
+
 resource managedInstance 'Microsoft.Sql/managedInstances@2024-05-01-preview' existing = {
   name: managedInstanceName
 }
@@ -25,8 +70,13 @@ resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolici
   name: name
   parent: managedInstance
   properties: {
-    state: state
+    disabledAlerts: disabledAlerts
     emailAccountAdmins: emailAccountAdmins
+    emailAddresses: emailAddresses
+    retentionDays: retentionDays
+    state: state
+    storageAccountAccessKey: !empty(storageAccountResourceId) ? storageAccount!.listKeys().keys[0].value : null
+    storageEndpoint: !empty(storageAccountResourceId) ? storageAccount!.properties.primaryEndpoints.blob : null
   }
 }
 

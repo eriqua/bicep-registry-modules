@@ -45,11 +45,8 @@ param vlanId int?
 @description('Optional. A list of IP configuration references.')
 param ipConfigurationReferences subnetIpConfigurationReferenceType[]?
 
-@description('Conditional. The starting IP address of the IP address range. Required if ipAllocationMethod is Static.')
-param startingAddress string?
-
-@description('Conditional. The ending IP address of the IP address range. Required if ipAllocationMethod is Static.')
-param endingAddress string?
+@description('Conditional. Network associated pool of IP Addresses. Required if ipAllocationMethod is Static.')
+param ipPools poolType[]?
 
 @description('Conditional. The route name. Required if ipAllocationMethod is Static.')
 param routeName string?
@@ -92,7 +89,7 @@ var formattedRoleAssignments = [
 // ============= //
 
 #disable-next-line no-deployments-resources
-resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+resource avmTelemetry 'Microsoft.Resources/deployments@2024-07-01' = if (enableTelemetry) {
   name: take(
     '46d3xbcp.res.azurestackhci-logicalnetwork.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}',
     64
@@ -113,14 +110,6 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-var subnet1Pools = [
-  {
-    start: startingAddress
-    end: endingAddress
-    info: {}
-  }
-]
-
 var routeTable = {
   properties: {
     routes: [
@@ -135,7 +124,7 @@ var routeTable = {
   }
 }
 
-resource logicalNetwork 'Microsoft.AzureStackHCI/logicalNetworks@2024-05-01-preview' = {
+resource logicalNetwork 'Microsoft.AzureStackHCI/logicalNetworks@2024-10-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -158,7 +147,7 @@ resource logicalNetwork 'Microsoft.AzureStackHCI/logicalNetworks@2024-05-01-prev
             (ipConfigurationReference) => { ID: ipConfigurationReference.id }
           )
           vlan: vlanId
-          ipPools: ipAllocationMethod == 'Dynamic' ? null : subnet1Pools
+          ipPools: ipAllocationMethod == 'Dynamic' ? null : ipPools
           routeTable: ipAllocationMethod == 'Dynamic' ? null : routeTable
         }
       }
@@ -176,7 +165,7 @@ resource logicalNetwork_roleAssignments 'Microsoft.Authorization/roleAssignments
       description: roleAssignment.?description
       principalType: roleAssignment.?principalType
       condition: roleAssignment.?condition
-      conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+      conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condition is set
       delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
     }
     scope: logicalNetwork
@@ -204,4 +193,23 @@ output location string = logicalNetwork.location
 type subnetIpConfigurationReferenceType = {
   @description('Required. The ARM ID for a Network Interface.')
   id: string
+}
+
+@export()
+@description('The type for IP pool info.')
+type ipPoolInfoType = {}
+
+@export()
+@description('The type for an IP pool.')
+type poolType = {
+  @description('Required. The end IP address of the pool.')
+  end: string
+  @description('Optional. Additional info for the pool.')
+  info: ipPoolInfoType?
+  @description('Optional. The type of the IP pool. Must be either vippool or vm.')
+  ipPoolType: ('vippool' | 'vm')?
+  @description('Optional. The name of the IP pool.')
+  name: string?
+  @description('Required. The start IP address of the pool.')
+  start: string
 }

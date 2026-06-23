@@ -2,6 +2,14 @@
 
 This module deploys a Recovery Services Vault.
 
+You can reference the module as follows:
+```bicep
+module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -13,23 +21,22 @@ This module deploys a Recovery Services Vault.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-11-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-11-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2024-04-01/vaults) |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-01-01/vaults/backupconfig) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2024-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2024-10-01/vaults/backupFabrics/protectionContainers/protectedItems) |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2024-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2024-10-01/vaults/backupPolicies) |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2024-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2024-04-01/vaults/backupstorageconfig) |
-| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationAlertSettings) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2023-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-06-01/vaults/replicationPolicies) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Authorization/roleAssignments` | 2022-04-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_roleassignments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)</li></ul> |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.insights_diagnosticsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)</li></ul> |
+| `Microsoft.Network/privateEndpoints` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints)</li></ul> |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints_privatednszonegroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/privateEndpoints/privateDnsZoneGroups)</li></ul> |
+| `Microsoft.RecoveryServices/vaults` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_backupconfig.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/backupconfig)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_backupfabrics_protectioncontainers_protecteditems.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/backupFabrics/protectionContainers/protectedItems)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_backuppolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/backupPolicies)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_replicationalertsettings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/replicationAlertSettings)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_replicationfabrics.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/replicationFabrics)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_replicationfabrics_replicationprotectioncontainers.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/replicationFabrics/replicationProtectionContainers)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_replicationfabrics_replicationprotectioncontainers_replicationprotectioncontainermappings.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings)</li></ul> |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | 2025-08-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.recoveryservices_vaults_replicationpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2025-08-01/vaults/replicationPolicies)</li></ul> |
 
 ## Usage examples
 
@@ -39,15 +46,116 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br/public:avm/res/recovery-services/vault:<version>`.
 
-- [Using only defaults](#example-1-using-only-defaults)
-- [Test case for disaster recovery enabled](#example-2-test-case-for-disaster-recovery-enabled)
-- [Using encryption with Customer-Managed-Key](#example-3-using-encryption-with-customer-managed-key)
-- [Using large parameter set](#example-4-using-large-parameter-set)
-- [WAF-aligned](#example-5-waf-aligned)
+- [Using managed HSM Customer-Managed-Keys with User-Assigned identity](#example-1-using-managed-hsm-customer-managed-keys-with-user-assigned-identity)
+- [Using encryption with Customer-Managed-Key](#example-2-using-encryption-with-customer-managed-key)
+- [Using only defaults](#example-3-using-only-defaults)
+- [Test case for disaster recovery enabled](#example-4-test-case-for-disaster-recovery-enabled)
+- [Using large parameter set](#example-5-using-large-parameter-set)
+- [WAF-aligned](#example-6-waf-aligned)
 
-### Example 1: _Using only defaults_
+### Example 1: _Using managed HSM Customer-Managed-Keys with User-Assigned identity_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module with Managed HSM-based Customer Managed Key (CMK) encryption, using a User-Assigned Managed Identity to access the HSM key.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/cmk-hsm-uami]
+
+> **Note**: This test is skipped from the CI deployment validation due to the presence of a `.e2eignore` file in the test folder. The reason for skipping the deployment is:
+```text
+The test is skipped because running the HSM scenario requires a persistent Managed HSM instance to be available and configured at all times, which would incur significant costs for contributors.
+```
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
+  params: {
+    // Required parameters
+    name: 'rsvhsmu001'
+    // Non-required parameters
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rsvhsmu001"
+    },
+    // Non-required parameters
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/recovery-services/vault:<version>'
+
+// Required parameters
+param name = 'rsvhsmu001'
+// Non-required parameters
+param customerManagedKey = {
+  keyName: '<keyName>'
+  keyVaultResourceId: '<keyVaultResourceId>'
+  userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+}
+param managedIdentities = {
+  userAssignedResourceIds: [
+    '<managedIdentityResourceId>'
+  ]
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using encryption with Customer-Managed-Key_
+
+This instance deploys the module using Customer-Managed-Keys using a User-Assigned Identity to access the Customer-Managed-Key secret.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/cmk-uami]
 
 
 <details>
@@ -56,19 +164,108 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
-  name: 'vaultDeployment'
+  params: {
+    // Required parameters
+    name: 'rsvencr001'
+    // Non-required parameters
+    customerManagedKey: {
+      autoRotationEnabled: false
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "rsvencr001"
+    },
+    // Non-required parameters
+    "customerManagedKey": {
+      "value": {
+        "autoRotationEnabled": false,
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/res/recovery-services/vault:<version>'
+
+// Required parameters
+param name = 'rsvencr001'
+// Non-required parameters
+param customerManagedKey = {
+  autoRotationEnabled: false
+  keyName: '<keyName>'
+  keyVaultResourceId: '<keyVaultResourceId>'
+  userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
+}
+param managedIdentities = {
+  userAssignedResourceIds: [
+    '<managedIdentityResourceId>'
+  ]
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
   params: {
     // Required parameters
     name: 'rsvmin001'
     // Non-required parameters
     immutabilitySettingState: 'Unlocked'
-    replicationAlertSettings: {
-      customEmailAddresses: [
-        'test.user@testcompany.com'
-      ]
-      locale: 'en-US'
-      sendToOwners: 'Send'
-    }
   }
 }
 ```
@@ -92,15 +289,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     // Non-required parameters
     "immutabilitySettingState": {
       "value": "Unlocked"
-    },
-    "replicationAlertSettings": {
-      "value": {
-        "customEmailAddresses": [
-          "test.user@testcompany.com"
-        ],
-        "locale": "en-US",
-        "sendToOwners": "Send"
-      }
     }
   }
 }
@@ -120,21 +308,16 @@ using 'br/public:avm/res/recovery-services/vault:<version>'
 param name = 'rsvmin001'
 // Non-required parameters
 param immutabilitySettingState = 'Unlocked'
-param replicationAlertSettings = {
-  customEmailAddresses: [
-    'test.user@testcompany.com'
-  ]
-  locale: 'en-US'
-  sendToOwners: 'Send'
-}
 ```
 
 </details>
 <p>
 
-### Example 2: _Test case for disaster recovery enabled_
+### Example 4: _Test case for disaster recovery enabled_
 
 This instance deploys the module with disaster recovery enabled.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/dr]
 
 
 <details>
@@ -143,12 +326,10 @@ This instance deploys the module with disaster recovery enabled.
 
 ```bicep
 module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
-  name: 'vaultDeployment'
   params: {
     // Required parameters
     name: '<name>'
     // Non-required parameters
-    location: '<location>'
     replicationFabrics: [
       {
         location: 'NorthEurope'
@@ -204,11 +385,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
         recoveryPointHistory: 2880
       }
     ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -230,9 +406,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
       "value": "<name>"
     },
     // Non-required parameters
-    "location": {
-      "value": "<location>"
-    },
     "replicationFabrics": {
       "value": [
         {
@@ -291,13 +464,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
           "recoveryPointHistory": 2880
         }
       ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }
@@ -316,7 +482,6 @@ using 'br/public:avm/res/recovery-services/vault:<version>'
 // Required parameters
 param name = '<name>'
 // Non-required parameters
-param location = '<location>'
 param replicationFabrics = [
   {
     location: 'NorthEurope'
@@ -372,121 +537,17 @@ param replicationPolicies = [
     recoveryPointHistory: 2880
   }
 ]
-param tags = {
-  Environment: 'Non-Prod'
-  'hidden-title': 'This is visible in the resource name'
-  Role: 'DeploymentValidation'
-}
 ```
 
 </details>
 <p>
 
-### Example 3: _Using encryption with Customer-Managed-Key_
-
-This instance deploys the module using Customer-Managed-Keys using a User-Assigned Identity to access the Customer-Managed-Key secret.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
-  name: 'vaultDeployment'
-  params: {
-    // Required parameters
-    name: 'rsvencr001'
-    // Non-required parameters
-    customerManagedKey: {
-      autoRotationEnabled: false
-      keyName: '<keyName>'
-      keyVaultResourceId: '<keyVaultResourceId>'
-      userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
-    }
-    location: '<location>'
-    managedIdentities: {
-      userAssignedResourceIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON parameters file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "rsvencr001"
-    },
-    // Non-required parameters
-    "customerManagedKey": {
-      "value": {
-        "autoRotationEnabled": false,
-        "keyName": "<keyName>",
-        "keyVaultResourceId": "<keyVaultResourceId>",
-        "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
-      }
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "managedIdentities": {
-      "value": {
-        "userAssignedResourceIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via Bicep parameters file</summary>
-
-```bicep-params
-using 'br/public:avm/res/recovery-services/vault:<version>'
-
-// Required parameters
-param name = 'rsvencr001'
-// Non-required parameters
-param customerManagedKey = {
-  autoRotationEnabled: false
-  keyName: '<keyName>'
-  keyVaultResourceId: '<keyVaultResourceId>'
-  userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
-}
-param location = '<location>'
-param managedIdentities = {
-  userAssignedResourceIds: [
-    '<managedIdentityResourceId>'
-  ]
-}
-```
-
-</details>
-<p>
-
-### Example 4: _Using large parameter set_
+### Example 5: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
+
 
 <details>
 
@@ -494,14 +555,13 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
-  name: 'vaultDeployment'
   params: {
     // Required parameters
     name: 'rsvmax001'
     // Non-required parameters
     backupConfig: {
-      enhancedSecurityState: 'Disabled'
-      softDeleteFeatureState: 'Disabled'
+      enhancedSecurityState: 'AlwaysON'
+      softDeleteFeatureState: 'AlwaysON'
     }
     backupPolicies: [
       {
@@ -838,6 +898,9 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
         sourceResourceId: '<sourceResourceId>'
       }
     ]
+    redundancySettings: {
+      standardTierStorageRedundancy: 'LocallyRedundant'
+    }
     replicationAlertSettings: {
       customEmailAddresses: [
         'test.user@testcompany.com'
@@ -865,9 +928,16 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
       }
     ]
     softDeleteSettings: {
-      enhancedSecurityState: 'Enabled'
+      enhancedSecurityState: 'AlwaysON'
       softDeleteRetentionPeriodInDays: 14
-      softDeleteState: 'Enabled'
+      softDeleteState: 'AlwaysON'
+    }
+    sourceScanConfiguration: {
+      sourceScanIdentity: {
+        operationIdentityType: 'UserAssigned'
+        userAssignedIdentity: '<userAssignedIdentity>'
+      }
+      state: 'Enabled'
     }
     tags: {
       Environment: 'Non-Prod'
@@ -897,8 +967,8 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     // Non-required parameters
     "backupConfig": {
       "value": {
-        "enhancedSecurityState": "Disabled",
-        "softDeleteFeatureState": "Disabled"
+        "enhancedSecurityState": "AlwaysON",
+        "softDeleteFeatureState": "AlwaysON"
       }
     },
     "backupPolicies": {
@@ -1254,6 +1324,11 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
         }
       ]
     },
+    "redundancySettings": {
+      "value": {
+        "standardTierStorageRedundancy": "LocallyRedundant"
+      }
+    },
     "replicationAlertSettings": {
       "value": {
         "customEmailAddresses": [
@@ -1286,9 +1361,18 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     },
     "softDeleteSettings": {
       "value": {
-        "enhancedSecurityState": "Enabled",
+        "enhancedSecurityState": "AlwaysON",
         "softDeleteRetentionPeriodInDays": 14,
-        "softDeleteState": "Enabled"
+        "softDeleteState": "AlwaysON"
+      }
+    },
+    "sourceScanConfiguration": {
+      "value": {
+        "sourceScanIdentity": {
+          "operationIdentityType": "UserAssigned",
+          "userAssignedIdentity": "<userAssignedIdentity>"
+        },
+        "state": "Enabled"
       }
     },
     "tags": {
@@ -1316,8 +1400,8 @@ using 'br/public:avm/res/recovery-services/vault:<version>'
 param name = 'rsvmax001'
 // Non-required parameters
 param backupConfig = {
-  enhancedSecurityState: 'Disabled'
-  softDeleteFeatureState: 'Disabled'
+  enhancedSecurityState: 'AlwaysON'
+  softDeleteFeatureState: 'AlwaysON'
 }
 param backupPolicies = [
   {
@@ -1654,6 +1738,9 @@ param protectedItems = [
     sourceResourceId: '<sourceResourceId>'
   }
 ]
+param redundancySettings = {
+  standardTierStorageRedundancy: 'LocallyRedundant'
+}
 param replicationAlertSettings = {
   customEmailAddresses: [
     'test.user@testcompany.com'
@@ -1681,9 +1768,16 @@ param roleAssignments = [
   }
 ]
 param softDeleteSettings = {
-  enhancedSecurityState: 'Enabled'
+  enhancedSecurityState: 'AlwaysON'
   softDeleteRetentionPeriodInDays: 14
-  softDeleteState: 'Enabled'
+  softDeleteState: 'AlwaysON'
+}
+param sourceScanConfiguration = {
+  sourceScanIdentity: {
+    operationIdentityType: 'UserAssigned'
+    userAssignedIdentity: '<userAssignedIdentity>'
+  }
+  state: 'Enabled'
 }
 param tags = {
   Environment: 'Non-Prod'
@@ -1695,9 +1789,11 @@ param tags = {
 </details>
 <p>
 
-### Example 5: _WAF-aligned_
+### Example 6: _WAF-aligned_
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
 
 
 <details>
@@ -1706,14 +1802,13 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
-  name: 'vaultDeployment'
   params: {
     // Required parameters
     name: 'rsvwaf001'
     // Non-required parameters
     backupConfig: {
-      enhancedSecurityState: 'Disabled'
-      softDeleteFeatureState: 'Disabled'
+      enhancedSecurityState: 'AlwaysON'
+      softDeleteFeatureState: 'AlwaysON'
     }
     backupPolicies: [
       {
@@ -1946,7 +2041,7 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
       }
     ]
     customerManagedKey: {
-      autoRotationEnabled: false
+      autoRotationEnabled: true
       keyName: '<keyName>'
       keyVaultResourceId: '<keyVaultResourceId>'
       userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
@@ -1966,7 +2061,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
       }
     ]
     immutabilitySettingState: 'Unlocked'
-    location: '<location>'
     managedIdentities: {
       systemAssigned: true
       userAssignedResourceIds: [
@@ -2051,9 +2145,21 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
       sendToOwners: 'Send'
     }
     softDeleteSettings: {
-      enhancedSecurityState: 'Enabled'
+      enhancedSecurityState: 'AlwaysON'
       softDeleteRetentionPeriodInDays: 14
-      softDeleteState: 'Enabled'
+      softDeleteState: 'AlwaysON'
+    }
+    sourceScanConfiguration: {
+      sourceScanIdentity: {
+        operationIdentityType: 'UserAssigned'
+        userAssignedIdentity: '<userAssignedIdentity>'
+      }
+      state: 'Enabled'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -2078,8 +2184,8 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     // Non-required parameters
     "backupConfig": {
       "value": {
-        "enhancedSecurityState": "Disabled",
-        "softDeleteFeatureState": "Disabled"
+        "enhancedSecurityState": "AlwaysON",
+        "softDeleteFeatureState": "AlwaysON"
       }
     },
     "backupPolicies": {
@@ -2316,7 +2422,7 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     },
     "customerManagedKey": {
       "value": {
-        "autoRotationEnabled": false,
+        "autoRotationEnabled": true,
         "keyName": "<keyName>",
         "keyVaultResourceId": "<keyVaultResourceId>",
         "userAssignedIdentityResourceId": "<userAssignedIdentityResourceId>"
@@ -2340,9 +2446,6 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     },
     "immutabilitySettingState": {
       "value": "Unlocked"
-    },
-    "location": {
-      "value": "<location>"
     },
     "managedIdentities": {
       "value": {
@@ -2437,9 +2540,25 @@ module vault 'br/public:avm/res/recovery-services/vault:<version>' = {
     },
     "softDeleteSettings": {
       "value": {
-        "enhancedSecurityState": "Enabled",
+        "enhancedSecurityState": "AlwaysON",
         "softDeleteRetentionPeriodInDays": 14,
-        "softDeleteState": "Enabled"
+        "softDeleteState": "AlwaysON"
+      }
+    },
+    "sourceScanConfiguration": {
+      "value": {
+        "sourceScanIdentity": {
+          "operationIdentityType": "UserAssigned",
+          "userAssignedIdentity": "<userAssignedIdentity>"
+        },
+        "state": "Enabled"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
       }
     }
   }
@@ -2460,8 +2579,8 @@ using 'br/public:avm/res/recovery-services/vault:<version>'
 param name = 'rsvwaf001'
 // Non-required parameters
 param backupConfig = {
-  enhancedSecurityState: 'Disabled'
-  softDeleteFeatureState: 'Disabled'
+  enhancedSecurityState: 'AlwaysON'
+  softDeleteFeatureState: 'AlwaysON'
 }
 param backupPolicies = [
   {
@@ -2694,7 +2813,7 @@ param backupPolicies = [
   }
 ]
 param customerManagedKey = {
-  autoRotationEnabled: false
+  autoRotationEnabled: true
   keyName: '<keyName>'
   keyVaultResourceId: '<keyVaultResourceId>'
   userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
@@ -2714,7 +2833,6 @@ param diagnosticSettings = [
   }
 ]
 param immutabilitySettingState = 'Unlocked'
-param location = '<location>'
 param managedIdentities = {
   systemAssigned: true
   userAssignedResourceIds: [
@@ -2799,9 +2917,21 @@ param replicationAlertSettings = {
   sendToOwners: 'Send'
 }
 param softDeleteSettings = {
-  enhancedSecurityState: 'Enabled'
+  enhancedSecurityState: 'AlwaysON'
   softDeleteRetentionPeriodInDays: 14
-  softDeleteState: 'Enabled'
+  softDeleteState: 'AlwaysON'
+}
+param sourceScanConfiguration = {
+  sourceScanIdentity: {
+    operationIdentityType: 'UserAssigned'
+    userAssignedIdentity: '<userAssignedIdentity>'
+  }
+  state: 'Enabled'
+}
+param tags = {
+  Environment: 'Non-Prod'
+  'hidden-title': 'This is visible in the resource name'
+  Role: 'DeploymentValidation'
 }
 ```
 
@@ -2822,7 +2952,6 @@ param softDeleteSettings = {
 | :-- | :-- | :-- |
 | [`backupConfig`](#parameter-backupconfig) | object | The backup configuration. |
 | [`backupPolicies`](#parameter-backuppolicies) | array | List of all backup policies. |
-| [`backupStorageConfig`](#parameter-backupstorageconfig) | object | The storage configuration for the Azure Recovery Service Vault. |
 | [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
@@ -2838,9 +2967,11 @@ param softDeleteSettings = {
 | [`replicationAlertSettings`](#parameter-replicationalertsettings) | object | Replication alert settings. |
 | [`replicationFabrics`](#parameter-replicationfabrics) | array | List of all replication fabrics. |
 | [`replicationPolicies`](#parameter-replicationpolicies) | array | List of all replication policies. |
+| [`resourceGuardOperationRequests`](#parameter-resourceguardoperationrequests) | array | ResourceGuard operation requests on which LAC check will be performed. |
 | [`restoreSettings`](#parameter-restoresettings) | object | The restore settings of the vault. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`softDeleteSettings`](#parameter-softdeletesettings) | object | The soft delete related settings. |
+| [`sourceScanConfiguration`](#parameter-sourcescanconfiguration) | object | The source scan configuration of the vault security settings. |
 | [`tags`](#parameter-tags) | object | Tags of the Recovery Service Vault resource. |
 
 ### Parameter: `name`
@@ -2879,6 +3010,7 @@ Enable this setting to protect hybrid backups against accidental deletes and add
 - Allowed:
   ```Bicep
   [
+    'AlwaysON'
     'Disabled'
     'Enabled'
   ]
@@ -2914,6 +3046,7 @@ Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM 
 - Allowed:
   ```Bicep
   [
+    'AlwaysON'
     'Disabled'
     'Enabled'
   ]
@@ -2992,51 +3125,6 @@ Configuration of the Azure Recovery Service Vault Backup Policy.
 
 - Required: Yes
 - Type: object
-
-### Parameter: `backupStorageConfig`
-
-The storage configuration for the Azure Recovery Service Vault.
-
-- Required: No
-- Type: object
-
-**Optional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`crossRegionRestoreFlag`](#parameter-backupstorageconfigcrossregionrestoreflag) | bool | Opt in details of Cross Region Restore feature. |
-| [`name`](#parameter-backupstorageconfigname) | string | The name of the backup storage config. |
-| [`storageModelType`](#parameter-backupstorageconfigstoragemodeltype) | string | Change Vault Storage Type (Works if vault has not registered any backup instance). |
-
-### Parameter: `backupStorageConfig.crossRegionRestoreFlag`
-
-Opt in details of Cross Region Restore feature.
-
-- Required: No
-- Type: bool
-
-### Parameter: `backupStorageConfig.name`
-
-The name of the backup storage config.
-
-- Required: No
-- Type: string
-
-### Parameter: `backupStorageConfig.storageModelType`
-
-Change Vault Storage Type (Works if vault has not registered any backup instance).
-
-- Required: No
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'GeoRedundant'
-    'LocallyRedundant'
-    'ReadAccessGeoZoneRedundant'
-    'ZoneRedundant'
-  ]
-  ```
 
 ### Parameter: `customerManagedKey`
 
@@ -3285,6 +3373,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -3304,6 +3393,13 @@ Specify the type of lock.
 ### Parameter: `lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -3628,6 +3724,7 @@ Specify the type of lock.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-privateendpointslocknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `privateEndpoints.lock.kind`
 
@@ -3647,6 +3744,13 @@ Specify the type of lock.
 ### Parameter: `privateEndpoints.lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -3961,27 +4065,107 @@ The redundancy settings of the vault.
 
 - Required: No
 - Type: object
+- Discriminator: `standardTierStorageRedundancy`
+
+<h4>The available variants are:</h4>
+
+| Variant | Description |
+| :-- | :-- |
+| [`GeoRedundant`](#variant-redundancysettingsstandardtierstorageredundancy-georedundant) |  |
+| [`LocallyRedundant`](#variant-redundancysettingsstandardtierstorageredundancy-locallyredundant) |  |
+| [`ZoneRedundant`](#variant-redundancysettingsstandardtierstorageredundancy-zoneredundant) |  |
+
+### Variant: `redundancySettings.standardTierStorageRedundancy-GeoRedundant`
+
+
+To use this variant, set the property `standardTierStorageRedundancy` to `GeoRedundant`.
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`standardTierStorageRedundancy`](#parameter-redundancysettingsstandardtierstorageredundancy-georedundantstandardtierstorageredundancy) | string | The storage redundancy setting of a vault. |
 
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`crossRegionRestore`](#parameter-redundancysettingscrossregionrestore) | string | Flag to show if Cross Region Restore is enabled on the Vault or not. |
-| [`standardTierStorageRedundancy`](#parameter-redundancysettingsstandardtierstorageredundancy) | string | The storage redundancy setting of a vault. |
+| [`crossRegionRestore`](#parameter-redundancysettingsstandardtierstorageredundancy-georedundantcrossregionrestore) | string | Flag to show if Cross Region Restore is enabled on the Vault or not. |
 
-### Parameter: `redundancySettings.crossRegionRestore`
+### Parameter: `redundancySettings.standardTierStorageRedundancy-GeoRedundant.standardTierStorageRedundancy`
+
+The storage redundancy setting of a vault.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'GeoRedundant'
+  ]
+  ```
+
+### Parameter: `redundancySettings.standardTierStorageRedundancy-GeoRedundant.crossRegionRestore`
 
 Flag to show if Cross Region Restore is enabled on the Vault or not.
 
 - Required: No
 - Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
-### Parameter: `redundancySettings.standardTierStorageRedundancy`
+### Variant: `redundancySettings.standardTierStorageRedundancy-LocallyRedundant`
+
+
+To use this variant, set the property `standardTierStorageRedundancy` to `LocallyRedundant`.
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`standardTierStorageRedundancy`](#parameter-redundancysettingsstandardtierstorageredundancy-locallyredundantstandardtierstorageredundancy) | string | The storage redundancy setting of a vault. |
+
+### Parameter: `redundancySettings.standardTierStorageRedundancy-LocallyRedundant.standardTierStorageRedundancy`
 
 The storage redundancy setting of a vault.
 
-- Required: No
+- Required: Yes
 - Type: string
+- Allowed:
+  ```Bicep
+  [
+    'LocallyRedundant'
+  ]
+  ```
+
+### Variant: `redundancySettings.standardTierStorageRedundancy-ZoneRedundant`
+
+
+To use this variant, set the property `standardTierStorageRedundancy` to `ZoneRedundant`.
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`standardTierStorageRedundancy`](#parameter-redundancysettingsstandardtierstorageredundancy-zoneredundantstandardtierstorageredundancy) | string | The storage redundancy setting of a vault. |
+
+### Parameter: `redundancySettings.standardTierStorageRedundancy-ZoneRedundant.standardTierStorageRedundancy`
+
+The storage redundancy setting of a vault.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'ZoneRedundant'
+  ]
+  ```
 
 ### Parameter: `replicationAlertSettings`
 
@@ -4213,6 +4397,13 @@ The duration in minutes until which the recovery points need to be stored.
 - Required: No
 - Type: int
 
+### Parameter: `resourceGuardOperationRequests`
+
+ResourceGuard operation requests on which LAC check will be performed.
+
+- Required: No
+- Type: array
+
 ### Parameter: `restoreSettings`
 
 The restore settings of the vault.
@@ -4409,6 +4600,80 @@ The soft delete state.
   ]
   ```
 
+### Parameter: `sourceScanConfiguration`
+
+The source scan configuration of the vault security settings.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`state`](#parameter-sourcescanconfigurationstate) | string | The source scan state. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`sourceScanIdentity`](#parameter-sourcescanconfigurationsourcescanidentity) | object | Identity details to be used for the source scan operation. |
+
+### Parameter: `sourceScanConfiguration.state`
+
+The source scan state.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+    'Invalid'
+  ]
+  ```
+
+### Parameter: `sourceScanConfiguration.sourceScanIdentity`
+
+Identity details to be used for the source scan operation.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`operationIdentityType`](#parameter-sourcescanconfigurationsourcescanidentityoperationidentitytype) | string | Identity type that should be used for an operation. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`userAssignedIdentity`](#parameter-sourcescanconfigurationsourcescanidentityuserassignedidentity) | string | User assigned identity to be used for an operation if operationIdentityType is UserAssigned. |
+
+### Parameter: `sourceScanConfiguration.sourceScanIdentity.operationIdentityType`
+
+Identity type that should be used for an operation.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'SystemAssigned'
+    'UserAssigned'
+  ]
+  ```
+
+### Parameter: `sourceScanConfiguration.sourceScanIdentity.userAssignedIdentity`
+
+User assigned identity to be used for an operation if operationIdentityType is UserAssigned.
+
+- Required: No
+- Type: string
+
 ### Parameter: `tags`
 
 Tags of the Recovery Service Vault resource.
@@ -4433,10 +4698,9 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/res/network/private-endpoint:0.10.1` | Remote reference |
-| `br/public:avm/utl/types/avm-common-types:0.4.0` | Remote reference |
-| `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/res/network/private-endpoint:0.12.0` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.6.1` | Remote reference |
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

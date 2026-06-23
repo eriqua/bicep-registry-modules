@@ -12,6 +12,9 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object?
 
+@description('Optional. Allowed origins.')
+param allowedOrigins string[]?
+
 @description('Required. Name of the environment for container apps.')
 param containerAppsEnvironmentName string
 
@@ -31,6 +34,10 @@ param containerMinReplicas int = 2
 
 @description('Optional. The name of the container.')
 param containerName string = 'main'
+
+import { containerAppProbeType, volumeType, volumeMountType } from 'br/public:avm/ptn/azd/acr-container-app:0.5.0'
+@description('Optional. List of probes for the container.')
+param containerProbes containerAppProbeType[]?
 
 @description('Optional. The name of the container registry.')
 param containerRegistryName string = ''
@@ -64,9 +71,9 @@ param identityName string = ''
 @description('Optional. The name of the container image.')
 param imageName string = ''
 
+import { secretType } from 'br/public:avm/res/app/container-app:0.18.1'
 @description('Optional. The secrets required for the container.')
-@secure()
-param secrets object = {}
+param secrets secretType[]?
 
 @description('Optional. The environment variables for the container.')
 param env environmentType[]?
@@ -79,6 +86,12 @@ param serviceBinds array = []
 
 @description('Optional. The target port for the container.')
 param targetPort int = 80
+
+@description('Optional. The list of volumes that can be mounted by containers in the container app.')
+param volumes volumeType[]?
+
+@description('Optional. Volume mounts for the primary container.')
+param volumeMounts volumeMountType[]?
 
 @description('Optional. The principal ID of the principal to assign the role to.')
 param identityPrincipalId string = ''
@@ -108,11 +121,11 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource existingApp 'Microsoft.App/containerApps@2023-05-02-preview' existing = if (exists) {
+resource existingApp 'Microsoft.App/containerApps@2025-01-01' existing = if (exists) {
   name: name
 }
 
-module app 'br/public:avm/ptn/azd/acr-container-app:0.1.1' = {
+module app 'br/public:avm/ptn/azd/acr-container-app:0.5.0' = {
   name: '${uniqueString(deployment().name, location)}-container-app-update'
   params: {
     name: name
@@ -120,9 +133,11 @@ module app 'br/public:avm/ptn/azd/acr-container-app:0.1.1' = {
     tags: tags
     identityType: identityType
     identityName: identityName
+    allowedOrigins: allowedOrigins
     ingressEnabled: ingressEnabled
     containerName: containerName
     containerAppsEnvironmentName: containerAppsEnvironmentName
+    containerProbes: containerProbes
     containerRegistryName: containerRegistryName
     containerRegistryHostSuffix: containerRegistryHostSuffix
     containerCpuCoreCount: containerCpuCoreCount
@@ -135,9 +150,11 @@ module app 'br/public:avm/ptn/azd/acr-container-app:0.1.1' = {
     secrets: secrets
     external: external
     env: env
-    imageName: !empty(imageName) ? imageName : exists ? existingApp.properties.template.containers[0].image : ''
+    imageName: !empty(imageName) ? imageName : exists ? existingApp!.properties.template.containers[0].image : ''
     targetPort: targetPort
     serviceBinds: serviceBinds
+    volumes: volumes
+    volumeMounts: volumeMounts
     principalId: !empty(identityName) && !empty(containerRegistryName) ? identityPrincipalId : ''
     userAssignedIdentityResourceId: !empty(identityName) && !empty(containerRegistryName)
       ? userAssignedIdentityResourceId

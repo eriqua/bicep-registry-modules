@@ -8,7 +8,31 @@ param dataFactoryName string
 param name string
 
 @description('Optional. An array of managed private endpoints objects created in the Data Factory managed virtual network.')
-param managedPrivateEndpoints array = []
+param managedPrivateEndpoints managedPrivateEndpointType[]?
+
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.datafactory-factory-managedvnet.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
   name: dataFactoryName
@@ -21,10 +45,11 @@ resource managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNe
 }
 
 module managedVirtualNetwork_managedPrivateEndpoint 'managed-private-endpoint/main.bicep' = [
-  for (managedPrivateEndpoint, index) in managedPrivateEndpoints: {
+  for (managedPrivateEndpoint, index) in (managedPrivateEndpoints ?? []): {
     name: '${deployment().name}-managedPrivateEndpoint-${index}'
     params: {
       dataFactoryName: dataFactoryName
+      enableTelemetry: enableReferencedModulesTelemetry
       managedVirtualNetworkName: managedVirtualNetwork.name
       name: managedPrivateEndpoint.name
       fqdns: managedPrivateEndpoint.fqdns
@@ -42,3 +67,23 @@ output name string = managedVirtualNetwork.name
 
 @description('The resource ID of the Managed Virtual Network.')
 output resourceId string = managedVirtualNetwork.id
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+@export()
+@description('Type definition for a Managed Private Endpoint.')
+type managedPrivateEndpointType = {
+  @description('Required. The managed private endpoint resource name.')
+  name: string
+
+  @description('Required. The groupId to which the managed private endpoint is created.')
+  groupId: string
+
+  @description('Required. Fully qualified domain names.')
+  fqdns: string[]
+
+  @description('Required. The ARM resource ID of the resource to which the managed private endpoint is created.')
+  privateLinkResourceId: string
+}

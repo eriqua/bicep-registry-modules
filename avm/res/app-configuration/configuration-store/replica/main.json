@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.33.93.31351",
-      "templateHash": "17508622087481054882"
+      "version": "0.42.1.51946",
+      "templateHash": "14902782690832686435"
     },
     "name": "App Configuration Replicas",
     "description": "This module deploys an App Configuration Replica."
@@ -13,8 +13,9 @@
   "parameters": {
     "name": {
       "type": "string",
+      "defaultValue": "[format('{0}replica', parameters('replicaLocation'))]",
       "metadata": {
-        "description": "Required. Name of the replica."
+        "description": "Optional. Name of the replica."
       }
     },
     "appConfigurationName": {
@@ -28,12 +29,39 @@
       "metadata": {
         "description": "Required. Location of the replica."
       }
+    },
+    "enableTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable/Disable usage telemetry for module."
+      }
     }
   },
   "resources": [
     {
+      "condition": "[parameters('enableTelemetry')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('46d3xbcp.res.appconfig-configstore-replica.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name), 0, 4))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [],
+          "outputs": {
+            "telemetry": {
+              "type": "String",
+              "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+            }
+          }
+        }
+      }
+    },
+    {
       "type": "Microsoft.AppConfiguration/configurationStores/replicas",
-      "apiVersion": "2024-05-01",
+      "apiVersion": "2025-02-01-preview",
       "name": "[format('{0}/{1}', parameters('appConfigurationName'), parameters('name'))]",
       "location": "[parameters('replicaLocation')]"
     }

@@ -2,17 +2,26 @@
 
 This module deploys a Virtual Machine Extension.
 
+You can reference the module as follows:
+```bicep
+module virtualMachine 'br/public:avm/res/compute/virtual-machine/extension:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Data Collection](#Data-Collection)
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Compute/virtualMachines/extensions` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/virtualMachines/extensions) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Compute/virtualMachines/extensions` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.compute_virtualmachines_extensions.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2024-11-01/virtualMachines/extensions)</li></ul> |
 
 ## Parameters
 
@@ -37,9 +46,12 @@ This module deploys a Virtual Machine Extension.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`forceUpdateTag`](#parameter-forceupdatetag) | string | How the extension handler should be forced to update even if the extension configuration has not changed. |
 | [`location`](#parameter-location) | string | The location the extension is deployed to. |
 | [`protectedSettings`](#parameter-protectedsettings) | secureObject | Any object that contains the extension specific protected settings. |
+| [`protectedSettingsFromKeyVault`](#parameter-protectedsettingsfromkeyvault) | object | The extensions protected settings that are passed by reference, and consumed from key vault. |
+| [`provisionAfterExtensions`](#parameter-provisionafterextensions) | array | Collection of extension names after which this extension needs to be provisioned. |
 | [`settings`](#parameter-settings) | object | Any object that contains the extension specific settings. |
 | [`supressFailures`](#parameter-supressfailures) | bool | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
@@ -93,13 +105,20 @@ The name of the parent virtual machine that extension is provisioned for. Requir
 - Required: Yes
 - Type: string
 
+### Parameter: `enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `forceUpdateTag`
 
 How the extension handler should be forced to update even if the extension configuration has not changed.
 
 - Required: No
 - Type: string
-- Default: `''`
 
 ### Parameter: `location`
 
@@ -115,7 +134,20 @@ Any object that contains the extension specific protected settings.
 
 - Required: No
 - Type: secureObject
-- Default: `{}`
+
+### Parameter: `protectedSettingsFromKeyVault`
+
+The extensions protected settings that are passed by reference, and consumed from key vault.
+
+- Required: No
+- Type: object
+
+### Parameter: `provisionAfterExtensions`
+
+Collection of extension names after which this extension needs to be provisioned.
+
+- Required: No
+- Type: array
 
 ### Parameter: `settings`
 
@@ -123,7 +155,6 @@ Any object that contains the extension specific settings.
 
 - Required: No
 - Type: object
-- Default: `{}`
 
 ### Parameter: `supressFailures`
 
@@ -148,3 +179,7 @@ Tags of the resource.
 | `name` | string | The name of the extension. |
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The resource ID of the extension. |
+
+## Data Collection
+
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

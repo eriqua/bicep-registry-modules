@@ -19,10 +19,13 @@ param policies policyType[]?
 @sys.description('Required. A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.')
 param method string
 
+@minLength(1)
+@maxLength(1000)
 @sys.description('Required. Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.')
 param urlTemplate string
 
-@sys.description('Optional. Description of the operation. May include HTML formatting tags. Must not be longer than 1.000 characters.')
+@maxLength(1000)
+@sys.description('Optional. Description of the operation. May include HTML formatting tags.')
 param description string?
 
 @sys.description('Optional. An entity containing request details.')
@@ -34,11 +37,35 @@ param responses resourceInput<'Microsoft.ApiManagement/service/apis/operations@2
 @sys.description('Optional. Collection of URL template parameters.')
 param templateParameters resourceInput<'Microsoft.ApiManagement/service/apis/operations@2024-05-01'>.properties.templateParameters?
 
-resource service 'Microsoft.ApiManagement/service@2023-05-01-preview' existing = {
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+var enableReferencedModulesTelemetry bool = false
+
+resource service 'Microsoft.ApiManagement/service@2024-05-01' existing = {
   name: apiManagementServiceName
 
-  resource api 'apis@2022-08-01' existing = {
+  resource api 'apis@2024-05-01' existing = {
     name: apiName
+  }
+}
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.apimgmt-service-apioperation.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
   }
 }
 
@@ -56,16 +83,17 @@ resource operation 'Microsoft.ApiManagement/service/apis/operations@2024-05-01' 
   }
 }
 
-module policy 'policy/main.bicep' = [
+module operation_policies 'policy/main.bicep' = [
   for (policy, index) in policies ?? []: {
-    name: '${deployment().name}-Policy-${index}'
+    name: '${deployment().name}-Pol-${index}'
     params: {
       apiManagementServiceName: apiManagementServiceName
       apiName: apiName
       operationName: operation.name
-      name: policy.name
-      format: policy.format
+      name: policy.?name
+      format: policy.?format
       value: policy.value
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -86,11 +114,11 @@ output resourceGroupName string = resourceGroup().name
 @export()
 @sys.description('The type of a policy.')
 type policyType = {
-  @sys.description('Required. The name of the policy.')
-  name: string
+  @sys.description('Optional. The name of the policy.')
+  name: string?
 
-  @sys.description('Required. Format of the policyContent.')
-  format: ('rawxml' | 'rawxml-link' | 'xml' | 'xml-link')
+  @sys.description('Optional. Format of the policyContent.')
+  format: ('rawxml' | 'rawxml-link' | 'xml' | 'xml-link')?
 
   @sys.description('Required. Contents of the Policy as defined by the format.')
   value: string

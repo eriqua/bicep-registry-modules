@@ -13,21 +13,41 @@ param name string
 @sys.description('Optional. A description of the network group.')
 param description string = ''
 
-@allowed([
-  'Subnet'
-  'VirtualNetwork'
-])
 @sys.description('Optional. The type of the group member. Subnet member type is used for routing configurations.')
-param memberType string = 'VirtualNetwork'
+param memberType resourceInput<'Microsoft.Network/networkManagers/networkGroups@2025-05-01'>.properties.memberType = 'VirtualNetwork'
 
 @sys.description('Optional. Static Members to create for the network group. Contains virtual networks to add to the network group.')
 param staticMembers staticMemberType[]?
 
-resource networkManager 'Microsoft.Network/networkManagers@2024-05-01' existing = {
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.network-nwmgr-networkgroup.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource networkManager 'Microsoft.Network/networkManagers@2025-05-01' existing = {
   name: networkManagerName
 }
 
-resource networkGroup 'Microsoft.Network/networkManagers/networkGroups@2024-05-01' = {
+resource networkGroup 'Microsoft.Network/networkManagers/networkGroups@2025-05-01' = {
   name: name
   parent: networkManager
   properties: {
@@ -44,6 +64,7 @@ module networkGroup_staticMembers 'static-member/main.bicep' = [
       networkGroupName: networkGroup.name
       name: staticMember.name
       resourceId: staticMember.resourceId
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]

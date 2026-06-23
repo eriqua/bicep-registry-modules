@@ -16,15 +16,14 @@ param description string = ''
 @sys.description('Required. Network Groups for the configuration. A connectivity configuration must be associated to at least one network group.')
 param appliesToGroups appliesToGroupType[]
 
-@allowed([
-  'HubAndSpoke'
-  'Mesh'
-])
 @sys.description('Required. Connectivity topology type.')
-param connectivityTopology string
+param connectivityTopology resourceInput<'Microsoft.Network/networkManagers/connectivityConfigurations@2025-05-01'>.properties.connectivityTopology
 
 @sys.description('Conditional. List of hub items. This will create peerings between the specified hub and the virtual networks in the network group specified. Required if connectivityTopology is of type "HubAndSpoke".')
 param hubs hubType[]?
+
+@sys.description('Optional. Collection of additional settings to enhance specific topology behaviors of the connectivity configuration, such as address overlap, private endpoint scale, and peering enforcement.')
+param connectivityCapabilities resourceInput<'Microsoft.Network/networkManagers/connectivityConfigurations@2025-05-01'>.properties.connectivityCapabilities?
 
 @sys.description('Optional. Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke".')
 param deleteExistingPeering bool = false
@@ -32,11 +31,33 @@ param deleteExistingPeering bool = false
 @sys.description('Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions.')
 param isGlobal bool = false
 
-resource networkManager 'Microsoft.Network/networkManagers@2024-05-01' existing = {
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.network-nwmgr-connectivityconfig.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource networkManager 'Microsoft.Network/networkManagers@2025-05-01' existing = {
   name: networkManagerName
 }
 
-resource connectivityConfiguration 'Microsoft.Network/networkManagers/connectivityConfigurations@2024-05-01' = {
+resource connectivityConfiguration 'Microsoft.Network/networkManagers/connectivityConfigurations@2025-05-01' = {
   name: name
   parent: networkManager
   properties: {
@@ -46,6 +67,7 @@ resource connectivityConfiguration 'Microsoft.Network/networkManagers/connectivi
       networkGroupId: any(group.networkGroupResourceId)
       useHubGateway: string(group.?useHubGateway ?? false)
     })
+    connectivityCapabilities: connectivityCapabilities
     connectivityTopology: connectivityTopology
     deleteExistingPeering: connectivityTopology == 'HubAndSpoke' ? string(deleteExistingPeering) : 'false'
     description: description

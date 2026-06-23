@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
-param tags object?
+param tags resourceInput<'Microsoft.Network/virtualHubs@2025-05-01'>.tags?
 
 @description('Required. Address-prefix for this VirtualHub.')
 param addressPrefix string
@@ -27,22 +27,12 @@ param expressRouteGatewayResourceId string?
 param p2SVpnGatewayResourceId string?
 
 @description('Optional. The preferred routing preference for this virtual hub.')
-@allowed([
-  'ASPath'
-  'ExpressRoute'
-  'VpnGateway'
-])
-param hubRoutingPreference string?
+param hubRoutingPreference resourceInput<'Microsoft.Network/virtualHubs@2025-05-01'>.properties.hubRoutingPreference?
 
 @description('Optional. The preferred routing gateway types.')
-@allowed([
-  'ExpressRoute'
-  'None'
-  'VpnGateway'
-])
-param preferredRoutingGateway string?
+param preferredRoutingGateway resourceInput<'Microsoft.Network/virtualHubs@2025-05-01'>.properties.preferredRoutingGateway?
 
-@description('Optional. VirtualHub route tables.')
+@description('Optional. The VirtualHub route tables.')
 param routeTableRoutes array?
 
 @description('Optional. ID of the Security Partner Provider to link to.')
@@ -62,7 +52,7 @@ param sku string = 'Standard'
 param virtualHubRouteTableV2s array = []
 
 @description('Optional. VirtualRouter ASN.')
-param virtualRouterAsn int?
+param virtualRouterAsn resourceInput<'Microsoft.Network/virtualHubs@2025-05-01'>.properties.virtualRouterAsn?
 
 @description('Optional. VirtualRouter IPs.')
 param virtualRouterIps array?
@@ -88,7 +78,10 @@ param hubRouteTables hubRouteTableType[]?
 @description('Optional. Virtual network connections to create for the virtual hub.')
 param hubVirtualNetworkConnections hubVirtualNetworkConnectionType[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+@description('Optional. Route maps to create for the virtual hub.')
+param routeMaps routeMapType[]?
+
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
@@ -117,7 +110,9 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2024-05-01' = {
+var enableReferencedModulesTelemetry = false
+
+resource virtualHub 'Microsoft.Network/virtualHubs@2025-05-01' = {
   name: name
   location: location
   tags: tags
@@ -174,48 +169,69 @@ resource virtualHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: virtualHub
 }
 
 module virtualHub_routingIntent 'routing-intent/main.bicep' = if (!empty(azureFirewallResourceId) && !empty(routingIntent)) {
-  name: '${uniqueString(deployment().name, location)}-routingIntent'
+  name: '${uniqueString(subscription().id, resourceGroup().id, location)}-routingIntent'
   params: {
     virtualHubName: virtualHub.name
     azureFirewallResourceId: azureFirewallResourceId!
     internetToFirewall: routingIntent.?internetToFirewall
     privateToFirewall: routingIntent.?privateToFirewall
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
 // Initially create the route tables without routes
 module virtualHub_routeTables 'hub-route-table/main.bicep' = [
   for (routeTable, index) in (hubRouteTables ?? []): {
-    name: '${uniqueString(deployment().name, location)}-routeTable-${index}'
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-routeTable-${index}'
     params: {
       virtualHubName: virtualHub.name
       name: routeTable.name
       labels: routeTable.?labels
       routes: routeTable.?routes
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
 
 module virtualHub_hubVirtualNetworkConnections 'hub-virtual-network-connection/main.bicep' = [
   for (virtualNetworkConnection, index) in (hubVirtualNetworkConnections ?? []): {
-    name: '${uniqueString(deployment().name, location)}-connection-${index}'
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-connection-${index}'
     params: {
       virtualHubName: virtualHub.name
       name: virtualNetworkConnection.name
       enableInternetSecurity: virtualNetworkConnection.?enableInternetSecurity
       remoteVirtualNetworkResourceId: virtualNetworkConnection.remoteVirtualNetworkResourceId
       routingConfiguration: virtualNetworkConnection.?routingConfiguration
+      enableTelemetry: enableReferencedModulesTelemetry
     }
     dependsOn: [
       virtualHub_routeTables
+    ]
+  }
+]
+
+module virtualHub_routeMaps 'route-map/main.bicep' = [
+  for (routeMap, index) in (routeMaps ?? []): {
+    name: '${uniqueString(subscription().id, resourceGroup().id, location)}-routeMap-${index}'
+    params: {
+      virtualHubName: virtualHub.name
+      name: routeMap.name
+      associatedInboundConnections: routeMap.?associatedInboundConnections
+      associatedOutboundConnections: routeMap.?associatedOutboundConnections
+      rules: routeMap.?rules
+      enableTelemetry: enableReferencedModulesTelemetry
+    }
+    dependsOn: [
+      virtualHub_routeTables
+      virtualHub_hubVirtualNetworkConnections
     ]
   }
 ]
@@ -288,4 +304,20 @@ type hubVirtualNetworkConnectionType = {
 
   @description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
   routingConfiguration: object?
+}
+
+@export()
+@description('The type of a route map.')
+type routeMapType = {
+  @description('Required. The route map name.')
+  name: string
+
+  @description('Optional. List of connections which have this route map associated for inbound traffic.')
+  associatedInboundConnections: resourceInput<'Microsoft.Network/virtualHubs/routeMaps@2025-05-01'>.properties.associatedInboundConnections?
+
+  @description('Optional. List of connections which have this route map associated for outbound traffic.')
+  associatedOutboundConnections: resourceInput<'Microsoft.Network/virtualHubs/routeMaps@2025-05-01'>.properties.associatedOutboundConnections?
+
+  @description('Optional. List of route map rules.')
+  rules: resourceInput<'Microsoft.Network/virtualHubs/routeMaps@2025-05-01'>.properties.rules?
 }

@@ -11,9 +11,6 @@ metadata description = 'This instance deploys the module in alignment with the b
 @maxLength(90)
 param resourceGroupName string = 'dep-${namePrefix}-sql.managedinstances-${serviceShort}-rg'
 
-@description('Optional. The location to deploy resources to.')
-param resourceLocation string = deployment().location
-
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'sqlmiwaf'
 
@@ -27,6 +24,15 @@ param password string = newGuid()
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '#_namePrefix_#'
 
+// =========== //
+// Variables   //
+// =========== //
+
+// The route table built in `dependencies.bicep` includes a route whose `addressPrefix` uses the regional service tag `AzureCloud.<location>`.
+// That regional service tag is not honored as a service tag in every region (e.g., `germanywestcentral`), causing the deployment to fail with
+// `InvalidAddressPrefixFormat`. Pin the location for this test only to a region where the regional tag is recognized.
+var enforcedLocation = 'uksouth'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,12 +41,12 @@ param namePrefix string = '#_namePrefix_#'
 // =================
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: resourceGroupName
-  location: resourceLocation
+  location: enforcedLocation
 }
 
 module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, resourceLocation)}-nestedDependencies'
+  name: '${uniqueString(deployment().name, enforcedLocation)}-nestedDependencies'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep${namePrefix}kv${serviceShort}${substring(uniqueString(baseTime), 0, 3)}'
@@ -56,7 +62,7 @@ module nestedDependencies 'dependencies.bicep' = {
 // ===========
 module diagnosticDependencies '../../../../../../../utilities/e2e-template-assets/templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, resourceLocation)}-diagnosticDependencies'
+  name: '${uniqueString(deployment().name, enforcedLocation)}-diagnosticDependencies'
   params: {
     storageAccountName: toLower('dep${namePrefix}wf${serviceShort}01')
     logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
@@ -73,7 +79,7 @@ module diagnosticDependencies '../../../../../../../utilities/e2e-template-asset
 module testDeployment '../../../main.bicep' = [
   for iteration in ['init', 'idem']: {
     scope: resourceGroup
-    name: '${uniqueString(deployment().name, resourceLocation)}-test-${serviceShort}-${iteration}'
+    name: '${uniqueString(deployment().name, enforcedLocation)}-test-${serviceShort}-${iteration}'
     params: {
       name: '${namePrefix}-${serviceShort}'
       administratorLogin: 'adminUserName'
@@ -115,7 +121,7 @@ module testDeployment '../../../main.bicep' = [
         }
       ]
       dnsZonePartnerResourceId: ''
-      encryptionProtectorObj: {
+      encryptionProtector: {
         serverKeyName: '${nestedDependencies.outputs.keyVaultName}_${nestedDependencies.outputs.keyVaultKeyName}_${last(split(nestedDependencies.outputs.keyVaultEncryptionKeyUrl, '/'))}'
         serverKeyType: 'AzureKeyVault'
       }
@@ -131,10 +137,15 @@ module testDeployment '../../../main.bicep' = [
       primaryUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
       proxyOverride: 'Proxy'
       publicDataEndpointEnabled: false
-      securityAlertPoliciesObj: {
+      securityAlertPolicy: {
         emailAccountAdmins: true
         name: 'default'
         state: 'Enabled'
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
+        emailAddresses: [
+          'test1@contoso.com'
+          'test2@contoso.com'
+        ]
       }
       servicePrincipal: 'SystemAssigned'
       skuName: 'GP_Gen5'
@@ -149,20 +160,17 @@ module testDeployment '../../../main.bicep' = [
       maintenanceWindow: 'Custom2'
       timezoneId: 'UTC'
       vCores: 4
-      vulnerabilityAssessmentsObj: {
-        emailSubscriptionAdmins: true
+      vulnerabilityAssessment: {
         name: 'default'
-        recurringScansEmails: [
-          'test1@contoso.com'
-          'test2@contoso.com'
-        ]
-        recurringScansIsEnabled: true
-        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
-        tags: {
-          'hidden-title': 'This is visible in the resource name'
-          Environment: 'Non-Prod'
-          Role: 'DeploymentValidation'
+        recurringScans: {
+          isEnabled: true
+          emailSubscriptionAdmins: true
+          emails: [
+            'test1@contoso.com'
+            'test2@contoso.com'
+          ]
         }
+        storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
       }
     }
   }

@@ -4,9 +4,6 @@ metadata description = 'This module deploys a Recovery Services Vault.'
 @description('Required. Name of the Azure Recovery Service Vault.')
 param name string
 
-@description('Optional. The storage configuration for the Azure Recovery Service Vault.')
-param backupStorageConfig backupStorageConfigType?
-
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
 
@@ -31,26 +28,26 @@ param replicationPolicies replicationPolicyType[]?
 @description('Optional. Replication alert settings.')
 param replicationAlertSettings replicationAlertSettingsType?
 
-import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingFullType[]?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { managedIdentityAllType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The managed identity definition for this resource.')
 param managedIdentities managedIdentityAllType?
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
-param tags object?
+param tags resourceInput<'Microsoft.RecoveryServices/vaults@2025-08-01'>.tags?
 
-import { privateEndpointSingleServiceType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
+import { privateEndpointSingleServiceType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints privateEndpointSingleServiceType[]?
 
@@ -81,7 +78,13 @@ param redundancySettings redundancySettingsType?
 @description('Optional. The restore settings of the vault.')
 param restoreSettings restoreSettingsType?
 
-import { customerManagedKeyWithAutoRotateType } from 'br/public:avm/utl/types/avm-common-types:0.4.0'
+@description('Optional. The source scan configuration of the vault security settings.')
+param sourceScanConfiguration sourceScanConfigurationType?
+
+@description('Optional. ResourceGuard operation requests on which LAC check will be performed.')
+param resourceGuardOperationRequests string[]?
+
+import { customerManagedKeyWithAutoRotateType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The customer managed key definition.')
 param customerManagedKey customerManagedKeyWithAutoRotateType?
 
@@ -151,8 +154,30 @@ var formattedRoleAssignments = [
   })
 ]
 
+var isHSMManagedCMK = split(customerManagedKey.?keyVaultResourceId ?? '', '/')[?7] == 'managedHSMs'
+
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2025-05-01' existing = if (!empty(customerManagedKey) && !isHSMManagedCMK) {
+  name: last(split((customerManagedKey.?keyVaultResourceId!), '/'))
+  scope: resourceGroup(
+    split(customerManagedKey.?keyVaultResourceId!, '/')[2],
+    split(customerManagedKey.?keyVaultResourceId!, '/')[4]
+  )
+
+  resource cMKKey 'keys@2025-05-01' existing = if (!empty(customerManagedKey) && !isHSMManagedCMK) {
+    name: customerManagedKey.?keyName!
+  }
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
+  name: last(split(customerManagedKey.?userAssignedIdentityResourceId!, '/'))
+  scope: resourceGroup(
+    split(customerManagedKey.?userAssignedIdentityResourceId!, '/')[2],
+    split(customerManagedKey.?userAssignedIdentityResourceId!, '/')[4]
+  )
+}
+
 #disable-next-line no-deployments-resources
-resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableTelemetry) {
+resource avmTelemetry 'Microsoft.Resources/deployments@2024-07-01' = if (enableTelemetry) {
   name: '46d3xbcp.res.recoveryservices-vault.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
   properties: {
     mode: 'Incremental'
@@ -170,27 +195,7 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
-  name: last(split((customerManagedKey.?keyVaultResourceId!), '/'))
-  scope: resourceGroup(
-    split(customerManagedKey.?keyVaultResourceId!, '/')[2],
-    split(customerManagedKey.?keyVaultResourceId!, '/')[4]
-  )
-
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId) && !empty(customerManagedKey.?keyName)) {
-    name: customerManagedKey.?keyName!
-  }
-}
-
-resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!empty(customerManagedKey.?userAssignedIdentityResourceId)) {
-  name: last(split(customerManagedKey.?userAssignedIdentityResourceId!, '/'))
-  scope: resourceGroup(
-    split(customerManagedKey.?userAssignedIdentityResourceId!, '/')[2],
-    split(customerManagedKey.?userAssignedIdentityResourceId!, '/')[4]
-  )
-}
-
-resource rsv 'Microsoft.RecoveryServices/vaults@2024-04-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2025-08-01' = {
   name: name
   location: location
   tags: tags
@@ -224,10 +229,17 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2024-04-01' = {
           }
         : null
       softDeleteSettings: softDeleteSettings
+      sourceScanConfiguration: sourceScanConfiguration
     }
     publicNetworkAccess: publicNetworkAccess
-    redundancySettings: redundancySettings
+    redundancySettings: (!empty(redundancySettings))
+      ? {
+          standardTierStorageRedundancy: redundancySettings!.standardTierStorageRedundancy
+          crossRegionRestore: redundancySettings.?crossRegionRestore ?? 'Disabled'
+        }
+      : null
     restoreSettings: restoreSettings
+    resourceGuardOperationRequests: resourceGuardOperationRequests
     encryption: !empty(customerManagedKey)
       ? {
           infrastructureEncryption: 'Enabled'
@@ -240,10 +252,16 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2024-04-01' = {
               }
           keyVaultProperties: {
             keyUri: !empty(customerManagedKey.?keyVersion)
-              ? '${cMKKeyVault::cMKKey.properties.keyUri}/${customerManagedKey!.?keyVersion}'
+              ? (!isHSMManagedCMK
+                  ? '${cMKKeyVault::cMKKey!.properties.keyUri}/${customerManagedKey!.keyVersion!}'
+                  : 'https://${last(split((customerManagedKey!.keyVaultResourceId), '/'))}.managedhsm.azure.net/keys/${customerManagedKey!.keyName}/${customerManagedKey!.keyVersion!}')
               : (customerManagedKey.?autoRotationEnabled ?? true)
-                  ? cMKKeyVault::cMKKey.properties.keyUri
-                  : cMKKeyVault::cMKKey.properties.keyUriWithVersion
+                  ? (!isHSMManagedCMK
+                      ? cMKKeyVault::cMKKey!.properties.keyUri
+                      : 'https://${last(split((customerManagedKey!.keyVaultResourceId), '/'))}.managedhsm.azure.net/keys/${customerManagedKey!.keyName}')
+                  : (!isHSMManagedCMK
+                      ? cMKKeyVault::cMKKey!.properties.keyUriWithVersion
+                      : fail('Managed HSM CMK encryption requires either specifying the \'keyVersion\' or omitting the \'autoRotationEnabled\' property. Setting \'autoRotationEnabled\' to false without a \'keyVersion\' is not allowed.'))
           }
         }
       : null
@@ -258,6 +276,7 @@ module rsv_replicationFabrics 'replication-fabric/main.bicep' = [
       name: replicationFabric.?name
       location: replicationFabric.location
       replicationContainers: replicationFabric.?replicationContainers
+      enableTelemetry: enableReferencedModulesTelemetry
     }
     dependsOn: [
       rsv_replicationPolicies
@@ -275,19 +294,10 @@ module rsv_replicationPolicies 'replication-policy/main.bicep' = [
       crashConsistentFrequencyInMinutes: replicationPolicy.?crashConsistentFrequencyInMinutes
       multiVmSyncStatus: replicationPolicy.?multiVmSyncStatus
       recoveryPointHistory: replicationPolicy.?recoveryPointHistory
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
-
-module rsv_backupStorageConfiguration 'backup-storage-config/main.bicep' = if (!empty(backupStorageConfig)) {
-  name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
-  params: {
-    recoveryVaultName: rsv.name
-    storageModelType: backupStorageConfig!.?storageModelType
-    crossRegionRestoreFlag: backupStorageConfig!.?crossRegionRestoreFlag
-  }
-}
-
 module rsv_backupFabric_protectionContainer_protectedItems 'backup-fabric/protection-container/protected-item/main.bicep' = [
   for (protectedItem, index) in (protectedItems ?? []): {
     name: '${uniqueString(deployment().name, location)}-ProtectedItem-${index}'
@@ -299,6 +309,7 @@ module rsv_backupFabric_protectionContainer_protectedItems 'backup-fabric/protec
       protectedItemType: protectedItem.protectedItemType
       protectionContainerName: protectedItem.protectionContainerName
       sourceResourceId: protectedItem.sourceResourceId
+      enableTelemetry: enableReferencedModulesTelemetry
     }
     dependsOn: [
       rsv_backupPolicies
@@ -313,6 +324,7 @@ module rsv_backupPolicies 'backup-policy/main.bicep' = [
       recoveryVaultName: rsv.name
       name: backupPolicy.name
       properties: backupPolicy.properties
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -322,13 +334,14 @@ module rsv_backupConfig 'backup-config/main.bicep' = if (!empty(backupConfig)) {
   params: {
     recoveryVaultName: rsv.name
     name: backupConfig.?name
-    enhancedSecurityState: backupConfig.?enhancedSecurityState
+    enhancedSecurityState: !empty(softDeleteSettings) ? null : backupConfig.?enhancedSecurityState
     resourceGuardOperationRequests: backupConfig.?resourceGuardOperationRequests
-    softDeleteFeatureState: backupConfig.?softDeleteFeatureState
+    softDeleteFeatureState: !empty(softDeleteSettings) ? null : backupConfig.?softDeleteFeatureState
     storageModelType: backupConfig.?storageModelType
     storageType: backupConfig.?storageType
     storageTypeState: backupConfig.?storageTypeState
     isSoftDeleteFeatureStateEditable: backupConfig.?isSoftDeleteFeatureStateEditable
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -340,6 +353,7 @@ module rsv_replicationAlertSettings 'replication-alert-setting/main.bicep' = if 
     customEmailAddresses: replicationAlertSettings.?customEmailAddresses
     locale: replicationAlertSettings.?locale
     sendToOwners: replicationAlertSettings.?sendToOwners
+    enableTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -347,13 +361,14 @@ resource rsv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?
   name: lock.?name ?? 'lock-${name}'
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
   scope: rsv
 }
 
+#disable-next-line use-recent-api-versions
 resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [
   for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
     name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
@@ -383,7 +398,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   }
 ]
 
-module rsv_privateEndpoints 'br/public:avm/res/network/private-endpoint:0.10.1' = [
+module rsv_privateEndpoints 'br/public:avm/res/network/private-endpoint:0.12.0' = [
   for (privateEndpoint, index) in (privateEndpoints ?? []): {
     name: '${uniqueString(deployment().name, location)}-rsv-PrivateEndpoint-${index}'
     scope: resourceGroup(
@@ -508,16 +523,6 @@ type privateEndpointOutputType = {
 }
 
 @export()
-@description('The type for redundancy settings.')
-type redundancySettingsType = {
-  @description('Optional. Flag to show if Cross Region Restore is enabled on the Vault or not.')
-  crossRegionRestore: string?
-
-  @description('Optional. The storage redundancy setting of a vault.')
-  standardTierStorageRedundancy: string?
-}
-
-@export()
 @description('The type for restore settings.')
 type restoreSettingsType = {
   @description('Required. The restore settings of the vault.')
@@ -561,32 +566,19 @@ type replicationPolicyType = {
 }
 
 @export()
-@description('The type for a backup storage config.')
-type backupStorageConfigType = {
-  @description('Optional. The name of the backup storage config.')
-  name: string?
-
-  @description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance).')
-  storageModelType: ('GeoRedundant' | 'LocallyRedundant' | 'ReadAccessGeoZoneRedundant' | 'ZoneRedundant')?
-
-  @description('Optional. Opt in details of Cross Region Restore feature.')
-  crossRegionRestoreFlag: bool?
-}
-
-@export()
 @description('The type for a backup configuration.')
 type backupConfigType = {
   @description('Optional. Name of the Azure Recovery Service Vault Backup Policy.')
   name: string?
 
   @description('Optional. Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations.')
-  enhancedSecurityState: ('Disabled' | 'Enabled')?
+  enhancedSecurityState: ('AlwaysON' | 'Disabled' | 'Enabled')?
 
   @description('Optional. ResourceGuard Operation Requests.')
   resourceGuardOperationRequests: object[]?
 
   @description('Optional. Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes.')
-  softDeleteFeatureState: ('Disabled' | 'Enabled')?
+  softDeleteFeatureState: ('AlwaysON' | 'Disabled' | 'Enabled')?
 
   @description('Optional. Storage type.')
   storageModelType: ('GeoRedundant' | 'LocallyRedundant' | 'ReadAccessGeoZoneRedundant' | 'ZoneRedundant')?
@@ -683,10 +675,6 @@ type monitoringSettingsType = {
   }?
 }
 
-// =============== //
-//   Definitions   //
-// =============== //
-
 @export()
 @description('The type for soft delete settings.')
 type softDeleteSettingType = {
@@ -698,4 +686,43 @@ type softDeleteSettingType = {
 
   @description('Required. The soft delete state.')
   softDeleteState: ('AlwaysON' | 'Disabled' | 'Enabled' | 'Invalid')
+}
+
+@export()
+@discriminator('standardTierStorageRedundancy')
+@description('The type for the recovery services vault\'s redundancy settings.')
+type redundancySettingsType = redundancySettingsGeoType | redundancySettingsLocalType | redundancySettingsZoneType
+
+type redundancySettingsGeoType = {
+  @description('Required. The storage redundancy setting of a vault.')
+  standardTierStorageRedundancy: 'GeoRedundant'
+
+  @description('Optional. Flag to show if Cross Region Restore is enabled on the Vault or not.')
+  crossRegionRestore: 'Enabled' | 'Disabled'?
+}
+
+type redundancySettingsLocalType = {
+  @description('Required. The storage redundancy setting of a vault.')
+  standardTierStorageRedundancy: 'LocallyRedundant'
+}
+
+type redundancySettingsZoneType = {
+  @description('Required. The storage redundancy setting of a vault.')
+  standardTierStorageRedundancy: 'ZoneRedundant'
+}
+
+@export()
+@description('The type for source scan configuration.')
+type sourceScanConfigurationType = {
+  @description('Optional. Identity details to be used for the source scan operation.')
+  sourceScanIdentity: {
+    @description('Required. Identity type that should be used for an operation.')
+    operationIdentityType: ('SystemAssigned' | 'UserAssigned')
+
+    @description('Optional. User assigned identity to be used for an operation if operationIdentityType is UserAssigned.')
+    userAssignedIdentity: string?
+  }?
+
+  @description('Required. The source scan state.')
+  state: ('Disabled' | 'Enabled' | 'Invalid')
 }

@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.33.13.18514",
-      "templateHash": "14313600575703393398"
+      "version": "0.40.2.10011",
+      "templateHash": "9687907465960016292"
     },
     "name": "VPN Server Configuration",
     "description": "This module deploys a VPN Server Configuration for a Virtual Hub P2S Gateway."
@@ -64,7 +64,7 @@
             "description": "Optional. The size of the SA data in kilobytes. Required if using IKEv2."
           }
         },
-        "salfetimeSeconds": {
+        "saLifeTimeSeconds": {
           "type": "int",
           "nullable": true,
           "metadata": {
@@ -97,12 +97,19 @@
           "metadata": {
             "description": "Optional. Specify the type of lock."
           }
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the notes of the lock."
+          }
         }
       },
       "metadata": {
         "description": "An AVM-aligned type for a lock.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.0"
         }
       }
     }
@@ -172,10 +179,13 @@
     },
     "radiusServers": {
       "type": "array",
-      "defaultValue": [],
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Network/vpnServerConfigurations@2025-05-01#properties/properties/properties/radiusServers"
+        },
         "description": "Optional. The list of RADIUS servers. Required if configuring multiple RADIUS servers."
-      }
+      },
+      "defaultValue": []
     },
     "radiusServerSecret": {
       "type": "securestring",
@@ -233,10 +243,13 @@
     },
     "tags": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.Network/vpnServerConfigurations@2025-05-01#properties/tags"
+        },
         "description": "Optional. Tags of the resource."
-      }
+      },
+      "nullable": true
     },
     "lock": {
       "$ref": "#/definitions/lockType",
@@ -257,7 +270,7 @@
     "avmTelemetry": {
       "condition": "[parameters('enableTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2024-03-01",
+      "apiVersion": "2025-04-01",
       "name": "[take(format('46d3xbcp.res.network-vpnserverconfiguration.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4)), 64)]",
       "properties": {
         "mode": "Incremental",
@@ -276,7 +289,7 @@
     },
     "vpnServerConfig": {
       "type": "Microsoft.Network/vpnServerConfigurations",
-      "apiVersion": "2023-11-01",
+      "apiVersion": "2025-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -308,15 +321,6 @@
             "input": {
               "name": "[coalesce(parameters('radiusServerRootCertificates'), createArray())[copyIndex('radiusServerRootCertificates')].name]",
               "publicCertData": "[coalesce(parameters('radiusServerRootCertificates'), createArray())[copyIndex('radiusServerRootCertificates')].publicCertData]"
-            }
-          },
-          {
-            "name": "radiusServers",
-            "count": "[length(coalesce(parameters('radiusServers'), createArray()))]",
-            "input": {
-              "radiusServerAddress": "[coalesce(parameters('radiusServers'), createArray())[copyIndex('radiusServers')].radiusServerAddress]",
-              "radiusServerScore": "[coalesce(parameters('radiusServers'), createArray())[copyIndex('radiusServers')].radiusServerScore]",
-              "radiusServerSecret": "[coalesce(parameters('radiusServers'), createArray())[copyIndex('radiusServers')].radiusServerSecret]"
             }
           },
           {
@@ -356,6 +360,7 @@
           "aadTenant": "[parameters('aadTenant')]"
         },
         "radiusServerAddress": "[parameters('radiusServerAddress')]",
+        "radiusServers": "[parameters('radiusServers')]",
         "radiusServerSecret": "[parameters('radiusServerSecret')]",
         "vpnAuthenticationTypes": "[parameters('vpnAuthenticationTypes')]",
         "vpnProtocols": "[parameters('vpnProtocols')]"
@@ -365,11 +370,11 @@
       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
-      "scope": "[format('Microsoft.Network/vpnServerConfigurations/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.Network/vpnServerConfigurations', parameters('name'))]",
       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+        "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
       },
       "dependsOn": [
         "vpnServerConfig"
@@ -403,7 +408,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('vpnServerConfig', '2023-11-01', 'full').location]"
+      "value": "[reference('vpnServerConfig', '2025-05-01', 'full').location]"
     }
   }
 }

@@ -21,10 +21,10 @@ param plan string = 'Analytics'
 @description('Optional. Restore parameters.')
 param restoredLogs restoredLogsType?
 
-@description('Optional. The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.')
-@minValue(-1)
+@description('Optional. The table retention in days, between 4 and 730. Don\'t provide to use the default workspace retention.')
+@minValue(4)
 @maxValue(730)
-param retentionInDays int = -1
+param retentionInDays int?
 
 @description('Optional. Table\'s schema.')
 param schema schemaType?
@@ -32,14 +32,17 @@ param schema schemaType?
 @description('Optional. Parameters of the search job that initiated this table.')
 param searchResults searchResultsType?
 
-@description('Optional. The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.')
-@minValue(-1)
+@description('Optional. The table total retention in days, between 4 and 2555. Don\'t provide use the default table retention.')
+@minValue(4)
 @maxValue(2555)
-param totalRetentionInDays int = -1
+param totalRetentionInDays int?
 
 import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.5.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
+
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -86,20 +89,41 @@ var formattedRoleAssignments = [
 //   Deployments   //
 // =============== //
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = {
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.opins-worksp-table.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource workspace 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = {
   name: workspaceName
 }
 
-resource table 'Microsoft.OperationalInsights/workspaces/tables@2025-02-01' = {
+resource table 'Microsoft.OperationalInsights/workspaces/tables@2025-07-01' = {
   parent: workspace
   name: name
   properties: {
     plan: plan
     restoredLogs: restoredLogs
-    retentionInDays: retentionInDays
+    #disable-next-line BCP328 // -1 is the documented default
+    retentionInDays: retentionInDays ?? -1
     schema: schema
     searchResults: searchResults
-    totalRetentionInDays: totalRetentionInDays
+    #disable-next-line BCP328 // -1 is the documented default
+    totalRetentionInDays: totalRetentionInDays ?? -1
   }
 }
 

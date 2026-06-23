@@ -14,23 +14,43 @@ param name string
 param description string = ''
 
 @sys.description('Required. Enum list of network intent policy based services.')
-param applyOnNetworkIntentPolicyBasedServices applyOnNetworkIntentPolicyBasedServicesType[]
+param applyOnNetworkIntentPolicyBasedServices resourceInput<'Microsoft.Network/networkManagers/securityAdminConfigurations@2025-05-01'>.properties.applyOnNetworkIntentPolicyBasedServices
 
-@allowed([
-  'None'
-  'Manual'
-])
 @sys.description('Optional. Determine update behavior for changes to network groups referenced within the rules in this configuration.')
-param networkGroupAddressSpaceAggregationOption string = 'None'
+param networkGroupAddressSpaceAggregationOption resourceInput<'Microsoft.Network/networkManagers/securityAdminConfigurations@2025-05-01'>.properties.networkGroupAddressSpaceAggregationOption = 'None'
 
 @sys.description('Optional. A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules.')
 param ruleCollections securityAdminConfigurationRuleCollectionType[]?
 
-resource networkManager 'Microsoft.Network/networkManagers@2024-05-01' existing = {
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.network-nwmgr-secadmcfg.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource networkManager 'Microsoft.Network/networkManagers@2025-05-01' existing = {
   name: networkManagerName
 }
 
-resource securityAdminConfigurations 'Microsoft.Network/networkManagers/securityAdminConfigurations@2024-05-01' = {
+resource securityAdminConfigurations 'Microsoft.Network/networkManagers/securityAdminConfigurations@2025-05-01' = {
   name: name
   parent: networkManager
   properties: {
@@ -50,6 +70,7 @@ module securityAdminConfigurations_ruleCollections 'rule-collection/main.bicep' 
       description: ruleCollection.?description
       appliesToGroups: ruleCollection.appliesToGroups
       rules: ruleCollection.?rules ?? []
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -66,9 +87,6 @@ output resourceGroupName string = resourceGroup().name
 // =============== //
 //   Definitions   //
 // =============== //
-
-@export()
-type applyOnNetworkIntentPolicyBasedServicesType = ('None' | 'All' | 'AllowRulesOnly')
 
 import { appliesToGroupType, ruleType } from './rule-collection/main.bicep'
 @export()

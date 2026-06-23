@@ -1,4 +1,4 @@
-# Azure Cosmos DB for MongoDB (vCore) cluster user `[Microsoft.DocumentDB/mongoClusters]`
+# Azure Cosmos DB for MongoDB (vCore) cluster user `[Microsoft.DocumentDB/mongoClusters/users]`
 
 This module creates a user within an Azure Cosmos DB for MongoDB (vCore) cluster. These users are used to connect to the cluster and perform operations using Microsoft Entra authentication.
 
@@ -10,9 +10,9 @@ This module creates a user within an Azure Cosmos DB for MongoDB (vCore) cluster
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.DocumentDB/mongoClusters/users` | [2025-04-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/mongoClusters) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.DocumentDB/mongoClusters/users` | 2025-09-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.documentdb_mongoclusters_users.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2025-09-01/mongoClusters/users)</li></ul> |
 
 ## Parameters
 
@@ -33,7 +33,7 @@ This module creates a user within an Azure Cosmos DB for MongoDB (vCore) cluster
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`location`](#parameter-location) | string | Default to current resource group scope location. Location for all resources. |
-| [`targetRoles`](#parameter-targetroles) | array | The roles to assign to the user per database. Defaults to the "dbOwner" role on the "admin" database. |
+| [`targetRoles`](#parameter-targetroles) | array | The roles to assign to the user per database. Defaults to the "root" role on the "admin" database. |
 
 ### Parameter: `targetIdentity`
 
@@ -87,7 +87,7 @@ Default to current resource group scope location. Location for all resources.
 
 ### Parameter: `targetRoles`
 
-The roles to assign to the user per database. Defaults to the "dbOwner" role on the "admin" database.
+The roles to assign to the user per database. Defaults to the "root" role on the "admin" database.
 
 - Required: No
 - Type: array
@@ -96,7 +96,7 @@ The roles to assign to the user per database. Defaults to the "dbOwner" role on 
   [
     {
       database: 'admin'
-      role: 'dbOwner'
+      role: 'root'
     }
   ]
   ```
@@ -130,7 +130,7 @@ The role to assign to the user.
 - Allowed:
   ```Bicep
   [
-    'dbOwner'
+    'root'
   ]
   ```
 

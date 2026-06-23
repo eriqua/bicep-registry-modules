@@ -10,20 +10,23 @@ param apiName string
 @description('Conditional. The name of the parent operation. Required if the template is used in a standalone deployment.')
 param operationName string
 
-@description('Required. The name of the policy.')
-param name string
+@description('Optional. The name of the policy.')
+param name string = 'policy'
 
-@description('Required. Format of the policyContent.')
+@description('Optional. Format of the policyContent.')
 @allowed([
   'rawxml'
   'rawxml-link'
   'xml'
   'xml-link'
 ])
-param format string
+param format string = 'xml'
 
 @description('Required. Contents of the Policy as defined by the format.')
 param value string
+
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
 
 resource service 'Microsoft.ApiManagement/service@2024-05-01' existing = {
   name: apiManagementServiceName
@@ -37,7 +40,26 @@ resource service 'Microsoft.ApiManagement/service@2024-05-01' existing = {
   }
 }
 
-resource policy 'Microsoft.ApiManagement/service/apis/operations/policies@2022-08-01' = {
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.apimgmt-service-apioperationpolicy.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource policy 'Microsoft.ApiManagement/service/apis/operations/policies@2024-05-01' = {
   name: name
   parent: service::api::operation
   properties: {

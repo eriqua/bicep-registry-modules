@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.32.4.45862",
-      "templateHash": "17347307248420179343"
+      "version": "0.42.1.51946",
+      "templateHash": "10098042851207212623"
     },
     "name": "Application Gateway for Containers",
     "description": "This module deploys an Application Gateway for Containers"
@@ -23,7 +23,8 @@
         }
       },
       "metadata": {
-        "__bicep_export!": true
+        "__bicep_export!": true,
+        "description": "Type definition for Application Gateway for Containers frontend."
       }
     },
     "associationType": {
@@ -43,7 +44,29 @@
         }
       },
       "metadata": {
-        "__bicep_export!": true
+        "__bicep_export!": true,
+        "description": "Type definition for Application Gateway for Containers association."
+      }
+    },
+    "securityPolicyType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The name of the Application Gateway for Containers security policy."
+          }
+        },
+        "wafPolicyResourceId": {
+          "type": "string",
+          "metadata": {
+            "description": "Required. The resource ID of the WAF Policy to associate with the security policy."
+          }
+        }
+      },
+      "metadata": {
+        "__bicep_export!": true,
+        "description": "Type definition for Application Gateway for Containers security policy."
       }
     },
     "diagnosticSettingFullType": {
@@ -164,7 +187,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.3.0"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -189,12 +212,19 @@
           "metadata": {
             "description": "Optional. Specify the type of lock."
           }
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Specify the notes of the lock."
+          }
         }
       },
       "metadata": {
         "description": "An AVM-aligned type for a lock.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.3.0"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     },
@@ -269,7 +299,7 @@
       "metadata": {
         "description": "An AVM-aligned type for a role assignment.",
         "__bicep_imported_from!": {
-          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
         }
       }
     }
@@ -297,10 +327,13 @@
     },
     "tags": {
       "type": "object",
-      "nullable": true,
       "metadata": {
+        "__bicep_resource_derived_type!": {
+          "source": "Microsoft.ServiceNetworking/trafficControllers@2025-01-01#properties/tags"
+        },
         "description": "Optional. Resource tags."
-      }
+      },
+      "nullable": true
     },
     "lock": {
       "$ref": "#/definitions/lockType",
@@ -349,6 +382,16 @@
       "metadata": {
         "description": "Optional. List of Application Gateway for Containers associations. At this time, the number of associations is limited to 1."
       }
+    },
+    "securityPolicies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/securityPolicyType"
+      },
+      "nullable": true,
+      "metadata": {
+        "description": "Optional. List of Application Gateway for Containers security policies."
+      }
     }
   },
   "variables": {
@@ -365,13 +408,14 @@
       "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
       "Role Based Access Control Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
       "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
-    }
+    },
+    "enableReferencedModulesTelemetry": false
   },
   "resources": {
     "avmTelemetry": {
       "condition": "[parameters('enableTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2024-03-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('46d3xbcp.res.servicenetworking-trafficcontroller.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
       "properties": {
         "mode": "Incremental",
@@ -390,7 +434,7 @@
     },
     "trafficController": {
       "type": "Microsoft.ServiceNetworking/trafficControllers",
-      "apiVersion": "2023-11-01",
+      "apiVersion": "2025-01-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -400,11 +444,11 @@
       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
       "type": "Microsoft.Authorization/locks",
       "apiVersion": "2020-05-01",
-      "scope": "[format('Microsoft.ServiceNetworking/trafficControllers/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.ServiceNetworking/trafficControllers', parameters('name'))]",
       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
       "properties": {
         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-        "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+        "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
       },
       "dependsOn": [
         "trafficController"
@@ -417,7 +461,7 @@
       },
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
-      "scope": "[format('Microsoft.ServiceNetworking/trafficControllers/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.ServiceNetworking/trafficControllers', parameters('name'))]",
       "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
       "properties": {
         "copy": [
@@ -458,7 +502,7 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.ServiceNetworking/trafficControllers/{0}', parameters('name'))]",
+      "scope": "[resourceId('Microsoft.ServiceNetworking/trafficControllers', parameters('name'))]",
       "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.ServiceNetworking/trafficControllers', parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
       "properties": {
         "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -479,7 +523,7 @@
         "count": "[length(coalesce(parameters('frontends'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-TrafficController-Frontend-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -495,6 +539,9 @@
           },
           "location": {
             "value": "[parameters('location')]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -503,8 +550,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "17816381791659571023"
+              "version": "0.42.1.51946",
+              "templateHash": "7002553992872566898"
             },
             "name": "Application Gateway for Containers Frontend",
             "description": "This module deploys an Application Gateway for Containers Frontend"
@@ -528,12 +575,39 @@
               "metadata": {
                 "description": "Conditional. The name of the parent Application Gateway for Containers instance. Required if the template is used in a standalone deployment."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": [
             {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.servicenetworking-traffctrlfrontend.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
               "type": "Microsoft.ServiceNetworking/trafficControllers/frontends",
-              "apiVersion": "2023-11-01",
+              "apiVersion": "2025-01-01",
               "name": "[format('{0}/{1}', parameters('trafficControllerName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {}
@@ -566,7 +640,7 @@
               "metadata": {
                 "description": "The FQDN of the frontend."
               },
-              "value": "[reference(resourceId('Microsoft.ServiceNetworking/trafficControllers/frontends', parameters('trafficControllerName'), parameters('name')), '2023-11-01').fqdn]"
+              "value": "[reference(resourceId('Microsoft.ServiceNetworking/trafficControllers/frontends', parameters('trafficControllerName'), parameters('name')), '2025-01-01').fqdn]"
             }
           }
         }
@@ -581,7 +655,7 @@
         "count": "[length(coalesce(parameters('associations'), createArray()))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-TrafficController-Association-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -600,6 +674,9 @@
           },
           "subnetResourceId": {
             "value": "[coalesce(parameters('associations'), createArray())[copyIndex()].subnetResourceId]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -608,8 +685,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "8195874511200088482"
+              "version": "0.42.1.51946",
+              "templateHash": "14334011495449894079"
             },
             "name": "Application Gateway for Containers Association",
             "description": "This module deploys an Application Gateway for Containers Association"
@@ -639,12 +716,39 @@
               "metadata": {
                 "description": "Required. The resource ID of the subnet to associate with the traffic controller."
               }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
             }
           },
           "resources": [
             {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.servicenetworking-traffctrlassoc.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
               "type": "Microsoft.ServiceNetworking/trafficControllers/associations",
-              "apiVersion": "2023-11-01",
+              "apiVersion": "2025-01-01",
               "name": "[format('{0}/{1}', parameters('trafficControllerName'), parameters('name'))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -682,13 +786,153 @@
               "metadata": {
                 "description": "The resource ID of the associated subnet."
               },
-              "value": "[reference(resourceId('Microsoft.ServiceNetworking/trafficControllers/associations', parameters('trafficControllerName'), parameters('name')), '2023-11-01').subnet.id]"
+              "value": "[reference(resourceId('Microsoft.ServiceNetworking/trafficControllers/associations', parameters('trafficControllerName'), parameters('name')), '2025-01-01').subnet.id]"
             }
           }
         }
       },
       "dependsOn": [
         "trafficController"
+      ]
+    },
+    "trafficController_securityPolicies": {
+      "copy": {
+        "name": "trafficController_securityPolicies",
+        "count": "[length(coalesce(parameters('securityPolicies'), createArray()))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-TrafficController-SecurityPolicy-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "trafficControllerName": {
+            "value": "[parameters('name')]"
+          },
+          "name": {
+            "value": "[coalesce(parameters('securityPolicies'), createArray())[copyIndex()].name]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "wafPolicyResourceId": {
+            "value": "[coalesce(parameters('securityPolicies'), createArray())[copyIndex()].wafPolicyResourceId]"
+          },
+          "enableTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.42.1.51946",
+              "templateHash": "97901892228691805"
+            },
+            "name": "Application Gateway for Containers Security Policy",
+            "description": "This module deploys an Application Gateway for Containers Security Policy"
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the security policy to create."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Location for all Resources."
+              }
+            },
+            "trafficControllerName": {
+              "type": "string",
+              "metadata": {
+                "description": "Conditional. The name of the parent Application Gateway for Containers instance. Required if the template is used in a standalone deployment."
+              }
+            },
+            "wafPolicyResourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The resource ID of the WAF Policy to associate with the security policy."
+              }
+            },
+            "enableTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable/Disable usage telemetry for module."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "[format('46d3xbcp.res.servicenetworking-traffctrlsecpolicy.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": [],
+                  "outputs": {
+                    "telemetry": {
+                      "type": "String",
+                      "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.ServiceNetworking/trafficControllers/securityPolicies",
+              "apiVersion": "2025-01-01",
+              "name": "[format('{0}/{1}', parameters('trafficControllerName'), parameters('name'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "wafPolicy": {
+                  "id": "[parameters('wafPolicyResourceId')]"
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "resourceId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource ID of the security policy."
+              },
+              "value": "[resourceId('Microsoft.ServiceNetworking/trafficControllers/securityPolicies', parameters('trafficControllerName'), parameters('name'))]"
+            },
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the security policy."
+              },
+              "value": "[parameters('name')]"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the resource group the resource was created in."
+              },
+              "value": "[resourceGroup().name]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "trafficController",
+        "trafficController_associations",
+        "trafficController_frontends"
       ]
     }
   },
@@ -719,7 +963,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('trafficController', '2023-11-01', 'full').location]"
+      "value": "[reference('trafficController', '2025-01-01', 'full').location]"
     },
     "configurationEndpoints": {
       "type": "array",
@@ -733,11 +977,34 @@
     },
     "frontends": {
       "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "metadata": {
+              "description": "The name of the frontend."
+            }
+          },
+          "resourceId": {
+            "type": "string",
+            "metadata": {
+              "description": "The resource ID of the frontend."
+            }
+          },
+          "fqdn": {
+            "type": "string",
+            "metadata": {
+              "description": "The FQDN of the frontend."
+            }
+          }
+        }
+      },
       "metadata": {
         "description": "The frontends of the Application Gateway for Containers."
       },
       "copy": {
-        "count": "[length(if(not(empty(parameters('frontends'))), array(parameters('frontends')), createArray()))]",
+        "count": "[length(coalesce(parameters('frontends'), createArray()))]",
         "input": {
           "name": "[reference(format('trafficController_frontends[{0}]', copyIndex())).outputs.name.value]",
           "resourceId": "[reference(format('trafficController_frontends[{0}]', copyIndex())).outputs.resourceId.value]",
@@ -747,15 +1014,68 @@
     },
     "associations": {
       "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "metadata": {
+              "description": "The name of the association."
+            }
+          },
+          "resourceId": {
+            "type": "string",
+            "metadata": {
+              "description": "The resource ID of the association."
+            }
+          },
+          "subnetResourceId": {
+            "type": "string",
+            "metadata": {
+              "description": "The subnet resource ID associated with the association."
+            }
+          }
+        }
+      },
       "metadata": {
         "description": "The associations of the Application Gateway for Containers."
       },
       "copy": {
-        "count": "[length(if(not(empty(parameters('associations'))), array(parameters('associations')), createArray()))]",
+        "count": "[length(coalesce(parameters('associations'), createArray()))]",
         "input": {
           "name": "[reference(format('trafficController_associations[{0}]', copyIndex())).outputs.name.value]",
           "resourceId": "[reference(format('trafficController_associations[{0}]', copyIndex())).outputs.resourceId.value]",
           "subnetResourceId": "[reference(format('trafficController_associations[{0}]', copyIndex())).outputs.subnetResourceId.value]"
+        }
+      }
+    },
+    "securityPolicies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "metadata": {
+              "description": "The name of the security policy."
+            }
+          },
+          "resourceId": {
+            "type": "string",
+            "metadata": {
+              "description": "The resource ID of the security policy."
+            }
+          }
+        }
+      },
+      "metadata": {
+        "description": "The security policies of the Application Gateway for Containers."
+      },
+      "copy": {
+        "count": "[length(coalesce(parameters('securityPolicies'), createArray()))]",
+        "input": {
+          "name": "[reference(format('trafficController_securityPolicies[{0}]', copyIndex())).outputs.name.value]",
+          "resourceId": "[reference(format('trafficController_securityPolicies[{0}]', copyIndex())).outputs.resourceId.value]"
         }
       }
     }

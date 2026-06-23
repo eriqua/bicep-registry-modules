@@ -2,17 +2,26 @@
 
 This module deploys a SQL Managed Instance Security Alert Policy.
 
+You can reference the module as follows:
+```bicep
+module managedInstance 'br/public:avm/res/sql/managed-instance/security-alert-policy:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Data Collection](#Data-Collection)
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2024-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2024-05-01-preview/managedInstances/securityAlertPolicies) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2024-05-01-preview | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.sql_managedinstances_securityalertpolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2024-05-01-preview/managedInstances/securityAlertPolicies)</li></ul> |
 
 ## Parameters
 
@@ -27,12 +36,17 @@ This module deploys a SQL Managed Instance Security Alert Policy.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`managedInstanceName`](#parameter-managedinstancename) | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | A blob storage to hold all Threat Detection audit logs. Required if state is 'Enabled'. |
 
 **Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`disabledAlerts`](#parameter-disabledalerts) | array | Specifies an array of alerts that are disabled. |
 | [`emailAccountAdmins`](#parameter-emailaccountadmins) | bool | Specifies that the schedule scan notification will be is sent to the subscription administrators. |
+| [`emailAddresses`](#parameter-emailaddresses) | array | Specifies an array of e-mail addresses to which the alert is sent. |
+| [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
+| [`retentionDays`](#parameter-retentiondays) | int | Specifies the number of days to keep in the Threat Detection audit logs. |
 | [`state`](#parameter-state) | string | Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
 
 ### Parameter: `name`
@@ -49,6 +63,31 @@ The name of the parent SQL managed instance. Required if the template is used in
 - Required: Yes
 - Type: string
 
+### Parameter: `storageAccountResourceId`
+
+A blob storage to hold all Threat Detection audit logs. Required if state is 'Enabled'.
+
+- Required: No
+- Type: string
+
+### Parameter: `disabledAlerts`
+
+Specifies an array of alerts that are disabled.
+
+- Required: No
+- Type: array
+- Allowed:
+  ```Bicep
+  [
+    'Access_Anomaly'
+    'Brute_Force'
+    'Data_Exfiltration'
+    'Sql_Injection'
+    'Sql_Injection_Vulnerability'
+    'Unsafe_Action'
+  ]
+  ```
+
 ### Parameter: `emailAccountAdmins`
 
 Specifies that the schedule scan notification will be is sent to the subscription administrators.
@@ -56,6 +95,28 @@ Specifies that the schedule scan notification will be is sent to the subscriptio
 - Required: No
 - Type: bool
 - Default: `False`
+
+### Parameter: `emailAddresses`
+
+Specifies an array of e-mail addresses to which the alert is sent.
+
+- Required: No
+- Type: array
+
+### Parameter: `enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `retentionDays`
+
+Specifies the number of days to keep in the Threat Detection audit logs.
+
+- Required: No
+- Type: int
 
 ### Parameter: `state`
 
@@ -79,3 +140,7 @@ Enables advanced data security features, like recuring vulnerability assesment s
 | `name` | string | The name of the deployed security alert policy. |
 | `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |
+
+## Data Collection
+
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

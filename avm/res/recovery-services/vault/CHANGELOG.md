@@ -2,6 +2,76 @@
 
 The latest version of the changelog can be found [here](https://github.com/Azure/bicep-registry-modules/blob/main/avm/res/recovery-services/vault/CHANGELOG.md).
 
+## 0.11.3
+
+### Changes
+
+- Publishing child modules `backup-config`, `backup-fabric/protection-container/protected-item`, `backup-policy`, `replication-alert-setting`, `replication-fabric`, `replication-fabric/replication-protection-container`, `replication-fabric/replication-protection-container/replication-protection-container-mapping`, and `replication-policy`.
+
+### Breaking Changes
+
+- None
+
+## 0.11.2
+
+### Changes
+
+- Updated all API versions to `2025-08-01` for Recovery Services vault and child resources
+- Added `sourceScanConfiguration` parameter and type for security settings
+- Added `resourceGuardOperationRequests` parameter
+- Made backup-config `enhancedSecurityState` and `softDeleteFeatureState` nullable to avoid conflicts with vault-level `softDeleteSettings`
+
+### Breaking Changes
+
+- None
+
+## 0.11.1
+
+### Changes
+
+- Fixed typo in the CMK interface when retrieving the latest keyUri version with auto-rotation enabled
+
+### Breaking Changes
+
+- None
+
+## 0.11.0
+
+### Changes
+
+- Added support for managed HSM customer-managed key encryption
+- Updated all 'avm-common-types' references to version `0.6.1`
+- Updated `avm/res/network/private-endpoint` cross-referenced module to version `0.11.1`
+
+### Breaking Changes
+
+- None
+
+## 0.10.1
+
+### Changes
+
+- Updated `privateEndpoints` parameter type to 'avm-common-types' `0.6.1`, adding a type to its `tags` property
+
+### Breaking Changes
+
+- None
+
+## 0.10.0
+
+### Changes
+
+- Introduced a type for the `tags` parameter
+- Updated `avm-common-types` which in turn allows the specification of 'Notes' on locks
+- Addressed diverse warnings
+- Added discriminated type for `redundancySettings` to mimic Portal behavior. `crossRegionRestore` is only available if `standardTierStorageRedundancy` is set to 'GeoRedundant'.
+- Updated ReadMe with AzAdvertizer reference
+
+### Breaking Changes
+
+- Deprecated `backupStorageConfig` parameter in favor of `redundancySettings` only.
+  Background: If the `redundancySettings` parameter is not provided to the Resource Provider it automatically configures Geo-Redundant-Storage which conflicts with the `backupStorageConfig` configuration (- API mismatch)
+
 ## 0.9.2
 
 ### Changes

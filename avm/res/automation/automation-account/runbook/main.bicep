@@ -45,6 +45,9 @@ param location string = resourceGroup().location
 @sys.description('Optional. Tags of the Automation Account resource.')
 param tags object?
 
+@sys.description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
 var accountSasProperties = {
   signedServices: 'b'
   signedPermission: 'r'
@@ -53,11 +56,30 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.aut-autacct-runbook.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
+
+resource automationAccount 'Microsoft.Automation/automationAccounts@2024-10-23' existing = {
   name: automationAccountName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountResourceId)) {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' existing = if (!empty(scriptStorageAccountResourceId)) {
   name: last(split(scriptStorageAccountResourceId!, '/'))
   scope: resourceGroup(split(scriptStorageAccountResourceId!, '/')[2], split(scriptStorageAccountResourceId!, '/')[4])
 }
@@ -68,12 +90,12 @@ var publishContentLink = empty(uri)
       uri: !empty(uri)
         ? (empty(scriptStorageAccountResourceId)
             ? uri
-            : '${uri}?${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}')
+            : '${uri}?${storageAccount!.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}')
         : null
       version: !empty(version) ? version : null
     }
 
-resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2023-11-01' = {
+resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2024-10-23' = {
   name: name
   parent: automationAccount
   location: location

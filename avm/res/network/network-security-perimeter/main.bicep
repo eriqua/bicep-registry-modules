@@ -13,15 +13,15 @@ param profiles profileType[]?
 @description('Optional. Array of resource associations to create.')
 param resourceAssociations resourceAssociationType[]?
 
-import { diagnosticSettingLogsOnlyType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { diagnosticSettingLogsOnlyType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingLogsOnlyType[]?
 
-import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { lockType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The lock settings of the service.')
 param lock lockType?
 
-import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType[]?
 
@@ -60,6 +60,8 @@ var formattedRoleAssignments = [
   })
 ]
 
+var enableReferencedModulesTelemetry = false
+
 #disable-next-line no-deployments-resources
 resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
   name: '46d3xbcp.res.network-nwsecurityperimeter.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
@@ -89,6 +91,7 @@ module networkSecurityPerimeter_profiles 'profile/main.bicep' = [
   for (profile, index) in (profiles ?? []): {
     name: '${uniqueString(deployment().name, location)}-nsp-profile-${index}'
     params: {
+      enableTelemetry: enableReferencedModulesTelemetry
       networkPerimeterName: name
       name: profile.name
       accessRules: profile.?accessRules
@@ -98,8 +101,8 @@ module networkSecurityPerimeter_profiles 'profile/main.bicep' = [
 
 @batchSize(1)
 resource networkSecurityPerimeter_resourceAssociations 'Microsoft.Network/networkSecurityPerimeters/resourceAssociations@2024-07-01' = [
-  for (resourceAssociation, index) in (resourceAssociations ?? []): {
-    name: '${guid(resourceAssociation.privateLinkResource, name, resourceAssociation.profile)}-nsp-ra'
+  for resourceAssociation in (resourceAssociations ?? []): {
+    name: resourceAssociation.?name ?? '${guid(resourceAssociation.privateLinkResource, name, resourceAssociation.profile)}-nsp-ra'
     parent: networkSecurityPerimeter
     properties: {
       privateLinkResource: {
@@ -122,9 +125,9 @@ resource networkSecurityPerimeter_lock 'Microsoft.Authorization/locks@2020-05-01
   scope: networkSecurityPerimeter
   properties: {
     level: lock.?kind ?? ''
-    notes: lock.?kind == 'CanNotDelete'
+    notes: lock.?notes ?? (lock.?kind == 'CanNotDelete'
       ? 'Cannot delete resource or child resources.'
-      : 'Cannot delete or modify the resource or child resources.'
+      : 'Cannot delete or modify the resource or child resources.')
   }
 }
 
@@ -196,11 +199,18 @@ type profileType = {
 
   @description('Optional. Whether network traffic is allowed or denied.')
   accessRules: accessRuleType[]?
+
+  @description('Optional. Enable/Disable usage telemetry for module.')
+  enableTelemetry: bool?
 }
 
 @export()
 @description('The type for a resource association.')
 type resourceAssociationType = {
+  @description('Optional. The name of the resource association.')
+  @maxLength(80)
+  name: string?
+
   @description('Required. The resource identifier of the resource association.')
   privateLinkResource: string
 

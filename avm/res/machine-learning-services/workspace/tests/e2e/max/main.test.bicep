@@ -98,7 +98,7 @@ module testDeployment '../../../main.bicep' = [
               nodeIdleTimeBeforeScaleDown: 'PT5M'
             }
             vmPriority: 'Dedicated'
-            vmSize: 'STANDARD_DS11_V2'
+            vmSize: 'Standard_D2ads_v5'
           }
           sku: 'Basic'
           managedIdentities: {
@@ -109,19 +109,20 @@ module testDeployment '../../../main.bicep' = [
           }
         }
       ]
-      connections: [
-        {
-          name: 'connection'
-          category: 'ApiKey'
-          target: 'https://example.com'
-          connectionProperties: {
-            authType: 'ApiKey'
-            credentials: {
-              key: 'key'
-            }
-          }
-        }
-      ]
+      // Currently unable to create both a connection and a private endpoint in the same deployment.
+      // connections: [
+      //   {
+      //     name: 'connection'
+      //     category: 'ApiKey'
+      //     target: 'https://example.com'
+      //     connectionProperties: {
+      //       authType: 'ApiKey'
+      //       credentials: {
+      //         key: 'key'
+      //       }
+      //     }
+      //   }
+      // ]
       datastores: [
         {
           name: 'datastore'

@@ -24,13 +24,15 @@ param namePrefix string = '#_namePrefix_#'
 @sys.description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
+var metricCategoryName string = 'AllMetrics'
+
 // ============ //
 // Dependencies //
 // ============ //
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: enforcedLocation
 }
@@ -72,8 +74,9 @@ module testDeployment '../../../main.bicep' = [
     name: '${uniqueString(deployment().name, enforcedLocation)}-test-${serviceShort}-${iteration}'
     params: {
       name: '${namePrefix}${serviceShort}001'
-      sku: 'Premium_ZRS'
+      sku: 'Premium_LRS'
       publicNetworkAccess: 'Disabled'
+      availabilityZone: 1
       volumeGroups: [
         {
           name: 'vol-grp-01'
@@ -115,12 +118,13 @@ module testDeployment '../../../main.bicep' = [
         Owner: 'Contoso'
         CostCenter: '123-456-789'
       }
+
       diagnosticSettings: [
         {
           name: 'customSetting'
           metricCategories: [
             {
-              category: 'AllMetrics'
+              category: metricCategoryName
             }
           ]
           eventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
@@ -149,3 +153,4 @@ output cmkKeyVaultUrl string = nestedDependencies.outputs.keyVaultUrl
 output cmkKeyVaultEncryptionKeyVersion string = nestedDependencies.outputs.keyVaultEncryptionKeyVersion
 
 output logAnalyticsWorkspaceResourceId string = diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+output metricCategoryName string = metricCategoryName

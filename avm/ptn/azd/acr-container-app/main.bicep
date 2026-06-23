@@ -34,6 +34,9 @@ param containerMinReplicas int = 2
 @description('Optional. The name of the container.')
 param containerName string = 'main'
 
+@description('Optional. List of probes for the container.')
+param containerProbes containerAppProbeType[]?
+
 @description('Optional. The name of the container registry.')
 param containerRegistryName string = ''
 
@@ -91,9 +94,9 @@ param ingressAllowInsecure bool = true
 @description('Optional. Controls how active revisions are handled for the Container app.')
 param revisionMode string = 'Single'
 
+import { secretType } from 'br/public:avm/res/app/container-app:0.19.0'
 @description('Optional. The secrets required for the container.')
-@secure()
-param secrets object = {}
+param secrets secretType[]?
 
 @description('Optional. The service binds associated with the container.')
 param serviceBinds array = []
@@ -106,6 +109,12 @@ param targetPort int = 80
 
 @description('Optional. Toggle to include the service configuration.')
 param includeAddOns bool = false
+
+@description('Optional. The list of volumes that can be mounted by containers in the container app.')
+param volumes volumeType[]?
+
+@description('Optional. Volume mounts for the primary container.')
+param volumeMounts volumeMountType[]?
 
 @description('Optional. The principal ID of the principal to assign the role to.')
 param principalId string = ''
@@ -141,7 +150,7 @@ resource avmTelemetry 'Microsoft.Resources/deployments@2024-03-01' = if (enableT
   }
 }
 
-module containerApp 'br/public:avm/res/app/container-app:0.10.0' = {
+module containerApp 'br/public:avm/res/app/container-app:0.19.0' = {
   name: '${uniqueString(deployment().name, location)}-container-app'
   params: {
     name: name
@@ -181,6 +190,7 @@ module containerApp 'br/public:avm/res/app/container-app:0.10.0' = {
         ]
       : []
     serviceBinds: serviceBinds
+    volumes: volumes
     containers: [
       {
         image: !empty(imageName) ? imageName : 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
@@ -190,10 +200,14 @@ module containerApp 'br/public:avm/res/app/container-app:0.10.0' = {
           cpu: json(containerCpuCoreCount)
           memory: containerMemory
         }
+        probes: containerProbes
+        volumeMounts: volumeMounts
       }
     ]
-    scaleMaxReplicas: containerMaxReplicas
-    scaleMinReplicas: containerMinReplicas
+    scaleSettings: {
+      maxReplicas: containerMaxReplicas
+      minReplicas: containerMinReplicas
+    }
     enableTelemetry: enableTelemetry
   }
   dependsOn: usePrivateRegistry ? [containerRegistryAccess] : []
@@ -208,7 +222,7 @@ module containerRegistryAccess 'modules/registry-access.bicep' = if (usePrivateR
   }
 }
 
-resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2025-01-01' existing = {
   name: containerAppsEnvironmentName
 }
 
@@ -221,7 +235,7 @@ output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 @description('The principal ID of the identity.')
 output identityPrincipalId string = normalizedIdentityType == 'None'
   ? ''
-  : (empty(identityName) ? containerApp.outputs.systemAssignedMIPrincipalId : principalId)
+  : (empty(identityName) ? containerApp.outputs.?systemAssignedMIPrincipalId : principalId) ?? ''
 
 @description('The name of the container image.')
 output imageName string = imageName
@@ -249,4 +263,124 @@ type environmentType = {
 
   @description('Optional. Non-secret environment variable value.')
   value: string?
+}
+
+@description('The type for a container app probe HTTP GET.')
+type containerAppProbeHttpGetType = {
+  @description('Optional. Host name to connect to. Defaults to the pod IP.')
+  host: string?
+
+  @description('Optional. HTTP headers to set in the request.')
+  httpHeaders: containerAppProbeHttpGetHeadersItemType[]?
+
+  @description('Required. Path to access on the HTTP server.')
+  path: string
+
+  @description('Required. Name or number of the port to access on the container.')
+  port: int
+
+  @description('Optional. Scheme to use for connecting to the host. Defaults to HTTP.')
+  scheme: ('HTTP' | 'HTTPS')?
+}
+
+@description('The type for a container app probe HTTP GET header.')
+type containerAppProbeHttpGetHeadersItemType = {
+  @description('Required. Name of the header.')
+  name: string
+
+  @description('Required. Value of the header.')
+  value: string
+}
+
+@description('The type for a container app probe TCP socket.')
+type containerAppProbeTcpSocketType = {
+  @description('Optional. Host name to connect to, defaults to the pod IP.')
+  host: string?
+
+  @description('Required. Number of the port to access on the container. Name must be an IANA_SVC_NAME.')
+  @minValue(1)
+  @maxValue(65535)
+  port: int
+}
+
+@description('The type for a container app probe.')
+@export()
+type containerAppProbeType = {
+  @description('Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3.')
+  @minValue(1)
+  @maxValue(10)
+  failureThreshold: int?
+
+  @description('Optional. HTTPGet specifies the http request to perform.')
+  httpGet: containerAppProbeHttpGetType?
+
+  @description('Optional. Number of seconds after the container has started before liveness probes are initiated.')
+  @minValue(1)
+  @maxValue(60)
+  initialDelaySeconds: int?
+
+  @description('Optional. How often (in seconds) to perform the probe. Default to 10 seconds.')
+  @minValue(1)
+  @maxValue(240)
+  periodSeconds: int?
+
+  @description('Optional. Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup.')
+  @minValue(1)
+  @maxValue(10)
+  successThreshold: int?
+
+  @description('Optional. The TCP socket specifies an action involving a TCP port. TCP hooks not yet supported.')
+  tcpSocket: containerAppProbeTcpSocketType?
+
+  @description('Optional. Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod\'s terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum value is 3600 seconds (1 hour).')
+  terminationGracePeriodSeconds: int?
+
+  @description('Optional. Number of seconds after which the probe times out. Defaults to 1 second.')
+  @minValue(1)
+  @maxValue(240)
+  timeoutSeconds: int?
+
+  @description('Optional. The type of probe.')
+  type: ('Liveness' | 'Startup' | 'Readiness')?
+}
+
+@description('The type for a volume mount.')
+@export()
+type volumeMountType = {
+  @description('Required. Path within the container at which the volume should be mounted. Must not contain \':\'.')
+  mountPath: string
+
+  @description('Optional. Path within the volume from which the container\'s volume should be mounted. Defaults to "" (volume\'s root).')
+  subPath: string?
+
+  @description('Required. This must match the Name of a Volume.')
+  volumeName: string
+}
+
+@description('The type for a volume secret.')
+type volumeSecretType = {
+  @description('Required. Path to project secret to. Must be unique per volume and not conflict with other paths in the volume.')
+  path: string
+
+  @description('Required. Name of the Container App secret from which to pull the secret value.')
+  secretRef: string
+}
+
+@description('The type for a volume.')
+@export()
+type volumeType = {
+  @description('Required. Volume name.')
+  name: string
+
+  @description('Optional. Mount options used while mounting the Azure file share or NFS Azure file share. Must be a comma-separated string.')
+  mountOptions: string?
+
+  @description('Optional. Name of storage resource. No need to provide for EmptyDir and Secret.')
+  storageName: string?
+
+  @description('Optional. Storage type for the volume. If not provided, use EmptyDir.')
+  storageType: ('AzureFile' | 'EmptyDir' | 'Secret' | 'NfsAzureFile')?
+
+  @description('Optional. List of secrets to be added in volume. If no secrets are provided, all secrets in collection will be available to volume.')
+  secrets: volumeSecretType[]?
 }

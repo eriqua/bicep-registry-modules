@@ -5,24 +5,48 @@ metadata description = 'This module deploys a Storage Account Table Service.'
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. tables to create.')
-param tables array = []
+@description('Optional. Tables to create.')
+param tables tableType[]?
 
 @description('Optional. The List of CORS rules. You can include up to five CorsRule elements in the request.')
 param corsRules corsRuleType[]?
 
-import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.6.0'
+import { diagnosticSettingFullType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
 @description('Optional. The diagnostic settings of the service.')
 param diagnosticSettings diagnosticSettingFullType[]?
+
+@description('Optional. Enable/Disable usage telemetry for module.')
+param enableTelemetry bool = true
+
+#disable-next-line no-deployments-resources
+resource avmTelemetry 'Microsoft.Resources/deployments@2025-04-01' = if (enableTelemetry) {
+  name: '46d3xbcp.res.storage-storageaccount-tableservice.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name), 0, 4)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+      outputs: {
+        telemetry: {
+          type: 'String'
+          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+        }
+      }
+    }
+  }
+}
 
 // The name of the table service
 var name = 'default'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing = {
+var enableReferencedModulesTelemetry = false
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-06-01' existing = {
   name: storageAccountName
 }
 
-resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2024-01-01' = {
+resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2025-06-01' = {
   name: name
   parent: storageAccount
   properties: {
@@ -64,12 +88,13 @@ resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
 ]
 
 module tableServices_tables 'table/main.bicep' = [
-  for (table, index) in tables: {
+  for (table, index) in (tables ?? []): {
     name: '${deployment().name}-Table-${index}'
     params: {
       name: table.name
       storageAccountName: storageAccount.name
       roleAssignments: table.?roleAssignments
+      enableTelemetry: enableReferencedModulesTelemetry
     }
   }
 ]
@@ -104,4 +129,16 @@ type corsRuleType = {
 
   @description('Required. The number of seconds that the client/browser should cache a preflight response.')
   maxAgeInSeconds: int
+}
+
+import { roleAssignmentType } from 'br/public:avm/utl/types/avm-common-types:0.6.1'
+
+@export()
+@description('The type for a table.')
+type tableType = {
+  @description('Required. The name of the table.')
+  name: string
+
+  @description('Optional. Array of role assignments to create.')
+  roleAssignments: roleAssignmentType[]?
 }

@@ -2,18 +2,27 @@
 
 This module deploys an API Management Service API Operation.
 
+You can reference the module as follows:
+```bicep
+module service 'br/public:avm/res/api-management/service/api/operation:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Data Collection](#Data-Collection)
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.ApiManagement/service/apis/operations` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2024-05-01/service/apis/operations) |
-| `Microsoft.ApiManagement/service/apis/operations/policies` | [2022-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2022-08-01/service/apis/operations/policies) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.ApiManagement/service/apis/operations` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.apimanagement_service_apis_operations.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2024-05-01/service/apis/operations)</li></ul> |
+| `Microsoft.ApiManagement/service/apis/operations/policies` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.apimanagement_service_apis_operations_policies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2024-05-01/service/apis/operations/policies)</li></ul> |
 
 ## Parameters
 
@@ -37,7 +46,8 @@ This module deploys an API Management Service API Operation.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`description`](#parameter-description) | string | Description of the operation. May include HTML formatting tags. Must not be longer than 1.000 characters. |
+| [`description`](#parameter-description) | string | Description of the operation. May include HTML formatting tags. |
+| [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`policies`](#parameter-policies) | array | The policies to apply to the operation. |
 | [`request`](#parameter-request) | object | An entity containing request details. |
 | [`responses`](#parameter-responses) | array | An entity containing request details. |
@@ -87,10 +97,18 @@ The name of the parent API. Required if the template is used in a standalone dep
 
 ### Parameter: `description`
 
-Description of the operation. May include HTML formatting tags. Must not be longer than 1.000 characters.
+Description of the operation. May include HTML formatting tags.
 
 - Required: No
 - Type: string
+
+### Parameter: `enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `policies`
 
@@ -103,15 +121,27 @@ The policies to apply to the operation.
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`value`](#parameter-policiesvalue) | string | Contents of the Policy as defined by the format. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
 | [`format`](#parameter-policiesformat) | string | Format of the policyContent. |
 | [`name`](#parameter-policiesname) | string | The name of the policy. |
-| [`value`](#parameter-policiesvalue) | string | Contents of the Policy as defined by the format. |
+
+### Parameter: `policies.value`
+
+Contents of the Policy as defined by the format.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `policies.format`
 
 Format of the policyContent.
 
-- Required: Yes
+- Required: No
 - Type: string
 - Allowed:
   ```Bicep
@@ -127,14 +157,7 @@ Format of the policyContent.
 
 The name of the policy.
 
-- Required: Yes
-- Type: string
-
-### Parameter: `policies.value`
-
-Contents of the Policy as defined by the format.
-
-- Required: Yes
+- Required: No
 - Type: string
 
 ### Parameter: `request`
@@ -165,3 +188,7 @@ Collection of URL template parameters.
 | `name` | string | The name of the operation. |
 | `resourceGroupName` | string | The resource group the operation was deployed into. |
 | `resourceId` | string | The resource ID of the operation. |
+
+## Data Collection
+
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.

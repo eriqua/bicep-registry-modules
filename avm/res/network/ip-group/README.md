@@ -2,6 +2,14 @@
 
 This module deploys an IP Group.
 
+You can reference the module as follows:
+```bicep
+module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
+  params: { (...) }
+}
+```
+For examples, please refer to the [Usage Examples](#usage-examples) section.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -13,11 +21,11 @@ This module deploys an IP Group.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/ipGroups` | [2024-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/ipGroups) |
+| Resource Type | API Version | References |
+| :-- | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2020-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_locks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)</li></ul> |
+| `Microsoft.Authorization/roleAssignments` | 2022-04-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.authorization_roleassignments.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)</li></ul> |
+| `Microsoft.Network/ipGroups` | 2025-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_ipgroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2025-05-01/ipGroups)</li></ul> |
 
 ## Usage examples
 
@@ -35,6 +43,8 @@ The following section provides usage examples for the module, which were used to
 
 This instance deploys the module with the minimum set of required parameters.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/defaults]
+
 
 <details>
 
@@ -42,9 +52,11 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
-  name: 'ipGroupDeployment'
   params: {
     // Required parameters
+    ipAddresses: [
+      '10.0.0.1'
+    ]
     name: 'nigmin001'
     // Non-required parameters
     location: '<location>'
@@ -65,6 +77,11 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "ipAddresses": {
+      "value": [
+        "10.0.0.1"
+      ]
+    },
     "name": {
       "value": "nigmin001"
     },
@@ -87,6 +104,9 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
 using 'br/public:avm/res/network/ip-group:<version>'
 
 // Required parameters
+param ipAddresses = [
+  '10.0.0.1'
+]
 param name = 'nigmin001'
 // Non-required parameters
 param location = '<location>'
@@ -99,6 +119,8 @@ param location = '<location>'
 
 This instance deploys the module with most of its features enabled.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/max]
+
 
 <details>
 
@@ -106,15 +128,14 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
-  name: 'ipGroupDeployment'
   params: {
     // Required parameters
-    name: 'nigmax001'
-    // Non-required parameters
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'
     ]
+    name: 'nigmax001'
+    // Non-required parameters
     location: '<location>'
     lock: {
       kind: 'CanNotDelete'
@@ -161,16 +182,16 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "nigmax001"
-    },
-    // Non-required parameters
     "ipAddresses": {
       "value": [
         "10.0.0.1",
         "10.0.0.2"
       ]
     },
+    "name": {
+      "value": "nigmax001"
+    },
+    // Non-required parameters
     "location": {
       "value": "<location>"
     },
@@ -223,12 +244,12 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
 using 'br/public:avm/res/network/ip-group:<version>'
 
 // Required parameters
-param name = 'nigmax001'
-// Non-required parameters
 param ipAddresses = [
   '10.0.0.1'
   '10.0.0.2'
 ]
+param name = 'nigmax001'
+// Non-required parameters
 param location = '<location>'
 param lock = {
   kind: 'CanNotDelete'
@@ -267,6 +288,8 @@ param tags = {
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/waf-aligned]
+
 
 <details>
 
@@ -274,15 +297,14 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 ```bicep
 module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
-  name: 'ipGroupDeployment'
   params: {
     // Required parameters
-    name: 'nigwaf001'
-    // Non-required parameters
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'
     ]
+    name: 'nigwaf001'
+    // Non-required parameters
     location: '<location>'
     tags: {
       Environment: 'Non-Prod'
@@ -306,16 +328,16 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "nigwaf001"
-    },
-    // Non-required parameters
     "ipAddresses": {
       "value": [
         "10.0.0.1",
         "10.0.0.2"
       ]
     },
+    "name": {
+      "value": "nigwaf001"
+    },
+    // Non-required parameters
     "location": {
       "value": "<location>"
     },
@@ -341,12 +363,12 @@ module ipGroup 'br/public:avm/res/network/ip-group:<version>' = {
 using 'br/public:avm/res/network/ip-group:<version>'
 
 // Required parameters
-param name = 'nigwaf001'
-// Non-required parameters
 param ipAddresses = [
   '10.0.0.1'
   '10.0.0.2'
 ]
+param name = 'nigwaf001'
+// Non-required parameters
 param location = '<location>'
 param tags = {
   Environment: 'Non-Prod'
@@ -364,6 +386,7 @@ param tags = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`ipAddresses`](#parameter-ipaddresses) | array | IpAddresses/IpAddressPrefixes in the IP Group resource. |
 | [`name`](#parameter-name) | string | The name of the IP Group. |
 
 **Optional parameters**
@@ -371,11 +394,17 @@ param tags = {
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipAddresses`](#parameter-ipaddresses) | array | IpAddresses/IpAddressPrefixes in the IP Group resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
+
+### Parameter: `ipAddresses`
+
+IpAddresses/IpAddressPrefixes in the IP Group resource.
+
+- Required: Yes
+- Type: array
 
 ### Parameter: `name`
 
@@ -391,14 +420,6 @@ Enable/Disable usage telemetry for module.
 - Required: No
 - Type: bool
 - Default: `True`
-
-### Parameter: `ipAddresses`
-
-IpAddresses/IpAddressPrefixes in the IP Group resource.
-
-- Required: No
-- Type: array
-- Default: `[]`
 
 ### Parameter: `location`
 
@@ -421,6 +442,7 @@ The lock settings of the service.
 | :-- | :-- | :-- |
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
+| [`notes`](#parameter-locknotes) | string | Specify the notes of the lock. |
 
 ### Parameter: `lock.kind`
 
@@ -440,6 +462,13 @@ Specify the type of lock.
 ### Parameter: `lock.name`
 
 Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `lock.notes`
+
+Specify the notes of the lock.
 
 - Required: No
 - Type: string
@@ -570,8 +599,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `br/public:avm/utl/types/avm-common-types:0.5.1` | Remote reference |
+| `br/public:avm/utl/types/avm-common-types:0.7.0` | Remote reference |
 
 ## Data Collection
 
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the [repository](https://aka.ms/avm/telemetry). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Our privacy statement is located at <https://go.microsoft.com/fwlink/?LinkID=824704>. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.
