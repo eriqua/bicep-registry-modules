@@ -543,7 +543,7 @@ param tags = {
 | [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. If neither metrics nor logs are specified, all metrics & logs are configured by default. If only one of them is specified, the other one will not be configured. |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`firewallSettings`](#parameter-firewallsettings) | object | The inbound firewall rules to define on the server. If not specified, firewall is disabled. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The total number of query replica scale-out instances. |
@@ -733,7 +733,7 @@ The inbound firewall rules to define on the server. If not specified, firewall i
 
 ### Parameter: `location`
 
-Location for all Resources.
+Location for all resources.
 
 - Required: No
 - Type: string
